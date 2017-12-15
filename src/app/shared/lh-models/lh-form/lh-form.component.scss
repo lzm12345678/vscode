@@ -1,0 +1,25 @@
+.lh-form-wrapper {
+
+}
+.lh-form-item {
+    line-height: 50px;
+
+    .center-block {
+        display: flex;
+        .lh-form-item-label {
+            flex: 0 1 150px;
+            text-align: right;
+        }
+        .lh-form-item-wrapper {
+            flex: 1 1 auto;
+            .lh-form-item-input {
+                line-height: 24px;
+                width: 100%;
+                display: inline-block;
+            }
+        }
+    }
+    .lh-form-item-error {
+        color: red;
+    }
+}

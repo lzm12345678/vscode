@@ -1,0 +1,39 @@
+<div class="asset-wrap">
+    <div class="menu-left" [ngStyle]="{transform: isCollapse ? 'translateX(-100%)' : 'translateX(0)'}">
+    <!-- <div class="menu-left"> -->
+        <!-- jiade start -->
+        <div class="top-title">用户管理</div>
+        <!-- jiade end -->
+        <ul nz-menu [nzMode]="'inline'" nzTheme='dark' [nzInlineCollapsed]="isCollapsed">
+            <li nz-submenu [nzOpen]="true">
+                <span title>
+                    <i class="anticon anticon-mail"></i>
+                    <span>用户管理</span>
+                </span>
+                <ul>
+                    <li nz-menu-item [ngClass]="pageFlag === 'manager' ? 'ant-menu-item-selected' : ''" (click)="$router.navigate(['/user/manager'])">用户列表</li>
+                    <li nz-menu-item [ngClass]="pageFlag === 'online' ? 'ant-menu-item-selected' : ''" (click)="$router.navigate(['/user/online'])">在线用户列表</li>
+                    <li nz-menu-item [ngClass]="pageFlag === 'roles' ? 'ant-menu-item-selected' : ''" (click)="$router.navigate(['/user/roles'])">角色列表</li>
+                </ul>
+            </li>
+        </ul>
+
+        <!-- 修改左右收起jiade start -->
+        <div class="collapse" (click)="toggleCollapse()" [ngClass]="{close: isCollapse}">
+            <i class="icon_collapse"></i>
+        </div>
+        <!-- jiade end -->
+    </div>
+
+    <div class="asset-main" class="m-body" [ngStyle]="{left: isCollapse ? '0' : '240px'}">
+        <!-- <div class="asset-main">    -->
+        <nz-breadcrumb>
+            <nz-breadcrumb-item *ngFor="let item of breadCrumb">
+                <a >{{item.label}}</a>
+            </nz-breadcrumb-item>
+        </nz-breadcrumb>
+        <router-outlet></router-outlet>
+    </div>
+</div>
+
+

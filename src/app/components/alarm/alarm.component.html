@@ -1,0 +1,33 @@
+<div class="asset-wrap">
+    <div class="menu-left" [ngStyle]="{transform: isCollapse ? 'translateX(-100%)' : 'translateX(0)'}">
+        <!-- 新家的结构 start-->
+        <div class="top-title">告警列表</div>
+        <!-- 新家的结构 end -->
+        <ul nz-menu [nzMode]="'inline'" nzTheme='dark' [nzInlineCollapsed]="isCollapsed">
+            <li nz-submenu [nzOpen]="true">
+                <span title>
+                    <i class="anticon anticon-appstore"></i>
+                    <span>告警管理</span>
+                </span>
+                <ul>
+                    <li nz-menu-item [ngClass]="pageFlag === 'current' ? 'ant-menu-item-selected' : ''" (click)="$router.navigate(['/alarm/current'])" >当前告警</li>
+                    <li nz-menu-item [ngClass]="pageFlag === 'history' ? 'ant-menu-item-selected' : ''" (click)="$router.navigate(['/alarm/history'])">历史告警</li>
+                </ul>
+            </li>
+        </ul>
+
+        <!-- 修改左右收起jiade start -->
+        <div class="collapse" (click)="toggleCollapse()" [ngClass]="{close: isCollapse}">
+                <i class="icon_collapse"></i>
+        </div>
+            <!-- jiade end -->
+    </div>
+    <div class="asset-main"  class="m-body" [ngStyle]="{left: isCollapse ? '0' : '240px'}">
+        <nz-breadcrumb>
+            <nz-breadcrumb-item *ngFor="let item of breadCrumb">
+                <a >{{item.label}}</a>
+            </nz-breadcrumb-item>
+        </nz-breadcrumb>
+        <router-outlet></router-outlet>
+    </div>
+</div>

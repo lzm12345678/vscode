@@ -1,0 +1,224 @@
+<div class="user-manager-wrap">
+    <div class="search-area" nz-row >
+        <div nz-col class="gutter-row" [nzSpan]="6">
+            <span class="inputTitle">用户名称</span>
+            <span class="input-common-width">
+                <nz-input [(ngModel)]="search.name"></nz-input>
+            </span>
+        </div>
+        <div nz-col class="gutter-row" [nzSpan]="6">
+            <span class="inputTitle">用户代码</span>
+            <span class="input-common-width">
+                <nz-input [(ngModel)]="search.code" ></nz-input>
+            </span>
+           
+        </div>
+        <div nz-col class="gutter-row" [nzSpan]="6">
+                <span class="inputTitle">用户状态</span>
+            <nz-select class="input-common-width"
+                nzAllowClear
+                [nzPlaceHolder]="''"
+                [(ngModel)]="search.state"
+                [nzShowSearch]="true">
+                <nz-option
+                    [nzLabel]="'启用'"
+                    [nzValue]="'1'">
+                </nz-option>
+                <nz-option
+                    [nzLabel]="'停用'"
+                    [nzValue]="'0'">
+                </nz-option>
+            </nz-select>
+        </div>
+        <div nz-col class="gutter-row" [nzSpan]="6">
+            <button nz-button (click)="searchByField()" [nzType]="'default'" class="btn-common btn-search-normal">
+                <!-- <i class="anticon anticon-search"></i> -->
+                <span>查&nbsp;&nbsp;询</span>
+            </button>
+            <button nz-button (click)="clearField()" [nzType]="'default'" class="btn-common btn-reset-normal">
+                <!-- <i class="anticon anticon-delete"></i> -->
+                <span>重&nbsp;&nbsp;置</span>
+            </button>
+        </div>
+    </div>
+    <div>
+        <div class="m-10">
+            <button nz-button [nzType]="'default'" (click)="detailRouter('insert')" class="btn-common ant-btn-add">
+                <i class="anticon anticon-plus"></i>
+                <span>新&nbsp;&nbsp;增</span>
+            </button>
+            <button nz-button
+                    [disabled]="disabledButton"
+                    [nzType]="'primary'"
+                    [nzLoading]="operating"
+                    (click)="batchDelete()" class="btn-common">
+                <i class="anticon anticon-minus"></i>
+                <span>批量删除</span>
+            </button>
+            <span style="margin-left: 8px;" *ngIf="_checkedNumber">已选中 {{checkedNumber}} 条</span>
+        </div>
+        <nz-table #nzTable
+                  [nzDataSource]="data"
+                  [nzSize]="'small'"
+                  [nzIsPagination]="false"
+                  [nzScroll]="{ y: 330 }"
+                  [nzBordered]="true"
+                  [nzPageSize]="20">
+            <ng-template #nzFixedHeader>
+                <thead nz-thead>
+                    <tr>
+                        <th nz-th  [nzCheckbox]="true">
+                            <label nz-checkbox
+                                   [(ngModel)]="allChecked"
+                                   [nzIndeterminate]="indeterminate"
+                                   (ngModelChange)="checkAll($event)">
+                            </label>
+                        </th>
+                        <th nz-th [nzWidth]="'100px'"><span>用户名称</span></th>
+                        <th nz-th [nzWidth]="'80px'"><span>角色</span></th>
+                        <th nz-th [nzWidth]="'80px'"><span>用户状态</span></th>
+                        <th nz-th [nzWidth]="'100px'"><span>用户代码</span></th>
+                        <th nz-th [nzWidth]="'120px'"><span>描述</span></th>
+                        <th nz-th [nzWidth]="'100px'"><span>手机号</span></th>
+                        <th nz-th [nzWidth]="'100px'"><span>邮箱</span></th>
+                        <th nz-th [nzWidth]="'120px'"><span>最后登录时间</span></th>
+                        <!--<th nz-th [nzWidth]="'150px'"><span>最后一次登录IP</span></th>-->
+                        <th nz-th [nzWidth]="'120px'"><span>操作</span></th>
+                    </tr>
+                </thead>
+            </ng-template>
+            <tbody nz-tbody>
+                <ng-template ngFor let-user let-i="index" [ngForOf]="nzTable.data">
+                    <tr nz-tbody-tr>
+                        <td nz-td [nzCheckbox]="true">
+                            <label nz-checkbox
+                                   [(ngModel)]="user.checked"
+                                   (ngModelChange)="refreshStatus($event)"></label>
+                        </td>
+                        <td nz-td>
+                            <div class="overflow" style="width:80px;color:#108ee9" (click)="detailRouter('detail', user.userId)" title="{{user.userName}}">{{user.userName}}</div>
+                        </td>
+                        <td nz-td>
+                            <div class="overflow" style="width:60px;" title="{{user.role.roleName}}">{{user.role.roleName}}</div>
+                        </td>
+                        <td nz-td>
+                            <div class="overflow" style="width:60px">
+                                <nz-switch [nzSize]="'small'" (click)="toggleUserStatus(user)" [ngModel]="user.userStatus === '1' ? true: false"></nz-switch>
+                            </div>
+
+
+                            <!--<i *ngIf="user.userStatus === '1'" class="anticon anticon-check-circle" style="font-size: 14px;color: #108ee9;"></i>-->
+                            <!--<i *ngIf="user.userStatus === '0'" class="anticon anticon-close-circle" style="font-size: 14px;color: #aaa;"></i>-->
+                        </td>
+                        <td nz-td>
+                            <div class="overflow" style="width:80px" title="{{user.userCode}}">{{user.userCode}}</div>
+                        </td>
+                        <td nz-td>
+                            <div class="overflow" style="width:100px" title="{{user.userdesc}}">{{user.userdesc}}</div>
+                        </td>
+                        <td nz-td>
+                            <div class="overflow" style="width:80px" title="{{user.phonenumber}}">{{user.phonenumber}}</div>
+                        </td>
+                        <td nz-td>
+                            <div class="overflow" style="width:80px" title="{{user.email}}">{{user.email}}</div>
+                        </td>
+                        <td nz-td>
+                            <div class="overflow" style="width:100px" title="{{user.lastLoginTime}}">{{user.lastLoginTime}}</div>
+                        </td>
+                        <!--<td nz-td>-->
+                            <!--<span>{{user.lastLoginIp}}</span>-->
+                        <!--</td>-->
+                        <td nz-td>
+                            <nz-tooltip [nzTitle]="'修改'">
+                                <span class="hove_alert deal-item" nz-tooltip>
+                                        <a (click)="detailRouter('modify', user.userId)">
+                                            <!-- <i class="anticon anticon-edit icon_mlr-15"></i> -->
+                                            <span class="btn-edit"></span>
+                                        </a>
+                                    </span>
+                              </nz-tooltip>
+                              <nz-tooltip [nzTitle]="'删除'">
+                                    <span class="hove_alert" nz-tooltip>
+                                        <nz-popconfirm [nzTitle]="'确定要删除这个用户吗？'"
+                                                    (nzOnConfirm)="confirmDelete(user)"
+                                                    (nzOnCancel)="cancel()">
+                                            <a nz-popconfirm>
+                                                <!-- <i class="anticon anticon-delete icon_mlr-15"></i> -->
+                                                <span class="btn-delate"></span>
+                                            </a>
+                                        </nz-popconfirm>
+                                    </span>
+                                </nz-tooltip>
+
+                                <nz-tooltip [nzTitle]="'重置密码'">
+                                        <span  class="hove_alert" nz-tooltip>
+                                            <a (click)="modifyPassword(user)">
+                                                <!-- <i class="anticon anticon-retweet icon_mlr-15"></i> -->
+                                                <span class="btn-reset "></span>
+                                            </a>
+                                        </span>
+                                </nz-tooltip>
+
+
+                            <!--<nz-popconfirm [nzTitle]="'确认' + (user.userStatus | userState) + '吗？'"-->
+                                           <!--(nzOnConfirm)="confirmState(user)"-->
+                                           <!--(nzOnCancel)="cancel()">-->
+                                <!--<a nz-popconfirm>{{user.userStatus | userState: 'reverse'}}</a>-->
+                            <!--</nz-popconfirm>-->
+                        </td>
+                    </tr>
+                </ng-template>
+            </tbody>
+        </nz-table>
+        <div style="margin: 20px 30px;text-align: right;">
+            <app-pagination [pageIndex]="pageIndex"
+                            [pageSize]="pageSize"
+                            [total]="total">
+
+            </app-pagination>
+        </div>
+    </div>
+    <nz-modal *ngIf="dealUser && password" [nzTitle]="modalPwdTitle"
+            [nzContent]="modalPwdContent"
+            [nzMaskClosable]="false"
+            [nzFooter]="modalPwdFooter"
+            [nzVisible]="isModifyPasswordShow"
+            (nzOnCancel)="isModifyPasswordShow = false"
+            (nzOnOk)="handleOkMiddle($event)">
+        <ng-template #modalPwdTitle>
+            修改密码
+        </ng-template>
+        <ng-template #modalPwdContent>
+            <div nz-row class="m-item">
+                <div nz-col [nzSpan]="7" class="m-title">
+                    新密码
+                </div>
+                <div nz-col [nzSpan]="10" class="m-content">
+                        <nz-input nzType="password" [(ngModel)]="password.newPwd" (blur)="blur('new')" [nzPlaceHolder]="'请输入'" style="width:240px;"></nz-input>
+                    <!-- <input type="password" [(ngModel)]="password.newPwd" (blur)="blur('new')" placeHolder="请输入"> -->
+                    <p><span class="error">{{newMsg}}</span></p>
+                    <!--<nz-input [(ngModel)]="password.newPwd" [nzPlaceHolder]="'请输入'"></nz-input>-->
+                </div>
+            </div>
+            <div nz-row class="m-item">
+                <div nz-col [nzSpan]="7" class="m-title">
+                    确认新密码
+                </div>
+                <div nz-col [nzSpan]="10" class="m-content">
+                        <nz-input nzType="password" [(ngModel)]="password.rePwd" (blur)="blur('re')" [nzPlaceHolder]="'请再次输入'" style="width:240px;"></nz-input>
+                    <!-- <input type="password" [(ngModel)]="password.rePwd" (blur)="blur('re')" placeHolder="请输入"> -->
+                    <p><span class="error">{{reMsg}}</span></p>
+                    <!--<nz-input [(ngModel)]="password.rePwd" [nzPlaceHolder]="'请输入'"></nz-input>-->
+                </div>
+            </div>
+        </ng-template>
+        <ng-template #modalPwdFooter>
+            <div class="modal-footer">
+                    <button (click)="savePassword()" class="btn-common btn-save-normal">保存</button>
+                    <button  (click)="closePwdModel()"  class="btn-common" nz-button >取消</button>
+                <!-- <button  class="m-btn" type="button">取&nbsp;&nbsp;消</button>
+                <button (click)="savePassword()" class="m-btn" type="button">保&nbsp;&nbsp;存sss</button> -->
+            </div>
+        </ng-template>
+    </nz-modal>
+</div>

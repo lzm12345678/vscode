@@ -1,0 +1,41 @@
+<div [id]="tableId" class="lh-table-wrapper"
+     [style.width]="width || 100 + width ? 'px' : '%'">
+    <div class="lh-table-buttons">
+        <button class="lh-btn lh-btn-primary "
+                type="button"
+                [disabled]="btn.batch && !checkedAll && !indeterminate"
+                *ngFor="let btn of operateButtons;let i = index" (click)="btn._clickEvent()">
+            <i class="anticon" [ngClass]="btn.icon"></i>
+            <span [innerHTML]="btn.title"></span>
+        </button>
+    </div>
+    <div class="lh-table"
+         [class.lh-table-small]="size === 'small'"
+         [class.lh-table-large]="size === 'large'">
+
+        <lh-table-header [column]="column"
+                         [checkedAll]="checkedAll"
+                         [indeterminate]="indeterminate">
+
+        </lh-table-header>
+        <lh-table-body [column]="column"
+                       [data]="data"
+                       [expandInfo]="expandInfo"
+                       (scroll)="scroll($event)"
+                       [height]="height">
+
+        </lh-table-body>
+
+        <lh-table-fixed
+            [column]="column"
+            [checkedAll]="checkedAll"
+            [data]="data"
+            [expandInfo]="expandInfo"
+            (scroll)="scroll($event)"
+            [height]="height"
+            [indeterminate]="indeterminate">
+
+        </lh-table-fixed>
+    </div>
+
+</div>

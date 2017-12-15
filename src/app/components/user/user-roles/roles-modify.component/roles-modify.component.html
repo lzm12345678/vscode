@@ -1,0 +1,129 @@
+<div class="wrap">
+    <div nz-row>
+        <div nz-col [nzSpan]="3"><span class="font14 bold">角色名：</span></div>
+        <div nz-col [nzSpan]="8"><span class="font14">{{roleName}}</span></div>
+    </div>
+    <div nz-row>
+        <div nz-col [nzSpan]="3"><span class="font14 bold">描述：</span></div>
+        <div nz-col [nzSpan]="8"><span class="font14">{{roleDes}}</span></div>
+    </div>
+
+    <nz-tabset>
+        <nz-tab>
+            <ng-template #nzTabHeading>
+                用户列表
+            </ng-template>
+            <div>
+                <div class="search-input">
+                    <nz-input [nzType]="'text'" [nzPlaceHolder]="'请输入关键字搜索'">
+                        <ng-template #prefix>
+                            <i class="anticon anticon-search"></i>
+                        </ng-template>
+                    </nz-input>
+                </div>
+                <app-role-tab
+                    [roleId]="roleId"
+                    [thData]="userThs"
+                    [tdData]="userTds"
+                    [dataUrl]="'/itm/roles/getAllUsers'"
+                ></app-role-tab>
+                <!--<nz-table #nzTable [nzDataSource]="userList"-->
+                          <!--[nzBordered]="true"-->
+                          <!--[nzSize]="small"-->
+                          <!--[nzIsPagination]="false">-->
+                    <!--<thead nz-thead>-->
+                    <!--<tr>-->
+                        <!--<th nz-th style="width: 200px"><span>用户名</span></th>-->
+                        <!--<th nz-th><span>描述</span></th>-->
+                    <!--</tr>-->
+                    <!--</thead>-->
+                    <!--<tbody nz-tbody>-->
+                        <!--<tr nz-tbody-tr *ngFor="let item of nzTable.data">-->
+                            <!--<td nz-td>{{item.userName}}</td>-->
+                            <!--<td nz-td>{{item.userdesc}}</td>-->
+                        <!--</tr>-->
+                    <!--</tbody>-->
+                <!--</nz-table>-->
+
+            </div>
+        </nz-tab>
+        <nz-tab>
+            <ng-template #nzTabHeading>
+                操作权限
+            </ng-template>
+            <div>
+                <div style="margin-bottom:20px;">
+                    <button (click)="openInsertModal()" nz-button [nzType]="'primary'" class="btn-common ant-btn-add">
+                        <i class="anticon anticon-plus"></i>
+                        <span>新&nbsp;&nbsp;增</span>
+                    </button>
+                    <button nz-button [nzType]="'default'" class="btn-common">
+                        <i class="anticon anticon-delete"></i>
+                        <span>删&nbsp;&nbsp;除</span>
+                    </button>
+                </div>
+                <app-role-tab
+                    [roleId]="roleId"
+                    [thData]="funcThs"
+                    [tdData]="funcTds"
+                    [dataUrl]="'/itm/function/roleFunctionPage'"
+                ></app-role-tab>
+                <!--<nz-table #nzTable1 [nzDataSource]="functionList" [nzBordered]="true" [nzIsPagination]="false">-->
+                    <!--<thead nz-thead>-->
+                    <!--<tr>-->
+                        <!--<th nz-th><span>操作</span></th>-->
+                        <!--<th nz-th><span>路径信息</span></th>-->
+                    <!--</tr>-->
+                    <!--</thead>-->
+                    <!--<tbody nz-tbody>-->
+                    <!--<tr nz-tbody-tr *ngFor="let item of nzTable1.data">-->
+                        <!--<td nz-td>{{item.name}}</td>-->
+                        <!--<td nz-td>{{item.urlDesc}}</td>-->
+                    <!--</tr>-->
+                    <!--</tbody>-->
+                <!--</nz-table>-->
+                <!--<div style="margin: 20px 30px;text-align: right;">-->
+                    <!--<app-pagination [pageIndex]="pageIndex"-->
+                                    <!--[pageSize]="pageSize"-->
+                                    <!--[total]="total">-->
+
+                    <!--</app-pagination>-->
+                <!--</div>-->
+            </div>
+        </nz-tab>
+    </nz-tabset>
+    <!-- <nz-modal [nzVisible]="isVisible"
+              [nzTitle]="'操作组权限列表'"
+              [nzContent]="modalContent"
+              (nzOnCancel)="isVisible = false"
+              (nzOnOk)="saveFunction()">
+        <ng-template #modalContent>
+            <app-custom-tree [data]="roleFunctionList" [allData]="roleFunctionList"></app-custom-tree>
+        </ng-template>
+    </nz-modal> -->
+
+
+    <nz-modal [nzVisible]="isVisible" 
+              [nzTitle]="'操作组权限列表'" 
+              [nzContent]="modalContent" 
+              [nzFooter]="modalFooter" 
+              (nzOnCancel)="isVisible = false"
+              >
+            <ng-template #modalTitle>
+              对话框标题
+            </ng-template>
+            <ng-template #modalContent>
+                    <app-custom-tree [data]="roleFunctionList" [allData]="roleFunctionList"></app-custom-tree>
+            </ng-template>
+            <ng-template #modalFooter>
+                <button class="btn-common btn-save-normal" nz-button [nzType]="'primary'" [nzSize]="'large'" (click)="saveFunction()" [nzLoading]="isConfirmLoading">
+                        确定
+                </button>
+                <button class="btn-common" nz-button [nzType]="'default'" [nzSize]="'large'" (click)="isVisible = false">
+                        取消
+                </button>
+              
+            </ng-template>
+    </nz-modal>
+
+</div>

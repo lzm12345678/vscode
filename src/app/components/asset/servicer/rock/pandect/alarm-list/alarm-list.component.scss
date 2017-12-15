@@ -1,0 +1,62 @@
+.error, .primary .success .warning {
+    //去掉图标样式
+    //font-size: 14px;
+}
+.error {
+    //color: #ff2812;
+    color: #ff0000;
+}
+.primary {
+    //color: #f79700;
+    color: #ff9900;
+}
+.success {
+    //color: #ffd800;
+    color: #ffff00;
+}
+.warning {
+    //color: #04aef5;
+    color: #00ccff;
+}
+.normal {
+    //color: #4ac233;
+    color: #2bd544;
+}
+
+// ZORRO组件样式按高保真调整
+.ant-table-thead > tr > th{
+    height: 30px;
+    padding: 0 10px !important;
+    word-break: break-all;
+}
+.ant-table-tbody > tr > td {
+    height: 30px;
+    padding: 0 10px !important;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    > div {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        cursor: pointer;
+    }
+}
+
+.ant-table-thead > tr > th.ant-table-selection-column, .ant-table-tbody > tr > td.ant-table-selection-column {
+    text-align: center;
+    min-width: 42px;
+    width: 42px;
+}
+
+.w500{
+    width: 500px;
+}
+
+.alarm-list-space{
+    max-height: 350px;
+    overflow: auto;
+}
+
+.w1800{
+    width: 1800px;
+}

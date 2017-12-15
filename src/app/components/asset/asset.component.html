@@ -1,0 +1,63 @@
+<div class="asset-wrap">
+
+    <div class="asset-menu"  [ngStyle]="{transform: isCollapse ? 'translateX(-100%)' : 'translateX(0)'}">
+        <div class="top-title">服务器</div>
+        <!--<a class="asset-list">-->
+           <!--<span style="margin-left: 48px;">服务器列表</span>-->
+        <!--</a>-->
+        <ul nz-menu [nzMode]="'inline'" nzTheme='dark' [nzInlineCollapsed]="isCollapsed">
+            <li nz-submenu [nzOpen]="true">
+                <span title>
+                    <i class="anticon anticon-mail"></i>
+                    <span>资产管理</span>
+                </span>
+                <ul>
+                    <li nz-menu-item [ngClass]="pageFlag === 'rock' ? 'ant-menu-item-selected' : ''" (click)="$router.navigate(['/asset/servicer/rock'])">服务器</li>
+                    <!--<li nz-menu-item (click)="$router.navigate(['/asset/servicer/blade'])">刀片服务器</li>-->
+                    <!--<li nz-menu-item (click)="$router.navigate(['/asset/servicer/device'])">网络设备</li>-->
+                    <!-- <li nz-submenu [nzOpen]="true">
+                        <span title>网络设备(建设中...)</span>
+                        <ul>
+                            <li nz-menu-item class="disabled-menu-item">路由器</li>
+                            <li nz-menu-item class="disabled-menu-item">网关</li>
+                            <li nz-menu-item class="disabled-menu-item">防火墙</li>
+                        </ul>
+                    </li> -->
+                    <!-- 网络设备 start -->
+                    <li nz-menu-item [ngClass]="pageFlag === 'networkAsset' ? 'ant-menu-item-selected' : ''" (click)="$router.navigate(['/asset/servicer/networkAsset'])">网络设备</li>
+                    <!-- 网络设备 end -->
+
+                    <li nz-submenu [nzOpen]="true">
+                        <span title>资产维护</span>
+                        <ul>
+                            <li nz-menu-item [ngClass]="pageFlag === 'brand' ? 'ant-menu-item-selected' : ''"  (click)="$router.navigate(['/asset/manager/brand'])">品牌维护</li>
+                            <li nz-menu-item [ngClass]="pageFlag === 'series' ? 'ant-menu-item-selected' : ''" (click)="$router.navigate(['/asset/manager/series'])">系列维护</li>
+                            <li nz-menu-item [ngClass]="pageFlag === 'version' ? 'ant-menu-item-selected' : ''" (click)="$router.navigate(['/asset/manager/version'])">型号维护</li>
+                        </ul>
+                    </li>
+                </ul>
+            </li>
+            <!--<li nz-submenu>
+                <span title>
+                    <i class="anticon anticon-appstore"></i>
+                    <span>告警管理</span>
+                </span>
+                    <ul>
+                        <li nz-menu-item (click)="$router.navigate(['/asset/alarm/current'])" >当前告警</li>
+                        <li nz-menu-item (click)="$router.navigate(['/asset/alarm/history'])">历史告警</li>
+                    </ul>
+            </li>-->
+        </ul>
+        <div class="collapse" (click)="toggleCollapse()" [ngClass]="{close: isCollapse}">
+            <!--<i class="anticon anticon-caret-left"></i>-->
+            <i class="icon_collapse"></i>
+        </div>
+
+
+    </div>
+
+    <div class="asset-body" [ngStyle]="{left: isCollapse ? '0' : '240px'}">
+        <router-outlet></router-outlet>
+    </div>
+
+</div>

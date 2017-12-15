@@ -1,0 +1,42 @@
+<div class="detail-wrap" style="background: #ffffff">
+    <div class="colla-row">
+        <h3>基本属性</h3>
+        <app-custom-form [column]="generalProperty" [data]="serverInfo" [span]="6" [isDetail]="dealType === 'detail'"></app-custom-form>
+    </div>
+    <!--<div class="colla-row">-->
+        <!--<h3>上架位置(*必须先选择型号)</h3>-->
+        <!--<app-custom-form [column]="shelfPosition" [data]="serverInfo" [span]="6" [isDetail]="dealType === 'detail' || !serverInfo.serverModel"></app-custom-form>-->
+    <!--</div>-->
+    <div class="colla-row">
+        <h3>上架属性</h3>
+        <!-- <div class="colla-row">
+            <h3>SNMP协议</h3>
+            <app-custom-form [column]="protocolConfig.snmp" [data]="serverInfo.protocolList[0]" [span]="6" [isDetail]="dealType === 'detail'"></app-custom-form>
+        </div>
+        <div class="colla-row">
+            <h3>IPMI协议</h3>
+            <app-custom-form [column]="protocolConfig.ipmi" [data]="serverInfo.protocolList[1]" [span]="6" [isDetail]="dealType === 'detail'"></app-custom-form>
+        </div>
+        <div class="colla-row">
+            <h3>REDFISH协议</h3>
+            <app-custom-form [column]="protocolConfig.redfish" [data]="serverInfo.protocolList[2]" [span]="6" [isDetail]="dealType === 'detail'"></app-custom-form>
+        </div>
+        <div class="colla-row">
+            <h3>带内协议</h3>
+            <app-custom-form [column]="protocolConfig.dnip" [data]="serverInfo.protocolList[3]" [span]="6" [isDetail]="dealType === 'detail'"></app-custom-form>
+        </div> -->
+    </div>
+    <div class="colla-row">
+        <h3>协议配置</h3>
+        <!-- <app-custom-form [column]="remark" [data]="serverInfo" [span]="20" [isDetail]="dealType === 'detail'"></app-custom-form> -->
+    </div>
+    <div style="text-align: center">
+        <button  (click)="saveNetworkDetail()" nz-button [nzType]="'primary'" class="btn-common btn-save-normal">
+            <!-- <span *ngIf="isLoading"><i class="anticon anticon-loading anticon-spin"></i></span> -->
+            <span *ngIf="!isLoading">保存</span>
+        </button>
+        <button nz-button [nzType]="'default'" (click)="backNetwork()" class="btn-common">
+            <span>返回</span>
+        </button>
+    </div>
+</div>

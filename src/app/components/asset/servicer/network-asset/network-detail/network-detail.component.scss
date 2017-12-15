@@ -1,0 +1,54 @@
+.detail-wrap {
+    position: relative;
+    top: 0px;
+    left: 0px;
+    right: 0px;
+    bottom: 0px;
+    height: 100%;
+    background: #ffffff;
+    .search-row {
+        margin: 12px 10px;
+        .gutter-row {
+            padding: 0 16px;
+            line-height: 28px;
+        }
+    }
+    .colla-row {
+        margin: 0 0 20px 0px;
+        background: rgba(243, 243, 243, 0.49);
+        overflow: hidden;
+        h3 {
+            border-bottom: 1px solid #ccc;
+            line-height: 36px;
+            padding-left: 18px;
+            font-size: 14px;
+            font-weight: bold;
+        }
+        .colla-row {
+            margin: 40px 50px;
+            border: 1px solid #cccccc;
+            border-radius: 3px;
+            h3 {
+                font-weight: 200;
+                font-size: 12px;
+            }
+        }
+    }
+}
+
+.row-title {
+    line-height: 28px;
+    padding-right: 15px;
+    text-align: right;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+.important {
+    color: red;
+    font-size: 16px;
+}
+
+.err-tip {
+    box-shadow: 0 0 3px 1px #da2619;
+    border-radius: 4px;
+}

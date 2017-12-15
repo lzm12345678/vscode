@@ -1,0 +1,78 @@
+<div class="lh-form-wrapper">
+    <form [formGroup]="_rules">
+        <div nz-row>
+            <ng-container *ngFor="let col of column">
+                <div nz-col [nzSpan]="2 * col.col" class="lh-form-item">
+                    <label class="center-block">
+                    <span class="lh-form-item-label">
+                        <em *ngIf="col.required" style="color: red;">*</em>
+                        {{col.label}}
+                    </span>
+                        <div class="lh-form-item-wrapper" [ngSwitch]="col.type">
+                            <nz-input *ngSwitchCase="'input'"
+                                      formControlName="{{col.key}}"
+                                      (ngModelChange)="col._modelChange(_rules.controls, $event, col.key)"
+                                      [nzPlaceHolder]="'请填写'">
+
+                            </nz-input>
+                            <nz-select *ngSwitchCase="'select'" style="width: 100%;"
+                                       [nzPlaceHolder]="'请选择'"
+                                       (ngModelChange)="col._modelChange(_rules.controls, $event, col.key)"
+                                       formControlName="{{col.key}}">
+                                <nz-option
+                                    *ngFor="let select of col.selectInfo.data"
+                                    [nzLabel]="select[col.selectInfo.label]"
+                                    [nzValue]="select[col.selectInfo.value]">
+                                </nz-option>
+                            </nz-select>
+                            <nz-input *ngSwitchCase="'password'"
+                                      nzType="password"
+                                      maxlength="10"
+                                      formControlName="{{col.key}}"
+                                      (ngModelChange)="col._modelChange(_rules.controls, $event, col.key)"
+                                      [nzPlaceHolder]="'请填写'">
+
+                            </nz-input>
+
+                            <nz-input *ngSwitchCase="'textarea'"
+                                      formControlName="{{col.key}}"
+                                      (ngModelChange)="col._modelChange(_rules.controls, $event, col.key)"
+                                      [nzType]="'textarea'"
+                                      [nzRows]="'4'"
+                                      [nzPlaceHolder]="'请填写'">
+
+                            </nz-input>
+                            <nz-input-number *ngSwitchCase="'number'"
+                                             style="width: 100%"
+                                             (ngModelChange)="col._modelChange(_rules.controls, $event, col.key)"
+                                             formControlName="{{col.key}}">
+
+                            </nz-input-number>
+                        </div>
+                    </label>
+                    <div class="lh-form-item-error"
+                         *ngIf="!_rules.controls[col.key].valid && (_rules.controls[col.key].dirty || _rules.controls[col.key].touched)">
+                        <ng-container *ngFor="let rule of col.rules">
+                            <div *ngIf="_rules.controls[col.key].hasError(rule.code)">
+                                {{rule.msg}}
+                            </div>
+                        </ng-container>
+                        <ng-container *ngFor="let rule of col.asyncRules">
+                            <div *ngIf="_rules.controls[col.key].hasError(rule.asyncCode)">
+                                {{rule.msg}}
+                            </div>
+                        </ng-container>
+                        <div *ngIf="_rules.controls[col.key].pending">
+                            Validating...
+                        </div>
+                    </div>
+                </div>
+            </ng-container>
+        </div>
+    </form>
+
+    <p>Form value: {{ _rules.value | json }}</p>
+    <p>status: {{ _rules.status }}</p>
+    <button nz-button [nzType]="'primary'" [disabled]="!_rules.valid">SUBMIT</button>
+    <button nz-button [nzType]="'primary'" (click)="reset()">重置</button>
+</div>

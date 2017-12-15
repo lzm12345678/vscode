@@ -1,0 +1,75 @@
+<div nz-row>
+    <div nz-col class="m-item" [nzSpan]="span" *ngFor="let item of column">
+        <div nz-col
+             [nzMd]="titleWidth + 1"
+             [nzLg]="titleWidth"
+             [nzXl]="titleWidth - 1"
+             class="m-title" >
+            <em *ngIf="item.require" class="important">*</em>{{item.label}}
+        </div>
+        <div nz-col
+             [nzMd]="23 - titleWidth"
+             [nzLg]="24 - titleWidth"
+             [nzXl]=" 25 - titleWidth"
+             [ngClass]="{'form-error': item.isError}"
+             class="m-content"
+             [ngSwitch]="item.type">
+            <nz-tooltip [nzTrigger]="'focus'" [(nzVisible)]="item.isError">
+                <nz-input *ngSwitchCase="'input'" nz-tooltip
+                          [nzDisabled]="isDetail || item.disabled"
+                          [(ngModel)]="data[item.key]"
+                          (ngModelChange)="item.change($event, this)"
+                          (nzBlur)="item.blur(data[item.key], this)"
+                          [nzPlaceHolder]="'请填写'">
+
+                </nz-input>
+                <nz-select *ngSwitchCase="'select'" nz-tooltip style="width: 100%;"
+                           [nzDisabled]="isDetail || item.disabled"
+                           [nzPlaceHolder]="'请选择'"
+                           [(ngModel)]="data[item.key]"
+                           (ngModelChange)="item.change(data[item.key], this)">
+                    <nz-option
+                        *ngFor="let select of item.selectInfo.data"
+                        [nzDisabled]="select.nzDisabled"
+                        [nzLabel]="select[item.selectInfo.label]"
+                        [nzValue]="select[item.selectInfo.value]">
+                    </nz-option>
+                </nz-select>
+                <nz-input *ngSwitchCase="'password'" nz-tooltip
+                          nzType="password"
+                          maxlength="10"
+                          [nzDisabled]="isDetail || item.disabled"
+                          [(ngModel)]="data[item.key]"
+                          (ngModelChange)="item.change($event, this)"
+                          (nzBlur)="item.blur(data[item.key], this)"
+                          [nzPlaceHolder]="'请填写'">
+
+                </nz-input>
+
+                <nz-input *ngSwitchCase="'textarea'" nz-tooltip
+                          [(ngModel)]="data[item.key]"
+                          [nzDisabled]="isDetail || item.disabled"
+                          (ngModelChange)="item._change(data[item.key], this)"
+                          (nzBlur)="item.blur(data[item.key], this)"
+                          [nzType]="'textarea'"
+                          [nzRows]="'4'"
+                          [nzPlaceHolder]="'请填写'">
+
+                </nz-input>
+                <nz-input-number *ngSwitchCase="'number'" nz-tooltip
+                         style="width: 100%"
+                         [(ngModel)]="data[item.key]"
+                         [nzDisabled]="isDetail || item.disabled"
+                         [nzMin]="item.min || 1"
+                         (nzBlur)="item.blur(data[item.key], this)"
+                         [nzMax]="item.max || 100"
+                         [nzStep]="item.step || 1">
+
+                </nz-input-number>
+                <ng-template #nzTemplate>
+                    <span><i class="anticon anticon-exclamation-circle-o"></i>&nbsp;&nbsp;{{item.msg}}</span>
+                </ng-template>
+            </nz-tooltip>
+        </div>
+    </div>
+</div>

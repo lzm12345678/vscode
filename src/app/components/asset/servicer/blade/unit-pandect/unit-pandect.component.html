@@ -1,0 +1,37 @@
+<div class="wrap">
+    <div class="menu-left">
+        <ul nz-menu [nzMode]="'inline'" style="width: 180px;" nzTheme='light' [nzInlineCollapsed]="isCollapsed">
+            <li nz-menu-group>
+                <span title>
+                    <span>机架服务器总览</span>
+                </span>
+                <ul>
+                    <li nz-menu-item (click)="routerToChild('base')">基本信息</li>
+                    <li nz-menu-item (click)="routerToChild('operation')">运行参数</li>
+                    <li nz-menu-item (click)="routerToChild('alarm')">当前告警</li>
+                    <li nz-menu-item (click)="routerToChild('mt')">监控任务</li>
+                    <!--<li nz-menu-item (click)="routerToChild('rtm')">实时监控</li>-->
+                    <!--<li nz-menu-item (click)="routerToChild('history')">查看历史监控数据</li>-->
+                    <li nz-menu-item (click)="routerToChild('hardware')">硬件信息</li>
+                    <li nz-menu-item (click)="routerToChild('protocol')">协议参数配置</li>
+                    <!--<li nz-submenu>-->
+                        <!--<span title>-->
+                            <!--<span>配置</span>-->
+                        <!--</span>-->
+                        <!--<ul>-->
+                            <!--<li nz-menu-item  (click)="routerToChild('sensor')">传感器阀值查询</li>-->
+                            <!--<li nz-menu-item>整机功耗</li>-->
+                            <!--<li nz-menu-item (click)="routerToChild('sel')">查看SEL日志</li>-->
+                            <!--<li nz-menu-item (click)="routerToChild('bmc')">BMC用户列表</li>-->
+                            <!--<li nz-menu-item (click)="routerToChild('reset')">复位</li>-->
+                            <!--<li nz-menu-item (click)="routerToChild('other')">其他配置</li>-->
+                        <!--</ul>-->
+                    <!--</li>-->
+                </ul>
+            </li>
+        </ul>
+    </div>
+    <div class="router-body">
+        <router-outlet></router-outlet>
+    </div>
+</div>

@@ -1,0 +1,16 @@
+<div class="wrap" style="margin-top: 50px;width: 500px;">
+    <app-custom-form [column]="column" [titleWidth]="4" [data]="version" [span]="20" [isDetail]="dealType === 'detail'"></app-custom-form>
+    <div nz-row>
+        <div nz-col [nzSpan]="8"></div>
+        <div nz-col [nzSpan]="16">
+            <button *ngIf="dealType !== 'detail'" nz-button
+                    [nzType]="'primary'"
+                    (click)="saveVersion()"
+                    class="btn-common btn-save-normal">
+                <span *ngIf="isLoading"><i class="anticon anticon-loading anticon-spin"></i></span>
+                <span *ngIf="!isLoading">保存</span>
+            </button>
+            <button nz-button (click)="$router.navigate(['/asset/manager/version'])" class="btn-common">返回</button>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,50 @@
+<div class="login-wrap">
+    <div class="login-desc">
+        <div class="fiber-icon"></div>
+        <p class="title-1">IT集中管理系统</p>
+        <p class="title-2">专业·稳定·快捷</p>
+    </div>
+    <div class="login-panel">
+        <div class="panel">
+            <div nz-row class="panel-row login-title">
+                用户登录
+                <p class="error-p">{{errorMsg}}</p>
+            </div>
+            <div nz-row class="panel-row">
+                <div nz-col [nzSpan]="24">
+                    <i class="anticon anticon-user up-font"></i>
+                    <input type="text" (keydown.enter)="login()" [(ngModel)]="usercode" placeholder="请输入您的用户名">
+                </div>
+            </div>
+            <div nz-row class="panel-row">
+                <div nz-col [nzSpan]="24">
+                    <i class="anticon anticon-key up-font"></i>
+                    <input type="password" (keydown.enter)="login()" [(ngModel)]="password" placeholder="请输入您的密码">
+                </div>
+            </div>
+            <!--<div nz-row class="panel-row">-->
+                <!--<div nz-col [nzSpan]="15">-->
+                    <!--<input type="text" (keydown)="keyDown($event, this)" style="padding-left: 8px" [(ngModel)]="checkCode">-->
+                <!--</div>-->
+                <!--<div nz-col [nzSpan]="9">-->
+                    <!--<img class="check-code" style="cursor: pointer;" title="看不清楚？换一张" (click)="changeImageCode()" [src]="image" alt="">-->
+                    <!--<i (click)="changeImageCode()" title="看不清楚？换一张" class="anticon anticon-sync code-sync"></i>-->
+                <!--</div>-->
+            <!--</div>-->
+            <div nz-row class="panel-row">
+                <div nz-col [nzSpan]="24">
+                    <button [nzSize]="'large'" nz-button style="width: 100%" (click)="login()" [nzType]="'primary'">
+                        <span *ngIf="isLoading"><i class="anticon anticon-loading anticon-spin"></i></span>
+                        <span *ngIf="!isLoading">登 录</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="copy-right">
+        <span class="copy-title">Copyright 2013-2017 FiberHome.All Rights Reserved.烽火科技 版权所有</span>
+        <!--<span class="lan-en">English</span>-->
+        <!--<span class="lan-ch active">中文 <em class="lan-line"></em></span>-->
+    </div>
+</div>

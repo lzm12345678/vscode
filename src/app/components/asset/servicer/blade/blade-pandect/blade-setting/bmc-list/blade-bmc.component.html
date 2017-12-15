@@ -1,0 +1,43 @@
+<div class="wrap">
+    <div style="margin: 10px 25px;">
+        <button nz-button [nzType]="'default'">
+            <i class="anticon anticon-plus"></i>
+            <span>新&nbsp;&nbsp;增</span>
+        </button>
+        <button nz-button
+                [disabled]="true"
+                [nzType]="'primary'">
+            <i class="anticon anticon-delete"></i>
+            <span>批量删除</span>
+        </button>
+        <button nz-button
+                [disabled]="true"
+                [nzType]="'primary'">
+            <i class="anticon anticon-delete"></i>
+            <span>批量停止</span>
+        </button>
+        <span style="margin-left: 8px;">已选中 2 条</span>
+    </div>
+    <nz-table #nzTable
+              [nzDataSource]="data"
+              [nzScroll]="{ y: 600 }"
+              [nzSize]="'small'" [nzBordered]="true" [nzIsPagination]="false">
+        <thead nz-thead>
+        <tr>
+            <th nz-th *ngFor="let item of column"><span>{{item.label}}</span></th>
+        </tr>
+        </thead>
+        <tbody nz-tbody>
+        <tr nz-tbody-tr *ngFor="let item of data">
+            <td nz-td  *ngFor="let _item of column">{{item[_item.key]}}</td>
+        </tr>
+        </tbody>
+    </nz-table>
+    <div style="margin: 20px 30px;text-align: right;">
+        <app-pagination [pageIndex]="pageIndex"
+                        [pageSize]="pageSize"
+                        [total]="total">
+
+        </app-pagination>
+    </div>
+</div>

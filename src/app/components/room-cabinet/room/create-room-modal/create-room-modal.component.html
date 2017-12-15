@@ -1,0 +1,82 @@
+<nz-modal [nzVisible]="isVisible"
+          [nzTitle]="modalBrandTitle"
+          [nzClosable]="true"
+          [nzMaskClosable]="false"
+          [nzContent]="modalContent"
+          [nzFooter]="modalFooter"
+          (nzOnCancel)="closeModal()">
+    <ng-template #modalBrandTitle>
+        {{isEditorRoom  ? '修改机房' :'新增机房' }}
+    </ng-template>
+    <ng-template #modalContent>
+        <div style="padding: 20px 50px;">
+            <div class="c-item">
+                <div class="c-name">
+                    <span><span style="color: red">*</span>机房名称:</span>
+                </div>
+                <div class="c-info">
+                    <nz-input
+                        [(ngModel)]="roomName"
+                        (nzBlur)="validate(roomName)"
+                        [nzSize]="'large'"
+                        [nzPlaceHolder]="'机房名称'"
+                        (ngModelChange)="validate($event)">
+                    </nz-input>
+                    <div *ngIf="roomValidate" class="Validate-color">*{{roomValidateMsg}}</div>
+                </div>
+            </div>
+            <!--<div class="c-item">-->
+                <!--<nz-input-->
+                    <!--[(ngModel)]="roomWith"-->
+                    <!--[nzSize]="'large'"-->
+                    <!--[nzPlaceHolder]="'机房宽'"-->
+                    <!--(ngModelChange)="_console($event)">-->
+
+                <!--</nz-input>-->
+            <!--</div>-->
+            <!--<div class="c-item">-->
+                <!--<nz-input-->
+                    <!--[(ngModel)]="roomLength"-->
+                    <!--[nzSize]="'large'"-->
+                    <!--[nzPlaceHolder]="'机房高'"-->
+                    <!--(ngModelChange)="_console($event)">-->
+
+                <!--</nz-input>-->
+            <!--</div>-->
+            <div class="c-item">
+                <div class="c-name">
+                    <span>上传图片:</span>
+                </div>
+                <div class="c-info">
+                    <div *ngIf="!roomUpload" class="img-bg">
+                        <input id="fileUpload" type="file" name="pic" (change)="beforeUpload($event)">
+                        <span style="font-size: 14px;line-height: 70px;">
+                            <i class="anticon anticon-cloud-upload-o"></i>
+                            选择要上传的文件
+                        </span>
+                    </div>
+                    <div *ngIf="roomUpload" class="img-bg img-hover">
+                        <img [src]="roomUpload" class="img-area">
+                        <div class="mask">
+                            <p>
+                                <!--<a title="预览图片"><i class="anticon anticon-eye-o"></i></a>-->
+                                <a title="清除文件" (click)="roomUpload = null"><i class="anticon anticon-delete"></i></a>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--<form action="http://10.5.31.18:8080/itm/rooms/addRoom" method="post" enctype="multipart/form-data">-->
+            <!--<input type="text" name="roomName">-->
+            <!--<input type="file" name="pic">-->
+            <!--<input type="submit" >-->
+        <!--</form>-->
+    </ng-template>
+    <ng-template #modalFooter>
+        <div class="modal-footer">
+            <button (click)="saveRoom()" nz-button [nzLoading]="isLoading" class="m-btn btn-common btn-save-normal" type="button">确&nbsp;&nbsp;定</button>
+            <button (click)="closeModal()" class="m-btn btn-common btn-reset-normal" type="button">取&nbsp;&nbsp;消</button>
+        </div>
+    </ng-template>
+</nz-modal>

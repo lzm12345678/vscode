@@ -1,0 +1,28 @@
+.m-item {
+    margin: 10px 30px;
+    .m-title {
+        text-align: right;
+        line-height: 28px;
+        padding-right: 10px;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+    .m-content {
+
+    }
+}
+
+.important {
+    color: #ff305c;
+
+}
+
+.custom-input {
+    line-height: 28px;
+    padding-left: 4px;
+    height: 28px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    width: 100%;
+}
+

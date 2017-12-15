@@ -1,0 +1,259 @@
+<div class="container">
+
+    <div nz-row>
+        <div nz-col [nzSpan]="24">
+            <div class="crumb"><span>当前位置 ></span> <span class="cur">主页</span></div>
+        </div>
+    </div>
+    <div class="wrap">
+
+        <div nz-row [nzGutter]="16">
+            <div nz-col [nzSpan]="8" class="gutter-row">
+                <div nz-row>
+                    <div nz-col [nzSpan]="24">
+                        <h3 class="title">资产分布及占用情况统计</h3>
+                    </div>
+                </div>
+                <div nz-row>
+                    <div nz-col [nzSpan]="24">
+                        <div class="echart-wrap">
+                            <div class="chart-box-1" echarts [options]="serverOption" [loading]="showloading" ></div>
+                            <div class="chart-info">
+                                <div class="chart-h align-r">
+                                    <span class="item cur ">设备离线数</span> / <span class="item total">设备总数</span>
+                                </div>
+                                <div class="chart-b">
+                                    <ul class="item-list clearfix">
+                                        <li>
+                                            <div class="item-name">防火墙</div>
+                                            <div class="item-progress"></div>
+                                            <div class="item-data">
+                                                <span class="cur">0</span>/<span>5</span>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <div class="item-name">机架服务器</div>
+                                            <div class="item-progress"></div>
+                                            <div class="item-data">
+                                                <span class="cur">0</span>/<span>5</span>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <div class="item-name">路由器</div>
+                                            <div class="item-progress">
+                                                <div class="item-progress-cur" style="width: 20%;"></div>
+                                            </div>
+                                            <div class="item-data">
+                                                <span class="cur">10</span>/<span>52</span>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <div class="item-name">刀片服务器</div>
+                                            <div class="item-progress"></div>
+                                            <div class="item-data">
+                                                <span class="cur">0</span>/<span>5</span>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <div class="item-name">交换器</div>
+                                            <div class="item-progress"></div>
+                                            <div class="item-data">
+                                                <span class="cur">0</span>/<span>5</span>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div nz-col [nzSpan]="7" class="gutter-row">
+                <div nz-row>
+                    <div nz-col [nzSpan]="24">
+                        <h3 class="title">监控设备整体状态</h3>
+                    </div>
+
+                </div>
+                <div nz-row>
+                    <div nz-col [nzSpan]="24">
+                        <div class="echart-wrap">
+                            <div class="chart-box-2" echarts [options]="Baroptions" [loading]="showloading"></div>
+                            <div class="chart-info">
+                                <div class="chart-h align-r">
+                                    <span class="item cur ">正常数</span> / <span class="item total">总数</span>
+                                </div>
+                                <div class="chart-b">
+                                    <ul class="item-list clearfix">
+
+                                        <li>
+                                            <div class="item-name">正常</div>
+                                            <div class="item-progress">
+                                                <div class="item-progress-cur" style="width: 99%;"></div>
+                                            </div>
+                                            <div class="item-data">
+                                                <span class="cur">100</span>/<span>101</span>
+                                            </div>
+                                        </li>
+
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <div nz-col [nzSpan]="9" class="gutter-row">
+                <div nz-row>
+                    <div nz-col [nzSpan]="24">
+                        <h3 class="title clearfix">
+                            <span>服务器告警数量TOPN</span>
+                            <button nz-button [nzType]="'default'" style="float: right;margin-top: 16px;margin-right:0px" >
+                                <span>个性定制</span>
+                            </button>
+                        </h3>
+                    </div>
+
+                </div>
+                <!-- eachs图 -->
+                <div nz-row>
+                    <div nz-col [nzSpan]="24">
+                        <div class="echart-wrap">
+                            <div  class="chart-box-3" echarts [options]="chartOption" [loading]="showloading"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div nz-row>
+            <div nz-col [nzSpan]="24">
+                <h3 class="title">重要告警</h3>
+            </div>
+            <div nz-row>
+                <div nz-col [nzSpan]="24">
+                    <div class="w1000" style="max-height: 330px;overflow-x: auto;overflow-y:hidden" [style.width]="tabWidth + 'px'">
+                        <div style="width: 1800px;">
+                            <nz-table #nzTable
+                                    [nzDataSource]="_dataSet"
+                                    [nzSize]="small"
+                                    [nzPageSize]="pageSize"
+                                    (nzDataChange)="_displayDataChange($event)"
+                                    [nzSize]="small"
+                                    [nzScroll]="{ y: 330 }"
+                                    [nzIsPagination]="false">
+                                    <!--(nzPageIndexChange)="_refreshStatus()"-->
+                                    <!--(nzPageSizeChange)="_refreshStatus()"-->
+                            <ng-template #nzFixedHeader>
+                                <thead nz-thead>
+                                <tr>
+                                    <th nz-th [nzCheckbox]="true">
+                                        <label nz-checkbox [(ngModel)]="_allChecked" [nzIndeterminate]="_indeterminate" (ngModelChange)="_checkAll($event)">
+                                        </label>
+                                    </th>
+                                    <th nz-th style="width: 65px;"><span>告警级别</span></th>
+                                    <th nz-th style="width: 120px;"><span>告警名称</span></th>
+                                    <th nz-th style="width: 100px;"><span>告警内容</span></th>
+                                    <th nz-th style="width: 75px;"><span>设备类型</span></th>
+                                    <th nz-th style="width: 160px;"><span>告警源</span></th>
+                                    <th nz-th style="width: 130px;"><span>首次告警发生时间</span></th>
+                                    <th nz-th style="width: 130px;"><span>最后告警发生时间</span></th>
+                                    <th nz-th style="width: 125px;"><span>操作</span></th>
+                                    <th nz-th style="width: 65px;"><span>发生次数</span></th>
+                                    <th nz-th style="width: 100px;"><span>告警状态确认</span></th>
+                                    <th nz-th style="width: 130px;"><span>告警确认时间</span></th>
+                                    <th nz-th  style="width: 80px;"><span>告警确认人</span></th>
+                                    <th nz-th style="width: 130px;"><span>告警清除时间</span></th>
+                                </tr>
+                                </thead>
+                            </ng-template>
+                                <tbody nz-tbody>
+                                <ng-template ngFor let-data [ngForOf]="nzTable.data">
+                                    <tr nz-tbody-tr>
+                                        <td nz-td [nzCheckbox]="true">
+                                            <label nz-checkbox [(ngModel)]="data.checked" (ngModelChange)="_refreshStatus($event)">
+                                            </label>
+                                        </td>
+                                        <td nz-td style="width: 65px;">
+                                            <div style="width: 45px;">
+                                                <i [title]="data.alarmLevel==='1'?'严重告警':data.alarmLevel=='2'?'重要告警':
+                                                data.alarmLevel=='3'?'次要告警':data.alarmLevel=='4'?'提示告警':'正常'" class="alarmIcon lv{{data.alarmLevel}}"></i>
+                                            </div>
+                                        </td>
+                                        <td nz-td style="width: 120px;">
+                                            <div style="width: 100px;"><a (click)="data.show=!data.show" title="{{data.alarmName}}">{{data.alarmName}}</a></div>
+
+                                        </td>
+                                        <td nz-td style="width: 100px;">
+                                            <div style="width: 80px;" title="{{data.alarmContent}}">{{data.alarmContent}}</div>
+                                        </td>
+                                        <td nz-td style="width: 75px;">
+                                            <div style="width: 55px;" title="{{data.alarmServerType}}">{{data.alarmServerType}}</div>
+                                        </td>
+                                        <td nz-td style="width: 160px;">
+                                            <div style="width: 140px;" title="{{data.alarmSource}}">{{data.alarmSource}}</div>
+                                        </td>
+                                        <td nz-td style="width: 130px;">{{data.alarmBeginTime}}</td>
+                                        <td nz-td style="width: 130px;">{{data.alarmNearTime}}</td>
+                                        <td nz-td style="width: 125px;">
+                                            <a (click)="confirmAlarm(data)">告警确认</a>
+                                            <nz-popconfirm [nzTitle]="'确定要清除这条告警吗？'"
+                                                        (nzOnConfirm)="clearAlarm(data)">
+                                                <a nz-popconfirm>告警清除</a>
+                                            </nz-popconfirm>
+                                        </td>
+                                        <td nz-td style="width: 65px;">
+                                            <div style="width: 45px;" title="{{data.alarmHappenCount}}">{{data.alarmHappenCount}}</div>
+                                        </td>
+                                        <td nz-td style="width: 100px;">{{data.alarmConfirmStatus ? '已确认' : '未确认'}}</td>
+                                        <td nz-td style="width: 130px;">{{data.alarmConfirmTime}}</td>
+                                        <td nz-td style="width: 80px;">
+                                            <div style="width: 60px;" title="{{data.alarmConfirmPeople}}">{{data.alarmConfirmPeople}}</div>
+                                        </td>
+                                        <td nz-td style="width: 130px;">{{data.alarmCleanTime}}</td>
+                                    </tr>
+                                    <!-- jiade jiegou start -->
+                                    <tr *ngIf="data.show">
+                                        <td colspan="24" class="foz14 bold td-bg">
+                                            <div style="margin-left:40px;">告警详情</div>
+                                        </td>
+                                    </tr>
+                                    <!-- jiade jiegou end -->
+                                    <tr nz-tbody-tr *ngIf="data.show">
+                                        <td nz-td  colspan="24">
+                                            <div style="float: left;width: 100%;margin-left:40px;">
+                                                <!-- <p style="font-size: 14px;font-weight: bold;">告警详情：</p> -->
+                                                <div style="float: left;width:400px;">
+                                                    <div class="pd-5"><span>告警名称 ：</span>{{data.alarmName}}</div>
+                                                    <div class="pd-5"><span>定位信息 ：</span>{{data.extraMsg}}</div>
+                                                    <div class="pd-5"><span>首次发生时间：</span> {{data.alarmBeginTime}}</div>
+                                                    <div class="pd-5"><span>确认用户：</span>{{data.alarmCleanPeople}}</div>
+                                                </div>
+                                                <div style="float: left;width:400px;">
+                                                    <div class="pd-5"><span>告警源 ：</span>{{data.alarmSource}}</div>
+                                                    <div class="pd-5"><span>附加信息：</span> {{data.extraMsg}}</div>
+                                                    <div class="pd-5"><span>清除时间：</span>{{data.alarmCleanTime}}</div>
+                                                    <div class="pd-5"><span>修复建议 ：</span>没有修复建议</div>
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </ng-template>
+                                </tbody>
+                            </nz-table>
+                        </div>
+                    </div>
+                    <div style="margin: 20px 30px;text-align: right;">
+                        <lh-pagination [pageIndex]="pageIndex"
+                                        [pageSize]="pageSize"
+                                        [totalCount]="total">
+
+                        </lh-pagination>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+</div>

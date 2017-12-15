@@ -1,0 +1,146 @@
+<div class="cabinet-wrap">
+    <div class="cz-top" style="text-align: center;line-height: 40px;">
+        <div>
+            <span>机柜：{{serverData?serverData.cabinetName:''}}</span>
+            <span>所属机房：{{serverData?serverData.roomName:''}}，编号：{{serverData?serverData.cabinetRemark:''}}</span>
+            <span>已占用:{{serverData?serverData.usedU.split(',').length-1+'/'+serverData.cabinetMaxU:''}}</span>
+            <span>告警总数:{{alarmCount}}</span>
+        </div>
+        <button nz-button class="add-server" (click)="toggle('a')">
+            <span>上架设备</span>
+        </button>
+    </div>
+    <!-- qunee绘图区域 -->
+    <div id="canvas"
+         class="cabinet-body"
+         (drop)="drop($event)"
+         (dragover)="dragover($event)">
+
+    </div>
+    <!--<div class="c-panel" (click)="toggle('b')">-->
+        <!--设备属性-->
+    <!--</div>-->
+    <!--<div class="c-shelves" (click)="toggle('a')">-->
+        <!--设备上架-->
+    <!--</div>-->
+    <div class="c-legend" [@fadeState]="legendState">
+        <div class="i-title">未上架设备列表</div>
+        <div class="i-search">
+            <input type="text" [(ngModel)]="searchValue" (ngModelChange)="$watchSearch($event)"
+                   placeholder="search....">
+            <i class="anticon anticon-search"></i>
+        </div>
+        <div class="i-menu">
+            <!--<div class="loading" *ngIf="data.length === 0">-->
+                <!--<nz-spin></nz-spin>-->
+            <!--</div>-->
+            <!--<ul *ngIf="data.length > 0"-->
+                <!--nz-menu-->
+                <!--[nzMode]="'inline'"-->
+                <!--nzTheme='light'-->
+                <!--[nzInlineCollapsed]="isCollapsed">-->
+                <!--<li nz-submenu *ngFor="let item of data">-->
+                    <!--<span title>-->
+                        <!--<i class="anticon anticon-appstore"></i>-->
+                        <!--<span>{{item.name}}</span>-->
+                    <!--</span>-->
+                    <!--<ul>-->
+                        <!--<li nz-submenu *ngFor="let item_i of item.children">-->
+                            <!--<span title>{{item_i.name}}</span>-->
+                            <!--<ul>-->
+                                <!--<li nz-menu-item-->
+                                    <!--*ngFor="let item_ii of item_i.children"-->
+                                    <!--(click)="checkedImage(item_ii.image)">-->
+                                    <!--<span>{{item_ii.name}}</span>-->
+                                <!--</li>-->
+                            <!--</ul>-->
+                        <!--</li>-->
+                    <!--</ul>-->
+                <!--</li>-->
+            <!--</ul>-->
+            <!--后台服务器列表不折叠-->
+            <ul class="out-server">
+                <li *ngFor="let item of outServerList" (click)="checekedInfo(item.standard,item.serverId)"><i
+                    class="anticon anticon-appstore"></i>{{item.serverName}}
+                </li>
+            </ul>
+            <img *ngIf="image" class="img-area" style="margin: 30px 0;"
+                 [src]="image"
+                 [width]="width"
+                 [height]="height"
+                 draggable="true" (dragstart)="dragstart($event)">
+        </div>
+    </div>
+    <div class="c-info" [@fadeState]="facilityState">
+        <div class="i-title">属性面板</div>
+        <nz-table #nzTable
+                  [nzSize]="'small'"
+                  [nzDataSource]="[{name:1}]"
+                  [nzIsPagination]="false">
+            <tbody nz-tbody>
+            <tr nz-tbody-tr>
+                <td nz-td width="90">
+                    <span class="m-l-20">设备名称：</span>
+                </td>
+                <td nz-td>
+                    <span style="margin-left: -10px;">{{menuInfo.serverName}}</span>
+                </td>
+            </tr>
+            <tr nz-tbody-tr>
+                <td nz-td width="90">
+                    <span class="m-l-20">资产编号：</span>
+                </td>
+                <td nz-td>
+                    <span style="margin-left: -10px;">{{menuInfo.serverCode}}</span>
+                </td>
+            </tr>
+            <tr nz-tbody-tr>
+                <td nz-td width="90">
+                    <span class="m-l-20">品牌型号：</span>
+                </td>
+                <td nz-td>
+                    <span style="margin-left: -10px;">{{menuInfo.serverModel}}</span>
+                </td>
+            </tr>
+            <tr nz-tbody-tr>
+                <td nz-td width="90">
+                    <span class="m-l-20" style="letter-spacing:3.7px;" >序列号：</span>
+                </td>
+                <td nz-td>
+                    <span style="margin-left: -10px;">{{menuInfo.serialNum}}</span>
+                </td>
+            </tr>
+            <tr nz-tbody-tr>
+                <td nz-td width="90">
+                    <span class="m-l-20" >管&nbsp;&nbsp;理&nbsp;&nbsp;IP：</span>
+                </td>
+                <td nz-td>
+                    <span style="margin-left: -10px;">{{menuInfo.serverIp}}</span>
+                </td>
+            </tr>
+            </tbody>
+        </nz-table>
+        <div class="m-l-20" style="margin-top: 10px;">
+            <p>当前告警数：{{menuInfo.urgentLevel+menuInfo.importantLevel+menuInfo.secondaryLevel+menuInfo.promptLevel}}</p>
+            <p>紧急：{{menuInfo.urgentLevel}}</p>
+            <p>重要：{{menuInfo.importantLevel}}</p>
+            <p>次要：{{menuInfo.secondaryLevel}}</p>
+            <p>提示：{{menuInfo.promptLevel}}</p>
+        </div>
+        <!--<button nz-button [nzType]="'primary'" (click)="intoShelves()">-->
+            <!--<i class="anticon anticon-lock"></i><span>设备上架</span>-->
+        <!--</button>-->
+        <button nz-button [nzType]="'primary'" (click)="goToServerDetails()" class="ant-btn-machine">
+            <i class="anticon anticon-search"></i><span>查看详情</span>
+        </button>
+        <button nz-button [nzType]="'primary'" (click)="goToAlarmDetails()" class="ant-btn-machine">
+            <i class="anticon anticon-search"></i><span>查看告警</span>
+        </button>
+        <button nz-button [nzType]="'primary'" (click)="delServer()" class="ant-btn-machine">
+            <i class="anticon anticon-delete"></i><span>设备下架</span>
+        </button>
+        <button nz-button [nzType]="'primary'" (click)="saveCabinet()" class="ant-btn-machine" style="width: 98px;">
+            <i class="anticon anticon-save"></i><span>保&nbsp;&nbsp;存</span>
+        </button>
+    </div>
+</div>

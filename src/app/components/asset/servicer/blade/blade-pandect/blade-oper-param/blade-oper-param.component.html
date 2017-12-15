@@ -1,0 +1,48 @@
+<div class="wrap">
+    <h3>基本信息</h3>
+    <app-custom-table [column]="column" [data]="data" [row]="1"></app-custom-table>
+    <h3>CPU负载</h3>
+    <div echarts [options]="chartOption" [loading]="showloading" class="demo-chart"></div>
+    <h3>内存使用状态</h3>
+    <div style="width: 80%; margin: 20px auto;">
+        <table class="op-table">
+            <thead>
+            <tr>
+                <th width="'50px'">#</th>
+                <th>类型</th>
+                <th>总容量（GB）</th>
+                <th width="200">状态</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let item of memoryParams; let i = index;">
+                <td>{{i + 1}}</td>
+                <td>{{item.type}}</td>
+                <td>{{item.totalMb}}</td>
+                <td><nz-progress [ngModel]="item.percent" [nzStrokeWidth]="18"></nz-progress></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <h3>储存状态</h3>
+    <div style="width: 80%; margin: 20px auto;">
+        <table class="op-table">
+            <thead>
+            <tr>
+                <th width="'50px'">#</th>
+                <th>磁盘</th>
+                <th>总容量（GB）</th>
+                <th width="200">状态</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let item of diskParams; let i = index;">
+                <td>{{i + 1}}</td>
+                <td>{{item.type}}</td>
+                <td>{{item.totalMb}}</td>
+                <td><nz-progress [ngModel]="item.percent" [nzStrokeWidth]="18"></nz-progress></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

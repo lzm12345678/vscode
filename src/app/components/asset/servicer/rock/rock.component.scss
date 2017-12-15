@@ -1,0 +1,53 @@
+.maintenance-wrap {
+    height: 100%;
+    background: #ffffff;
+    .search-area {
+        margin: 0;
+        border-bottom: 1px solid #cccccc;
+        .gutter-row {
+            //padding: 0 16px;
+        }
+        .search-row {
+            margin: 20px 0;
+        }
+    }
+}
+
+.error, .primary .success .warning {
+    //去掉图片样式
+    //font-size: 14px;
+}
+.error {
+    //color: #ff2812;
+    color: #ff0000;
+}
+.primary {
+    //color: #f79700;
+    color: #ff9900;
+}
+.success {
+    //color: #ffd800;
+    color: #ffff00;
+}
+.warning {
+    //color: #04aef5;
+    color: #00ccff;
+}
+.normal {
+    //color: #4ac233;
+    color: #2bd544;
+}
+
+.deal-item {
+    margin-left: -8px;
+    &:hover {
+        text-decoration: underline;
+    }
+}
+
+//弹框标题样式
+.m-title {
+    text-align: right;
+    line-height: 28px;
+    padding-right: 10px;
+}

@@ -1,0 +1,89 @@
+
+.asset-wrap {
+    position: relative;
+    // height: 100%;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    .menu-left {
+        position: fixed;
+        top: 50px;
+        left: 0;
+        bottom: 0;
+        width: 240px;
+        background: #1a2226;
+        z-index: 9;
+    }
+    .asset-main {
+         flex: 0 1 90%;
+         margin-left: 240px;
+        background: #ffffff;
+    }
+}
+//
+.ant-menu-dark {
+        background: #1a2226;
+       
+}
+
+
+//修改左边菜单的显示隐藏---------------
+$bb: 1px solid #cccccc;
+$transition: all 0.4s;
+.asset-wrap .menu-left{
+    transition: $transition;
+}
+.collapse {
+    position: absolute;
+    right: -5px;
+    width: 20px;
+    line-height: 100px;
+    height: 100px;
+    top: 42px;
+    cursor: pointer;
+    margin-top: -50px;
+    z-index: 40 ;
+    .anticon {
+        font-size: 16px;
+        color: #868484;
+        transition: $transition;
+    }
+}
+.close {
+    opacity: 0;
+    right: -20px;
+    transition: $transition;
+    &:hover {
+        opacity: 1;
+    }
+    .icon_collapse {
+        transform: rotate(180deg);
+    }
+}
+
+.m-body {
+    position: absolute;
+    right: 0px;
+    top: 0px;
+    bottom: 0px;
+    height: 100%;
+    transition: $transition;
+    padding: 0 20px;
+}
+.asset-wrap .asset-main {
+    margin-left: 0px;
+}
+.asset-wrap .menu-left {
+    margin-left: 0px;
+    position: none;
+}
+
+.top-title{
+    height: 60px;
+    background: #1a2226;
+    font-size: 20px;
+    line-height: 60px;
+    color: #667ef7;
+    padding-left: 20px;
+    border-bottom: 1px solid #707792;
+}

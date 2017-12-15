@@ -1,0 +1,44 @@
+<div class="qunee-tool">
+    <nz-button-group [nzSize]="'large'">
+        <button nz-button title="默认模式" (click)="changeModel('default')">
+            <i class="iconfont icon-item-tp"></i>
+        </button>
+        <button nz-button title="框选模式" (click)="changeModel('selection')">
+            <i class="iconfont icon-selection"></i>
+        </button>
+        <button nz-button title="浏览模式" (click)="changeModel('view')">
+            <i class="iconfont icon-view"></i>
+        </button>
+    </nz-button-group>
+
+    <nz-button-group [nzSize]="'large'">
+        <button nz-button title="放大" (click)="zoomIn()">
+            <i class="iconfont icon-zoom-in"></i>
+        </button>
+        <button nz-button title="缩小" (click)="zoomOut()">
+            <i class="iconfont icon-zoom-out"></i>
+        </button>
+        <button nz-button title="1：1" (click)="zoomAt()">
+            <i class="iconfont icon-resize"></i>
+        </button>
+        <button nz-button title="纵览" (click)="zoomToOverview()">
+            <i class="iconfont icon-most"></i>
+        </button>
+    </nz-button-group>
+
+    <nz-button-group [nzSize]="'large'">
+        <button nz-button title="创建连线" (click)="changeModel('create_simple_edge')">
+            <i class="iconfont icon-create-edge"></i>
+        </button>
+        <button nz-button title="创建L型连线" (click)="changeModel('create_edge')">
+            <i class="iconfont icon-create-l"></i>
+        </button>
+        <button nz-button title="创建多边形" (click)="changeModel('create_shape')">
+            <i class="iconfont icon-create-shape"></i>
+        </button>
+        <button nz-button title="创建线条" (click)="changeModel('create_line')">
+            <i class="iconfont icon-create-line"></i>
+        </button>
+    </nz-button-group>
+
+</div>

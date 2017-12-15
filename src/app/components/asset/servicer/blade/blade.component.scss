@@ -1,0 +1,43 @@
+.wrap {
+    position: relative;
+    top: 0px;
+    left: 0px;
+    right: 0px;
+    bottom: 0px;
+    height: 100%;
+    background: #ffffff;
+    .search-area {
+        margin: 0;
+        border-bottom: 1px solid #cccccc;
+        .gutter-row {
+            padding: 0 16px;
+        }
+        .search-row {
+            margin: 20px 10px;
+        }
+    }
+}
+
+.ant-table-thead > tr > th.ant-table-selection-column, .ant-table-tbody > tr > td.ant-table-selection-column {
+    text-align: center;
+    min-width: 40px;
+    width: 40px;
+}
+
+
+
+.error, .primary .success .warning {
+    font-size: 14px;
+}
+.error {
+    color: #da2619;
+}
+.primary {
+    color: #d65a24;
+}
+.success {
+    color: #49a9ee;
+}
+.warning {
+    color: #ffbf00;
+}

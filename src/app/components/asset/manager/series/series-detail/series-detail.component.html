@@ -1,0 +1,16 @@
+<div class="wrap" style="margin-top: 50px;width: 500px;">
+  <app-custom-form [column]="column" [titleWidth]="4" [data]="veries" [span]="20" ></app-custom-form>
+  <div nz-row>
+      <div nz-col [nzSpan]="8"></div>
+      <div nz-col [nzSpan]="16">
+          <button  nz-button
+                  [nzType]="'primary'"
+                  (click)="saveSeries()"
+                  class="btn-common btn-save-normal">
+              <!-- <span ><i class="anticon anticon-loading anticon-spin"></i></span> -->
+              <span>保存</span>
+          </button>
+          <button nz-button (click)="backSeries()" class="btn-common">返回</button>
+      </div>
+  </div>
+</div>

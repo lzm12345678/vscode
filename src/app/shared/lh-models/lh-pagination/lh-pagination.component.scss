@@ -1,0 +1,32 @@
+.lh-page {
+    list-style: none;
+    .lh-page-item {
+        display: inline-block;
+        vertical-align: middle;
+        min-width: 32px;
+        height: 32px;
+        line-height: 30px;
+        margin-right: 4px;
+        text-align: center;
+        list-style: none;
+        background-color: #fff;
+        user-select: none;
+        cursor: pointer;
+        font-family: Arial;
+        border: 1px solid #dddee1;
+        border-radius: 4px;
+        transition: border .2s ease-in-out,color .2s ease-in-out;
+        a {
+            display: block;
+            text-decoration: none;
+            color: #495060;
+        }
+    }
+    .lh-page-item-active {
+        background-color: #2d8cf0;
+        border-color: #2d8cf0;
+        a {
+            color: #ffffff;
+        }
+    }
+}

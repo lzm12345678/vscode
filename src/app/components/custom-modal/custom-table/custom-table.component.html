@@ -1,0 +1,27 @@
+<table class="custom-table">
+    <tbody>
+    <tr *ngFor="let item of _column;">
+        <th width="150">{{column[item * row].label}}：</th>
+        <td>
+            <span *ngIf="!column[item * row].selectData">{{data[column[item * row].key]}}</span>
+            <span *ngIf="column[item * row].selectData">{{data[column[item * row].key] | commonSelect: column[item * row].selectData }}</span>
+        </td>
+        <th width="150" *ngIf="row > 1 && item * row + 1 < column.length">
+            {{column[item * row + 1].label}}：</th>
+        <td *ngIf="row > 1 && item * row + 1 < column.length">
+            <span *ngIf="!column[item * row + 1].selectData">{{data[column[item * row + 1].key]}}</span>
+            <span *ngIf="column[item * row + 1].selectData">{{data[column[item * row + 1].key] | commonSelect: column[item * row + 1].selectData }}</span>
+        </td>
+        <th width="150" *ngIf="row > 2 && item * row + 2 < column.length">{{column[item * row + 2].label}}：</th>
+        <td *ngIf="row > 2 && item * row + 2 < column.length">
+            <span *ngIf="!column[item * row + 2].selectData">{{data[column[item * row + 2].key]}}</span>
+            <span *ngIf="column[item * row + 2].selectData">{{data[column[item * row + 2].key] | commonSelect: column[item * row + 2].selectData }}</span>
+        </td>
+        <th width="150" *ngIf="row > 3 && item * row + 3 < column.length">{{column[item * row + 3].label}}：</th>
+        <td *ngIf="row > 3 && item * row + 3 < column.length">
+            <span *ngIf="!column[item * row + 3].selectData">{{data[column[item * row + 3].key]}}</span>
+            <span *ngIf="column[item * row + 3].selectData">{{data[column[item * row + 3].key] | commonSelect: column[item * row + 3].selectData }}</span>
+        </td>
+    </tr>
+    </tbody>
+</table>

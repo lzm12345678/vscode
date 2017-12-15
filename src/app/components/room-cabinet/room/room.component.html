@@ -1,0 +1,139 @@
+<div class="container">
+    <div class="top-info">
+        <div class="room-title"><span>{{roomName}} </span><span *ngIf="!isNoData">机柜：{{roomData.length}}个</span></div>
+        <nz-tooltip [nzTitle]="'新增'" [nzPlacement]="'bottom'">
+            <button class="hove_alert deal-item" nz-tooltip nz-button class="my-button" style="float: left;margin-left: 15px" (click)=createRoom()>
+                <img width="100%" src="./../../../assets/room/add.png" alt="">
+            </button>
+        </nz-tooltip>
+        <nz-tooltip [nzTitle]="'保存'" [nzPlacement]="'bottom'">
+            <button class="hove_alert deal-item" nz-tooltip nz-button class="my-button" *ngIf="!isNoData" style="float: left;margin-left: 15px" (click)=roomSave()>
+                <img width="100%" src="./../../../assets/room/save.png" alt="">
+            </button>
+        </nz-tooltip>
+        <nz-tooltip [nzTitle]="'删除'" [nzPlacement]="'bottom'">
+            <button class="hove_alert deal-item" nz-tooltip nz-button  class="my-button" *ngIf="!isNoData" style="float: left;margin-left: 15px" (click)="delRoom()">
+                <img width="100%" src="./../../../assets/room/delete.png" alt="">
+            </button>
+        </nz-tooltip>
+        <nz-tooltip [nzTitle]="'修改'" [nzPlacement]="'bottom'">
+            <button class="hove_alert deal-item" nz-tooltip nz-button  class="my-button" *ngIf="!isNoData" style="float: left;margin-left: 10px"
+                    (click)="editRoom()">
+                <img width="25" src="./../../../assets/room/edit.png" alt="">
+            </button>
+        </nz-tooltip>
+        <nz-tooltip [nzTitle]="'图例'" [nzPlacement]="'bottom'">
+            <button class="hove_alert deal-item" nz-tooltip nz-button  class="my-button" *ngIf="!isNoData" style="float: left;margin-left: 15px" (click)=toggle()>
+                <img width="100%" src="./../../../assets/room/pic.png" alt="">
+            </button>
+        </nz-tooltip>
+        <button nz-button class="add-room" *ngIf="!isNoData" (click)=toolsToggle()>
+            <span>新增机柜</span>
+        </button>
+        <button nz-button [nzType]="'default'" class="batch-room" *ngIf="!roomData.length>0&&isNoData1"
+                (click)="addCabinetBatch()">
+            <i class="anticon anticon-plus-square-o"></i>
+            <span>批量生成机柜</span>
+        </button>
+    </div>
+    <app-create-room-modal
+        [isVisible]="isCreateVisible" (onVoted)="onVoted($event)" [roomName]="roomName1" [roomId]='roomId1'
+        [isEditorRoom]="isEditorRoom">
+    </app-create-room-modal>
+    <app-add-cabinets [isAddVisible]='isAddVisible' [roomName]="roomName" [roomId]='roomId'
+                      (close)="closeModal($event)">
+    </app-add-cabinets>
+    <div class="machine-room" id="mcRoom" [ngStyle]="{'width': '100%', 'height': '100%'}">
+        <div [hidden]="!editDeleteShow"
+             [ngStyle]="{'position': 'absolute','zIndex':'88', 'top': editLocation.y+'px','left':editLocation.x+'px'}"
+             (click)="showCabinetModal('isDraw')"><i class="anticon anticon-edit"></i></div>
+        <div [hidden]="!editDeleteShow"
+             [ngStyle]="{'position': 'absolute','zIndex':'88', 'top': deleteLocation.y+'px','left':deleteLocation.x+'px'}"
+             (click)="showConfirm()"><i class="anticon anticon-close"></i></div>
+    </div>
+    <div class="alarm-info" [@attributeState]="state">
+        <div style="overflow:hidden;padding:.1% .1% 8%;font-size:16px;">
+            <span style="float:left">图例</span>
+            <i class="anticon anticon-close" title="点击隐藏" style="float:right;" (click)=toggle()></i>
+        </div>
+        <h5>机柜占有情况</h5>
+        <div style="color:#a5a1a1">——————————————</div>
+        <ul class="cabinet">
+            <li> 红色代表已满</li>
+            <li> 黄色代表未满，空闲比大于50%</li>
+            <li> 绿色代表未满，空闲比小于等于50%</li>
+            <li> 浅灰色代表空</li>
+            <!-- <li> 深灰色代表故障</li> -->
+        </ul>
+        <h5>设备告警情况</h5>
+        <div style="color:#a5a1a1">——————————————</div>
+        <ul class="alarm">
+            <li>紧急告警</li>
+            <li>重要告警</li>
+            <li>次要告警</li>
+            <li>提示告警</li>
+            <li>正常</li>
+        </ul>
+    </div>
+    <!--后台机柜列表2-->
+    <div class="cabinet-list" id="tools" [@attributeState]="state1">
+        <div>后台机柜列表</div>
+        <div *ngFor="let list of cabinetTypeList">
+            <img class="cabinetType" src='./../../../assets/room/background.png' draggable="true" [ngStyle]="{'width': list.cabinetTypeWidth/15+'px',
+          'height': list.cabinetTypeHeight/15+'px','background': '#f9a56a'}"
+                 [attr._width]="list.cabinetTypeWidth/20" [attr._height]='list.cabinetTypeHeight/20'>
+            <p>{{list.cabinetTypeName}}</p></div>
+        <!--<div>-->
+            <!--<button nz-button [nzType]="'default'" (click)=toolsToggle()>-->
+                <!--<i class="anticon anticon-delete"></i>-->
+                <!--<span>隐藏</span>-->
+            <!--</button>-->
+        <!--</div>-->
+        <div class="list-c" (click)=toolsToggle()>
+            <div class="icon_collapse"></div>
+        </div>
+
+    </div>
+    <!--新增机房模态框-->
+    <nz-modal [nzVisible]="iisVisible"
+              [nzTitle]="isAddRoom?'新增机柜':'修改机柜'"
+              [nzFooter]="modalFooter"
+              [nzContent]="mmodalContent" (nzOnCancel)="hiddenCabinet($event)"
+              (nzOnOk)="handleOkcabinet($event)">
+        <ng-template #mmodalContent>
+            <form nz-form>
+                <div nz-form-item nz-row>
+                    <div nz-form-label nz-col>
+                        <label><span style="color: red">*</span>机柜名称</label>
+                    </div>
+                    <div nz-form-control nz-col class="c-input">
+                        <nz-input
+                            (nzBlur)="validate(name,'cabinetName')" (ngModelChange)="validate($event,'cabinetName')"
+                            [ngClass]="{'Validate-border-color': cabinetNameValidate}"
+                            [nzPlaceHolder]="'机柜名称'" [(ngModel)]='name' name='first' [nzSize]="'large'">
+                        </nz-input>
+                        <div *ngIf="cabinetNameValidate" class="Validate-color">*{{cabinetNameMsg}}</div>
+                    </div>
+                </div>
+                <div nz-form-item nz-row>
+                    <div nz-form-label nz-col>
+                        <label><span style="color: red">&nbsp;&nbsp;</span>机柜编号</label>
+                    </div>
+                    <div nz-form-control nz-col class="c-input">
+                        <nz-input [(ngModel)]='code' name='second' (ngModelChange)="validate($event,'cabinetCode')"
+                                  [ngClass]="{'Validate-border-color': cabinetCodeValidate}"
+                                  [nzPlaceHolder]="'资产编号'" [nzSize]="'large'">
+                        </nz-input>
+                        <div *ngIf="cabinetCodeValidate" class="Validate-color">*机柜编号且不能超过32个字符</div>
+                    </div>
+                </div>
+            </form>
+        </ng-template>
+        <ng-template #modalFooter>
+            <div class="modal-footer">
+                <button (click)="handleOkcabinet()" class="m-btn btn-common btn-save-normal" type="button">确&nbsp;&nbsp;定</button>
+                <button (click)="hiddenCabinet()" class="m-btn btn-common btn-reset-normal" type="button">取&nbsp;&nbsp;消</button>
+            </div>
+        </ng-template>
+    </nz-modal>
+</div>

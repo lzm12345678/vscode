@@ -1,0 +1,140 @@
+<div class="wrap">
+    <h3>产品信息</h3>
+    <nz-table #nzTable
+              [nzDataSource]="productInfo"
+              [nzScroll]="{ y: 400 }"
+              [nzSize]="'small'" [nzBordered]="true" [nzIsPagination]="false">
+        <thead nz-thead>
+        <tr>
+            <th nz-th *ngFor="let item of productColumn"><span>{{item.label}}</span></th>
+        </tr>
+        </thead>
+        <tbody nz-tbody>
+        <tr nz-tbody-tr *ngFor="let item of productInfo; let i = index">
+            <td nz-td  *ngFor="let _item of productColumn">{{item[_item.key] || '无'}}</td>
+        </tr>
+        </tbody>
+    </nz-table>
+    <h3>CPU信息</h3>
+    <p>CPU槽位数: <span>xxxxxxxx</span></p>
+    <p>空置槽位数: <span>xxxxxxxx</span></p>
+    <nz-table #nzTable
+              [nzDataSource]="cpuInfo"
+              [nzScroll]="{ y: 400 }"
+              [nzSize]="'small'" [nzBordered]="true" [nzIsPagination]="false">
+        <thead nz-thead>
+        <tr>
+            <th nz-th *ngFor="let item of cpuColumn"><span>{{item.label}}</span></th>
+        </tr>
+        </thead>
+        <tbody nz-tbody>
+        <tr nz-tbody-tr *ngFor="let item of cpuInfo">
+            <td nz-td  *ngFor="let _item of cpuColumn">{{item[_item.key] || '无'}}</td>
+        </tr>
+        </tbody>
+    </nz-table>
+    <h3>主板信息</h3>
+    <nz-table #nzTable
+              [nzDataSource]="panelInfo"
+              [nzScroll]="{ y: 400 }"
+              [nzSize]="'small'" [nzBordered]="true" [nzIsPagination]="false">
+        <thead nz-thead>
+        <tr>
+            <th nz-th [nzWidth]="'200px'" *ngFor="let item of panelColumn"><span>{{item.label}}</span></th>
+        </tr>
+        </thead>
+        <tbody nz-tbody>
+        <tr nz-tbody-tr *ngFor="let item of panelInfo">
+            <td nz-td  *ngFor="let _item of panelColumn">{{item[_item.key] || '无'}}</td>
+        </tr>
+        </tbody>
+    </nz-table>
+    <h3>内存信息</h3>
+    <p>CPU槽位数: <span>xxxxxxxx</span></p>
+    <p>空置槽位数: <span>xxxxxxxx</span></p>
+    <nz-table #nzTable
+              [nzDataSource]="productInfo"
+              [nzScroll]="{ y: 400 }"
+              [nzSize]="'small'" [nzBordered]="true" [nzIsPagination]="false">
+        <thead nz-thead>
+        <tr>
+            <th nz-th *ngFor="let item of memoryColumn"><span>{{item.label}}</span></th>
+        </tr>
+        </thead>
+        <tbody nz-tbody>
+        <tr nz-tbody-tr *ngFor="let item of memoryInfo">
+            <td nz-td  *ngFor="let _item of memoryColumn">{{item[_item.key] || '无'}}</td>
+        </tr>
+        </tbody>
+    </nz-table>
+    <h3>磁盘信息</h3>
+    <nz-table #nzTable
+              [nzDataSource]="productInfo"
+              [nzScroll]="{ y: 400 }"
+              [nzSize]="'small'" [nzBordered]="true" [nzIsPagination]="false">
+        <thead nz-thead>
+        <tr>
+            <th nz-th *ngFor="let item of diskColumn"><span>{{item.label}}</span></th>
+        </tr>
+        </thead>
+        <tbody nz-tbody>
+        <tr nz-tbody-tr *ngFor="let item of diskInfo">
+            <td nz-td  *ngFor="let _item of diskColumn">{{item[_item.key] || '无'}}</td>
+        </tr>
+        </tbody>
+    </nz-table>
+    <h3>网络适配器信息</h3>
+    <p>CPU槽位数: <span>xxxxxxxx</span></p>
+    <p>空置槽位数: <span>xxxxxxxx</span></p>
+    <nz-table #nzTable
+              [nzDataSource]="productInfo"
+              [nzScroll]="{ y: 400 }"
+              [nzSize]="'small'" [nzBordered]="true" [nzIsPagination]="false">
+        <thead nz-thead>
+        <tr>
+            <th nz-th *ngFor="let item of niaColumn"><span>{{item.label}}</span></th>
+        </tr>
+        </thead>
+        <tbody nz-tbody>
+        <tr nz-tbody-tr *ngFor="let item of niaInfo">
+            <td nz-td  *ngFor="let _item of niaColumn">{{item[_item.key] || '无'}}</td>
+        </tr>
+        </tbody>
+    </nz-table>
+    <h3>散热设备信息</h3>
+    <p>CPU槽位数: <span>xxxxxxxx</span></p>
+    <p>空置槽位数: <span>xxxxxxxx</span></p>
+    <nz-table #nzTable
+              [nzDataSource]="productInfo"
+              [nzScroll]="{ y: 400 }"
+              [nzSize]="'small'" [nzBordered]="true" [nzIsPagination]="false">
+        <thead nz-thead>
+        <tr>
+            <th nz-th *ngFor="let item of fanColumn"><span>{{item.label}}</span></th>
+        </tr>
+        </thead>
+        <tbody nz-tbody>
+        <tr nz-tbody-tr *ngFor="let item of fanInfo">
+            <td nz-td  *ngFor="let _item of fanColumn">{{item[_item.key] || '无'}}</td>
+        </tr>
+        </tbody>
+    </nz-table>
+    <h3>电源信息</h3>
+    <p>CPU槽位数: <span>xxxxxxxx</span></p>
+    <p>空置槽位数: <span>xxxxxxxx</span></p>
+    <nz-table #nzTable
+              [nzDataSource]="productInfo"
+              [nzScroll]="{ y: 400 }"
+              [nzSize]="'small'" [nzBordered]="true" [nzIsPagination]="false">
+        <thead nz-thead>
+        <tr>
+            <th nz-th *ngFor="let item of powerColumn"><span>{{item.label}}</span></th>
+        </tr>
+        </thead>
+        <tbody nz-tbody>
+        <tr nz-tbody-tr *ngFor="let item of powerInfo">
+            <td nz-td  *ngFor="let _item of powerColumn">{{item[_item.key]}}</td>
+        </tr>
+        </tbody>
+    </nz-table>
+</div>

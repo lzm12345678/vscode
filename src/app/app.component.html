@@ -1,0 +1,7 @@
+
+<div class="menu-top" *ngIf="loginUser && loginUser.userId">
+    <app-menu-top></app-menu-top>
+</div>
+<div class="main">
+    <router-outlet></router-outlet>
+</div>

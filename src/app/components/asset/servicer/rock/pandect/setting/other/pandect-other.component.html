@@ -1,0 +1,45 @@
+<div class="wrap">
+    <h3>告警通知参数</h3>
+    <app-custom-table [column]="column1" [data]="data1" [row]="1"></app-custom-table>
+    <h3>BMC管理接口参数配置</h3>
+    <app-custom-table [column]="column2" [data]="data2" [row]="1"></app-custom-table>
+    <h3>时间设置(NTP)</h3>
+    <div style="width: 80%; margin: 20px auto;">
+        <div nz-row>
+            <div nz-col [nzSpan]="8" style="text-align: right">NTP状态:</div>
+            <div nz-col [nzSpan]="16">
+                <nz-radio-group>
+                    <label nz-radio [nzValue]="'A'">
+                        <span>启用</span>
+                    </label>
+                    <label nz-radio [nzValue]="'B'">
+                        <span>停用</span>
+                    </label>
+                </nz-radio-group>
+            </div>
+        </div>
+        <div nz-row>
+            <div nz-col [nzSpan]="8" style="text-align: right">首选NTP服务器IP:</div>
+            <div nz-col [nzSpan]="16">
+                <nz-input></nz-input>
+            </div>
+        </div>
+        <div nz-row>
+            <div nz-col [nzSpan]="8" style="text-align: right">NTP状态:</div>
+            <div nz-col [nzSpan]="16">
+                <nz-input></nz-input>
+            </div>
+        </div>
+        <div nz-row>
+            <div nz-col [nzSpan]="8">:</div>
+            <div nz-col [nzSpan]="16">
+                <button nz-button [nzType]="'primary'">
+                    <span>保存</span>
+                </button>
+                <button nz-button [nzType]="'default'">
+                    <span>取消</span>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

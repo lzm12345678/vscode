@@ -1,0 +1,11 @@
+<span class="lh-switch"
+      [class.lh-switch-checked]="_value"
+      [class.lh-switch-disabled]="disabled"
+      (click)="change()">
+    <input type="hidden"
+           [ngModel]="_value"
+           (ngModelChange)="modelChange($event)">
+    <span class="lh-switch-inner">
+        <span>{{_value ? openContent : closeContent}}</span>
+    </span>
+</span>

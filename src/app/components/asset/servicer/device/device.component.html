@@ -1,0 +1,185 @@
+<div class="wrap">
+    <div class="search-area" >
+        <div class="search-row" nz-row>
+            <div nz-col class="gutter-row" [nzSpan]="6">
+                <nz-select style="width: 100%;" [nzPlaceHolder]="'所属机房'" [nzShowSearch]="true" nzAllowClear>
+                    <nz-option [nzLabel]="'a4'" [nzValue]="1"></nz-option>
+                    <nz-option [nzLabel]="'a6'" [nzValue]="2"></nz-option>
+                    <nz-option [nzLabel]="'a7'" [nzValue]="3"></nz-option>
+                </nz-select>
+            </div>
+            <div nz-col class="gutter-row" [nzSpan]="6">
+                <nz-input [nzPlaceHolder]="'资产编号'"></nz-input>
+            </div>
+            <div nz-col class="gutter-row" [nzSpan]="6">
+                <nz-input [nzPlaceHolder]="'资产名称'"></nz-input>
+            </div>
+            <div nz-col class="gutter-row" [nzSpan]="6">
+                <button nz-button (click)="toggleSearch()" [nzType]="'default'">
+                    <i [ngClass]="isSearchOpen ? 'anticon-arrow-up' : 'anticon-arrow-down'" class="anticon"></i><span>{{isSearchOpen ? '收 起' : '展 开'}}</span>
+                </button>
+                <button nz-button (click)="searchByField()" [nzType]="'default'">
+                    <i class="anticon anticon-search"></i><span>查&nbsp;询</span>
+                </button>
+                <button nz-button (click)="searchByField()" [nzType]="'default'">
+                    <i class="anticon anticon-delete"></i><span>清空查询</span>
+                </button>
+            </div>
+        </div>
+        <div class="search-row" *ngIf="isSearchOpen" nz-row>
+            <div nz-col class="gutter-row" [nzSpan]="6">
+                <nz-input [(ngModel)]="search.code" [nzPlaceHolder]="'所属项目'"></nz-input>
+            </div>
+            <div nz-col class="gutter-row" [nzSpan]="6">
+                <nz-select
+                    style="width: 100%;"
+                    nzAllowClear
+                    [nzPlaceHolder]="'责任人'"
+                    [(ngModel)]="search.state"
+                    [nzShowSearch]="true">
+                    <nz-option
+                        [nzLabel]="'张三'"
+                        [nzValue]="1">
+                    </nz-option>
+                    <nz-option
+                        [nzLabel]="'李四'"
+                        [nzValue]="2">
+                    </nz-option>
+                </nz-select>
+            </div>
+            <div nz-col class="gutter-row" [nzSpan]="6">
+                <nz-input [(ngModel)]="search.name" [nzPlaceHolder]="'资产名称'"></nz-input>
+            </div>
+        </div>
+        <div class="search-row" *ngIf="isSearchOpen" nz-row>
+            <div nz-col class="gutter-row" [nzSpan]="6">
+                <nz-cascader
+                    [nzOptions]="brand"
+                    [(ngModel)]="_brand"
+                    [nzPlaceHolder]="'型号信息'"
+                    (ngModelChange)="_console($event)">
+                </nz-cascader>
+            </div>
+            <div nz-col class="gutter-row" [nzSpan]="6">
+                <nz-radio-group  [(ngModel)]="radioValue">
+                    <label nz-radio-button [nzValue]="'A'">
+                        <span>部署/在架</span>
+                    </label>
+                    <label nz-radio-button [nzValue]="'B'">
+                        <span>未上架</span>
+                    </label>
+                </nz-radio-group>
+            </div>
+            <div nz-col class="gutter-row" [nzSpan]="6">
+                <nz-cascader
+                    [nzOptions]="room"
+                    [(ngModel)]="_room"
+                    [nzPlaceHolder]="'位置信息'"
+                    (ngModelChange)="_console($event)">
+                </nz-cascader>
+            </div>
+        </div>
+    </div>
+    <div class="maintenance-body">
+        <div style="margin: 10px 25px;">
+            <button nz-button [nzType]="'default'" (click)="createBlade()">
+                <i class="anticon anticon-plus"></i>
+                <span>新&nbsp;&nbsp;增</span>
+            </button>
+            <button nz-button [disabled]="disabledButton" [nzType]="'primary'" [nzType]="'default'">
+                <i class="anticon anticon-sync"></i>
+                <span>同步服务器</span>
+            </button>
+            <button nz-button
+                    [disabled]="disabledButton"
+                    [nzType]="'primary'"
+                    [nzLoading]="operating"
+                    (click)="batchDelete()">
+                <i class="anticon anticon-delete"></i>
+                <span>批量删除</span>
+            </button>
+            <span style="margin-left: 8px;" *ngIf="_checkedNumber">已选中 {{_checkedNumber}} 条</span>
+        </div>
+        <nz-table #nzTable [nzDataSource]="assets"
+                  [nzSize]="'small'"
+                  [nzIsPagination]="false"
+                  [nzScroll]="{ y: 500 }"
+                  [nzBordered]="true"
+                  [nzPageSize]="10">
+            <ng-template #nzFixedHeader>
+                <thead nz-thead>
+                <tr>
+                    <th nz-th [nzWidth]="'30px'" [nzCheckbox]="true">
+                        <label nz-checkbox
+                               [(ngModel)]="allChecked"
+                               [nzIndeterminate]="indeterminate"
+                               (ngModelChange)="checkAll($event)">
+                        </label>
+                    </th>
+                    <th nz-th [nzWidth]="'110px'">
+                        <span>名称</span>
+                        <nz-table-sort></nz-table-sort>
+                    </th>
+                    <th nz-th [nzWidth]="'100px'"><span>编号</span></th>
+                    <th nz-th [nzWidth]="'150px'"><span>型号</span></th>
+                    <th nz-th [nzWidth]="'100px'"><span>机房</span></th>
+                    <th nz-th [nzWidth]="'100px'"><span>所属项目</span></th>
+                    <th nz-th [nzWidth]="'100px'"><span>责任人</span></th>
+                    <th nz-th [nzWidth]="'100px'"><span>位置</span></th>
+                    <th nz-th [nzWidth]="'200px'"><span>操作</span></th>
+                </tr>
+                </thead>
+            </ng-template>
+            <tbody nz-tbody>
+            <ng-template >
+                <tr nz-tbody-tr>
+                    <td nz-td [nzCheckbox]="true">
+                        <label nz-checkbox  (ngModelChange)="refreshStatus($event)"></label>
+                    </td>
+                    <td nz-td>
+                        <span>sdadawd</span>
+                    </td>
+                    <td nz-td>
+                        <a (click)="$router.navigate(['/asset/maintenance/' + asset.number])">{{asset.number}}</a>
+                    </td>
+                    <td nz-td>
+                        <span>sdadawd</span>
+                    </td>
+                    <td nz-td>
+                        <span>sdadawd</span>
+                    </td>
+                    <td nz-td>
+                        <span>sdadawd</span>
+                    </td>
+                    <td nz-td>
+                        <span>sdadawd</span>
+                    </td>
+                    <td nz-td>
+                        <span>sdadawd</span>
+                    </td>
+                    <td nz-td>
+                        <a (click)="modifyUser()">修改</a>
+                        <nz-popconfirm [nzTitle]="'确定要删除这个用户吗？'"
+                                       (nzOnConfirm)="confirmDelete()"
+                                       (nzOnCancel)="cancel()">
+                            <a nz-popconfirm>删除</a>
+                        </nz-popconfirm>
+                        <nz-popconfirm [nzTitle]="'确定要删除这个用户吗？'"
+                                       (nzOnConfirm)="confirmDelete()"
+                                       (nzOnCancel)="cancel()">
+                            <a nz-popconfirm>上架/下架</a>
+                        </nz-popconfirm>
+                    </td>
+                </tr>
+            </ng-template>
+            </tbody>
+        </nz-table>
+        <div style="margin: 20px 30px;text-align: right;">
+            <app-pagination [pageIndex]="pageIndex"
+                            [pageSize]="pageSize"
+                            [total]="total">
+
+            </app-pagination>
+        </div>
+    </div>
+</div>

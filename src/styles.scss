@@ -1,0 +1,522 @@
+/* You can add global styles to this file, and also import other style files */
+*{
+    padding: 0px;
+    margin: 0px;
+}
+
+
+.form-error {
+    $bc: 1px solid #ff2848;
+    .ant-input, .ant-select-selection--single, .ant-input-number {
+        border: $bc
+    }
+}
+
+
+.cus-active {
+    color: #41e248;
+}
+.cus-inactive {
+    color: #f73f40;
+}
+
+.ant-input-disabled, .ant-select-disabled, .ant-input-number-disabled {
+    color: rgba(0, 0, 0, 0.51) !important;
+}
+
+.ant-message-notice {
+    position: absolute;
+    top: 50px;
+    left: 50%;
+    margin-left: -20px;
+}
+
+//fiberhome 主体共用样式
+.nav-bg {
+    background: #323845;
+}
+//左侧的导航样式
+.left-nav {
+    background: #1a2226;
+}
+//导航选中的颜色--------------
+.nav-select {
+    border-color:#ff3300;
+}
+//用于线条--------------
+.line-clor {
+    border-color:#d7d7d7;
+}
+
+
+//修改表格样式---------------------------------------
+// .ant-btn {
+//     background:#2b87ee;
+//     color: #FFF;
+// }
+// .ant-btn:active, .ant-btn.active {
+//     background:#2b87ee;
+//     color: #FFF;
+// }
+
+// .ant-btn-default {
+
+//     color: #FFF;
+// }
+// .ant-btn-primary {
+//     color: #ccc;
+// }
+
+// .ant-table-thead > tr > th {
+//     text-align: center !important;
+//     background:#e0e2e3;
+// }
+// .ant-switch {min-width:auto;}
+// .ant-table table {text-align: center !important;}
+// .ant-table-bordered .ant-table-tbody > tr > td{
+//     text-align: center !important;
+// }
+
+// .ant-table table {text-align: center !important;}
+// .ant-table-fixed-header .ant-table-scroll .ant-table-header {
+//     margin-bottom: 0px !important;
+//     overflow: hidden !important;
+
+// }
+
+// .ant-table-body{
+//     overflow: hidden !important;
+// }
+
+//公共样式 显示-------------------------------------
+.overflow {
+    //显示出省略号
+    display: block;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    cursor: pointer;
+}
+//修改表格title的颜色------------
+// .ant-table-fixed-header .ant-table-scroll .ant-table-header { //这里是让表格title没有滚动条
+//     padding-right:20px !important;
+//     background:#e0e2e3 !important;
+//     overflow: auto !important;
+//     margin-bottom: 0px !important;
+
+// }
+.ant-table-small .ant-table-thead > tr > th {
+    background:#eeeff0 !important;
+    border:none !important;
+}
+.ant-table-bordered .ant-table-thead > tr > th, .ant-table-bordered .ant-table-tbody > tr > td {
+    border-right:none !important;
+}
+// .ant-table-small .ant-table-title, .ant-table-small .ant-table-footer, .ant-table-small .ant-table-thead > tr > th:not(.ant-table-selection-column){
+//     padding:0px 10px !important;
+//     height: 30px !important;
+// }
+.ant-table-thead > tr > th, .ant-table-tbody > tr > td{
+    padding:0px .5% !important;
+    height: 30px !important;
+    box-sizing: border-box !important;
+}
+
+
+.ant-table table {border-radius:0px !important}
+//main整体的padding  --------------
+.asset-main {
+    padding:0px 20px !important;
+}
+//表格外面的边框----------------------
+.ant-table-small {
+    border:none !important;
+}
+.ant-table-bordered .ant-table-body > table {
+    border-left: none !important;
+}
+.ant-table-content {border-bottom:1px solid #e9e9e9}
+
+//告警样式。
+.ant-table-small .ant-table-header > table, .ant-table-small .ant-table-body > table {
+    border: 0;
+    padding: 0 !important;
+}
+
+
+//角色列表 --------------
+.user-manager-wrap .search-area {
+    background: #fff !important;
+}
+.search-area .ant-row {
+    background: #fff !important;
+}
+.roles-wrap[_ngcontent-c14] .search-area[_ngcontent-c14],.roles-wrap[_ngcontent-c27] .search-area[_ngcontent-c27] {
+    background: #fff !important;
+
+}
+.user-manager-wrap[_ngcontent-c14] .search-area[_ngcontent-c14] {
+    padding:18px !important;
+}
+
+//资产管理模块文本框背景颜色调整
+.series-wrap .search-area {
+    padding: 20px;
+    margin: 0;
+    border-bottom: 1px solid #cccccc;
+    background: #fff !important;
+}
+.ant-modal-footer {
+    text-align: center !important;
+}
+
+//折叠图标
+.icon_collapse {
+    width: 15px;
+    height: 38px;
+    display: inline-block;
+    z-index: 40;
+    background-repeat: no-repeat;
+    background: url("./assets/common/icon_collapse.png")
+}
+
+//折叠打开
+.icon_open_parent{
+    margin-left:15px;
+    margin-top: 11px;
+}
+
+.icon_open_common{
+    display: block;
+    width: 7px;
+    height: 10px;
+    background-repeat: no-repeat !important;
+    background: url("./assets/common/icon_close.png")
+}
+
+.icon_open_children{
+    margin-left:5px;
+    margin-top: 9px;
+}
+
+//静止鼠标抖动
+.hove_alert{
+    display: inline-block;
+    line-height: 20px;
+}
+
+.m-l-10{
+    margin-left: 10px;
+}
+
+.m-l-20{
+    margin-left: 20px;
+}
+
+.t-r{
+    text-align: right;
+}
+
+//机柜按钮间距样式
+.ant-btn-machine{
+    margin: 10px 0 5px 10px !important;
+}
+
+//标准色样式总体
+//fiberhome 主体共用样式
+.nav-bg {
+    background: #323845;
+}
+//左侧的导航样式
+.left-nav {
+    background: #1a2226;
+}
+//导航选中的颜色--------------
+.nav-select {
+    border-color:#ff3300;
+}
+
+//用于线条--------------
+.line-clor {
+    border-color:#d7d7d7;
+}
+
+//5种警告颜色-----------------
+//紧急告警.
+.emergency-alarm{
+    background: #ff3600;
+}
+
+//重要告警
+.importance-alarm{
+    background: #ff6600;
+}
+
+//次要告警
+.minor-alarm{
+    background: #ffcc00;
+}
+
+//提示告警
+.reminder-alarm{
+    background: #0099ff;
+}
+
+//正常告警
+.normal-alarm{
+    background: #46d031;
+}
+
+//机柜占有情况-------------------
+//已满
+.rack-full{
+    background: #f27b81;
+}
+
+//大于50%
+.rack-above{
+    background: #fae8c9;
+}
+
+//小于50%
+.rock-small{
+    background: #a0edc1;
+}
+
+//空
+.rock-empty{
+    background: #e4e4e4;
+}
+
+//故障
+.rock-breakdown{
+    background: #94929b;
+}
+
+//按钮总体样式
+//1.查询样式
+//按钮通用样式--------------
+button[nz-button]{
+    margin: 0 5px;
+}
+
+.m-10 {
+    margin: 20px 0 12px;
+}
+// .icon_mlr-15 {
+//     // margin-right:10px;
+//     font-size:16px;
+// }
+//查询按钮-----------------------------------------------------------------
+.ant-btn {
+    height:30px !important;
+}
+// .ant-btn-search {
+//     background: #e96045 !important;
+//     color: #fff !important;
+// }
+// .ant-btn:active, .ant-btn.active {
+//     border:#d9d9d9;
+// }
+// 新增按钮--------------
+.ant-btn-add {
+    background: #2b87e1 !important;
+    color: #fff !important;
+}
+// //清空查询按钮-------------
+// .ant-btn-del-search {
+//     background: #e96045 !important;
+//     color: #fff !important;
+// }
+// .ant-btn:active, .ant-btn.active {
+//     border:#d9d9d9;
+// }
+//选择按钮的颜色-----------------
+.ant-switch-checked {
+    background:#15db2d !important;
+}
+//表操作的按钮 图标--------------------
+//修改的按钮----------------
+.btn-edit{
+    width: 25px;
+    height: 25px;
+    display: inline-block;
+    background: url("./assets/common/icon_edit.png")
+}
+//删除按钮---------------
+.btn-delate{
+    width: 25px;
+    height: 25px;
+    display: inline-block;
+    background: url("./assets/common/icon_delate.png")
+}
+//重置按钮------------------------
+.btn-reset{
+    width: 25px;
+    height: 25px;
+    display: inline-block;
+    background: url("./assets/common/icon_reset.png")
+}
+//强制下线按钮---------------------
+.btn-off-line {
+    width: 25px;
+    height: 25px;
+    display: inline-block;
+    background: url("./assets/common/icon_off_line.png")
+}
+//上架按钮-----------------
+.btn-shel-down {
+    width: 25px;
+    height: 25px;
+    display: inline-block;
+    background: url("./assets/common/icon_shel_down.png")
+}
+//下架按钮----------------------
+.btn-shel-up {
+    width: 25px;
+    height: 25px;
+    display: inline-block;
+    background: url("./assets/common/icon_shel_up.png")
+}
+//查看按钮-------------
+.btn-view {
+    width: 25px;
+    height: 25px;
+    display: inline-block;
+    background: url("./assets/common/icon_view.png")
+}
+//top人员的按钮-------------
+.btn-user {
+    width: 25px;
+    height: 25px;
+    vertical-align:10px;
+    display: inline-block;
+    background: url("./assets/common/icon_user.png");
+    background-size: 100% 100%;
+}
+.ant-tag-text a:first-child:last-child {
+    padding-left:0px !important;
+    padding-right:4px !important;
+}
+//操作按钮悬浮框的样式-------------
+.ant-tag {
+    padding:0px !important;
+}
+.ant-tag-checkable:active {
+    background: none !important;
+}
+
+.btn-common{
+    height: 30px !important;
+    padding: 0 20px !important;
+    font-size: 14px !important;
+    border-radius: 3px !important;
+}
+//查询按钮------------
+.btn-search-normal{
+    border: #c62121 solid 1px !important;
+    background: #e96045 !important;
+    color: #ffffff !important;
+}
+
+.btn-search-normal:hover{
+    background: #c52121 !important;
+    color: #ffffff !important;
+}
+
+
+//2.保存按钮样式
+.btn-save-normal{
+    border: #1c64b5 solid 1px !important;
+    background: #2b87ee !important;
+    color: #ffffff !important;
+}
+
+.btn-save-normal:hover{
+    background: #1c64b5 !important;
+    color: #ffffff !important;
+}
+
+
+//3.重置按钮
+.btn-reset-normal{
+    background: #ffffff !important;
+    border: #d1d1d3 solid 1px !important;
+    color:#2b87ee !important;
+}
+
+.btn-reset-normal:hover{
+    background: #ffffff !important;
+    border: #2b87ee solid 1px !important;
+    color:#2b87ee !important;
+}
+
+//禁用按钮通用样式
+// .btn-disabled{
+//     background: #cccccc;
+//     color: #fff;
+// }
+.ant-btn-primary[disabled] {
+    background: #cccccc !important;
+    color: #fff !important;
+    border-color:#ccc !important;
+}
+
+//所有input 的宽度
+.inputTitle {
+    display: inline-block;
+    margin-right:5px;
+    font-size:14px;
+    width: 57px;
+    text-align: right;
+}
+
+.input-common-width {
+    width:148px !important;
+    height:30px !important;
+    display: inline-block;
+}
+// .ant-input {
+//     height:30px !important;
+// }
+//字体图标----
+i.anticon {
+    font-weight: 800;
+}
+// 离开路由弹框的样式
+.ant-confirm  {
+    padding: 10px;
+    .ant-modal-body{
+
+        position: relative;
+        top:0;
+        left: 0;
+        .anticon-exclamation-circle:before{
+            // content:" ";
+            // width: 25px;
+            // height: 25px;
+            // background: url("./assets/common/icon_view.png")
+        }
+        .ant-confirm-btns {
+            display: inline-block;
+            margin-top: 30px;
+            margin-right: 50px;
+            button{
+                float: right;
+            }
+            button:nth-of-type(2){
+                background: #2b87e1;
+                border: 1px solid #1c64b5;
+            }
+        }
+    }
+
+}
+
+//修复弹出框半圆样式
+.ant-confirm-body > .anticon {
+    font-size: 24px !important;
+    margin-right: 16px !important;
+    padding: 3px !important;
+    float: left !important;
+}

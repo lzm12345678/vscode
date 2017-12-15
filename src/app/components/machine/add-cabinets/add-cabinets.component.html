@@ -1,0 +1,95 @@
+<nz-modal [nzVisible]="isAddVisible"
+          [nzTitle]="'批量生成机柜'"
+          [nzClosable]="true"
+          [nzMaskClosable]="false"
+          [nzContent]="modalContent"
+          [nzFooter]="modalFooter"
+          (nzOnCancel)="closeModal()">
+    <ng-template #modalContent>
+        <div style="padding: 20px 50px;">
+            <div class="c-item">
+                <div class="c-name">机房名称</div>
+                <div class="c-info">
+                    <nz-input
+                        [(ngModel)]="roomName"
+                        [nzDisabled]="true"
+                        [nzSize]="'large'"
+                        [nzPlaceHolder]="'机房名称'">
+                    </nz-input>
+                </div>
+            </div>
+            <div class="c-item">
+                <div class="c-name"><span style="color: red">*</span>机柜名称</div>
+                <div class="c-info">
+                    <nz-radio-group [(ngModel)]="radioValue" (ngModelChange)="radioValueChange($event)">
+                        <label nz-radio [nzValue]="'custom'" (click)="clickRadio('custom')">
+                            <span>自定义</span>
+                        </label>
+                        <label nz-radio [nzValue]="'predefine'" (click)="clickRadio('predefine')">
+                            <span>预定义</span>
+                        </label>
+                    </nz-radio-group>
+                    <nz-input *ngIf="radioValue==='custom'"
+                              [(ngModel)]="cabinetName"
+                              (ngModelChange)="inputChange($event,'cabinetName')"
+                              (nzBlur)="inputChange(cabinetName,'cabinetName')"
+                              [nzSize]="'large'"
+                              [nzDisabled]="inputDisabled"
+                              [nzPlaceHolder]="'输入机柜名字'">
+                    </nz-input>
+                    <div *ngIf="cabinetValidate&&radioValue==='custom'" class="Validate-color">*{{cabinetMsg}}</div>
+                </div>
+            </div>
+            <div class="c-item">
+                <div class="c-name"><span style="color: red">*</span>型号</div>
+                <div class="c-info">
+                    <nz-select
+                        style="width: 200px;"
+                        [nzPlaceHolder]="'请选择机柜型号'"
+                        [(ngModel)]="selectedCabinetType"
+                        [nzShowSearch]="true">
+                        <nz-option
+                            *ngFor="let cabinetType of cabinetType let index = index"
+                            [nzLabel]="cabinetType.cabinetTypeName"
+                            [nzValue]="index">
+                        </nz-option>
+                    </nz-select>
+                </div>
+            </div>
+            <div class="c-item">
+                <div class="c-name"><span style="color: red">*</span>机柜行数</div>
+                <div class="c-info">
+                    <nz-input
+                        [(ngModel)]="cabinetCol"
+                        (ngModelChange)="inputChange($event,'cabinetCol')"
+                        (nzBlur)="inputChange(cabinetCol,'cabinetCol')"
+                        [nzSize]="'large'"
+                        [nzPlaceHolder]="'添加机柜行数'">
+                    </nz-input>
+                    <div *ngIf="cabinetColValidate" class="Validate-color">*请输入非零整数</div>
+                    <div *ngIf="cabinetColNumValidate" class="Validate-color">*输入的行数不能大于26</div>
+                </div>
+            </div>
+            <div class="c-item">
+                <div class="c-name"><span style="color: red">*</span>机柜列数</div>
+                <div class="c-info">
+                    <nz-input
+                        [(ngModel)]="cabinetRow"
+                        (ngModelChange)="inputChange($event,'cabinetRow')"
+                        (nzBlur)="inputChange(cabinetRow,'cabinetRow')"
+                        [nzSize]="'large'"
+                        [nzPlaceHolder]="'添加机柜列数'">
+                    </nz-input>
+                    <div *ngIf="cabinetRowValidate" class="Validate-color">*请输入非零整数</div>
+                    <div *ngIf="cabinetSumValidate" class="Validate-color">*批量生成机柜不能大于1000个</div>
+                </div>
+            </div>
+        </div>
+    </ng-template>
+    <ng-template #modalFooter>
+        <div class="modal-footer">
+            <button nz-button  (click)="saveRoom()" [nzLoading]="isLoading" class="m-btn btn-common btn-save-normal" type="button">保&nbsp;&nbsp;存</button>
+            <button nz-button (click)="closeModal()" class="m-btn btn-common btn-reset-normal" type="button">取&nbsp;&nbsp;消</button>
+        </div>
+    </ng-template>
+</nz-modal>

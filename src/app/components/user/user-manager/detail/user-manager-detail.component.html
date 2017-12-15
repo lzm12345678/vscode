@@ -1,0 +1,17 @@
+<div class="wrap" style="padding-top: 40px;width:500px;">
+    <app-custom-form [column]="column" [titleWidth]="4" [data]="currentUser" [span]="18" [isDetail]="dealType === 'detail'"></app-custom-form>
+    <div nz-row class="m-item">
+        <div nz-col [nzSpan]="4" class="m-title">
+        </div>
+        <div nz-col [nzSpan]="17" nzPull="2" class="m-content" >
+            <button class="btn-common btn-save-normal"
+                    *ngIf="dealType !== 'detail'"
+                    nz-button [nzType]="'primary'"
+                    (click)="saveUser()">
+                <span *ngIf="isLoading"><i class="anticon anticon-loading anticon-spin"></i></span>
+                <span *ngIf="!isLoading">保存</span>
+            </button>
+            <button class="btn-common" nz-button (click)="$router.navigate(['/user/manager'])">返回</button>
+        </div>
+    </div>
+</div>

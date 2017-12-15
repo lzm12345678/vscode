@@ -1,0 +1,21 @@
+<ul class="lh-tree-children">
+    <li *ngFor="let item of data;let i = index;"
+        [title]="item.id"
+        [class.lh-tree-active]="checked === item.id">
+        <span class="lh-tree-arrow"
+              *ngIf="item.type !== 'node'"
+              (click)="expand(item)"
+              [class.lh-tree-arrow-open]="item.expand">
+            <i class="anticon anticon-caret-right"></i>
+        </span>
+        <span class="lh-tree-title" style="display: inline-block;">
+            <span>
+                <i class="anticon anticon-api"></i>
+                <span (dblclick)="navigateTo(item.id, item.type)">{{item.name}}</span>
+            </span>
+        </span>
+        <ng-container *ngIf="item.children && item.children.length > 0">
+            <lh-tree [data]="item.children"></lh-tree>
+        </ng-container>
+    </li>
+</ul>

@@ -1,0 +1,294 @@
+<div class="wrap" style="background: #ffffff">
+    <nz-tabset>
+        <nz-tab>
+            <ng-template #nzTabHeading>
+                <i class="anticon anticon-calculator"></i>
+                刀片服务器信息
+            </ng-template>
+            <nz-collapseset  [nzBordered]="false">
+                <nz-collapse [nzTitle]="'基本属性'" [nzActive]="true" [ngStyle]="style" >
+                    <div class="search-row" nz-row *ngFor="let row of basicProperty">
+                        <div nz-col [ngClass]="'gutter-row'" [nzSpan]="6" *ngFor="let column of row">
+                            <div nz-col [nzSpan]="8" [ngClass]="'row-title'"><em *ngIf="column.required" class="important">*</em>{{column.title}}:</div>
+                            <div nz-col [nzSpan]="16">
+                                <nz-tooltip [nzTrigger]="'focus'" [ngClass]="{'form-error': column.isError}" [(nzVisible)]="column.isError">
+                                    <nz-input nz-tooltip [nzDisabled]="(isEdit == 'false' || column.readonly)"
+                                              *ngIf="column.type === 'input'"
+                                              [(ngModel)]="detailInfo[column.key]"
+                                              (nzBlur)="column.blur(detailInfo[column.key], this)"
+                                              [nzPlaceHolder]="'请输入'">
+                                    </nz-input>
+                                    <nz-select nz-tooltip *ngIf="column.type === 'select'"
+                                               style="width: 100%"
+                                               nzAllowClear
+                                               [nzDisabled]="(isEdit == 'false' || column.readonly)"
+                                               [nzPlaceHolder]="'请输入'"
+                                               [(ngModel)]="detailInfo[column.key]"
+                                               (nzBlur)="column.blur(detailInfo[column.key], this)"
+                                               (ngModelChange)="column.change($event, this)"
+                                               [nzShowSearch]="true">
+                                        <nz-option *ngFor="let option of column.selectInfo.data"
+                                                   [nzLabel]="option[column.selectInfo.label]"
+                                                   [nzValue]="option[column.selectInfo.value]">
+                                        </nz-option>
+                                    </nz-select>
+                                    <nz-input-number nz-tooltip
+                                                     *ngIf="column.type === 'number'"
+                                                     [nzDisabled]="(isEdit == 'false' || column.readonly)"
+                                                     style="width: 100%"
+                                                     [(ngModel)]="detailInfo[column.key]"
+                                                     (nzBlur)="column.blur(detailInfo[column.key], this)"
+                                                     [nzMin]="1" [nzMax]="10" [nzStep]="1">
+
+                                    </nz-input-number>
+                                    <ng-template #nzTemplate>
+                                        <i class="anticon anticon-file"></i><span>{{column.msg}}</span>
+                                    </ng-template>
+                                </nz-tooltip>
+                            </div>
+                        </div>
+                    </div>
+
+                </nz-collapse>
+            </nz-collapseset>
+            <nz-collapseset  [nzBordered]="false">
+                <nz-collapse [nzTitle]="'上架属性'" [nzActive]="true" [ngStyle]="style" >
+                    <div class="search-row" nz-row *ngFor="let row of shelfPosition" >
+                        <div nz-col class="gutter-row" [nzSpan]="8" *ngFor="let column of row">
+                            <div nz-col [nzSpan]="8" class="row-title">{{column.title}}:</div>
+                            <div nz-col [nzSpan]="16">
+                                <nz-select *ngIf="column.type === 'select'" style="width: 100%"
+                                           nzAllowClear
+                                           [nzDisabled]="isEdit == 'false'"
+                                           [nzPlaceHolder]="'请输入'"
+                                           [(ngModel)]="detailInfo[column.key]"
+                                           (ngModelChange)="column.change($event, this)"
+                                           [nzShowSearch]="true">
+                                    <nz-option *ngFor="let option of column.selectInfo.data"
+                                               [nzLabel]="option[column.selectInfo.label]"
+                                               [nzValue]="option[column.selectInfo.value]">
+                                    </nz-option>
+                                </nz-select>
+                            </div>
+                        </div>
+                    </div>
+                </nz-collapse>
+            </nz-collapseset>
+            <nz-collapseset  [nzBordered]="false">
+                <nz-collapse [nzTitle]="'协议配置'" [nzActive]="true" [ngStyle]="style" >
+                    <div class="search-row" nz-row >
+                        <nz-collapseset>
+                            <nz-collapse [nzTitle]="'协议(SNMP)'" [nzActive]="true" >
+                                <div class="search-row" nz-row *ngFor="let row of agreementConfig.snmp" >
+                                    <div nz-col [ngClass]="'gutter-row'" [nzSpan]="12" *ngFor="let column of row">
+                                        <div nz-col [nzSpan]="8" [ngClass]="'row-title'"><em *ngIf="column.required" class="important">*</em>{{column.label}}:</div>
+                                        <div nz-col [nzSpan]="16">
+                                            <nz-tooltip [nzTrigger]="'focus'" [ngClass]="{'form-error': column.isError}" [(nzVisible)]="column.isError">
+                                                <nz-input nz-tooltip
+                                                          [nzDisabled]="isEdit == 'false' "
+                                                          *ngIf="column.type === 'input'"
+                                                          [(ngModel)]="detailInfo.protocolList[0][column.key]"
+                                                          (nzBlur)="column.blur(detailInfo.protocolList[0][column.key], this)"
+                                                          [nzPlaceHolder]="'请输入'">
+
+                                                </nz-input>
+                                                <nz-select nz-tooltip *ngIf="column.type === 'select'" style="width: 100%"
+                                                           nzAllowClear
+                                                           [nzDisabled]="isEdit == 'false'"
+                                                           [nzPlaceHolder]="'请输入'"
+                                                           [(ngModel)]="detailInfo.protocolList[0][column.key]"
+                                                           (nzBlur)="column.blur(detailInfo.protocolList[0][column.key], this)"
+                                                           (ngModelChange)="column.selectInfo.changeHook($event, this)"
+                                                           [nzShowSearch]="true">
+                                                    <nz-option *ngFor="let user of column.selectInfo.data" [nzLabel]="user[column.selectInfo.label]" [nzValue]="user[column.selectInfo.value]"></nz-option>
+                                                </nz-select>
+                                                <nz-input-number nz-tooltip
+                                                                 *ngIf="column.type === 'number'"
+                                                                 [nzDisabled]="isEdit == 'false'"
+                                                                 style="width: 100%"
+                                                                 [(ngModel)]="detailInfo.protocolList[0][column.key]"
+                                                                 (nzBlur)="column.blur(detailInfo.protocolList[0][column.key], this)"
+                                                                 [nzMin]="column.min" [nzMax]="column.max" [nzStep]="1"></nz-input-number>
+
+                                                <ng-template #nzTemplate>
+                                                    <i class="anticon anticon-file"></i><span>{{column.msg}}</span>
+                                                </ng-template>
+                                            </nz-tooltip>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </nz-collapse>
+                            <nz-collapse [nzTitle]="'协议(IPMI)'" [nzActive]="true" >
+                                <div class="search-row" nz-row *ngFor="let row of agreementConfig.ipmi" >
+                                    <div nz-col [ngClass]="'gutter-row'" [nzSpan]="12" *ngFor="let column of row">
+                                        <div nz-col [nzSpan]="8" [ngClass]="'row-title'"><em *ngIf="column.required" class="important">*</em>{{column.label}}:</div>
+                                        <div nz-col [nzSpan]="16">
+                                            <nz-tooltip [nzTrigger]="'focus'" [ngClass]="{'form-error': column.isError}" [(nzVisible)]="column.isError">
+                                                <nz-input nz-tooltip
+                                                          [nzDisabled]="isEdit == 'false' "
+                                                          *ngIf="column.type === 'input'"
+                                                          [(ngModel)]="detailInfo.protocolList[1][column.key]"
+                                                          (nzBlur)="column.blur(detailInfo.protocolList[1][column.key], this)"
+                                                          [nzPlaceHolder]="'请输入'">
+
+                                                </nz-input>
+                                                <nz-select nz-tooltip *ngIf="column.type === 'select'" style="width: 100%"
+                                                           nzAllowClear
+                                                           [nzDisabled]="isEdit == 'false'"
+                                                           [nzPlaceHolder]="'请输入'"
+                                                           [(ngModel)]="detailInfo.protocolList[1][column.key]"
+                                                           (nzBlur)="column.blur(detailInfo.protocolList[1][column.key], this)"
+                                                           (ngModelChange)="column.selectInfo.changeHook($event, this)"
+                                                           [nzShowSearch]="true">
+                                                    <nz-option *ngFor="let user of column.selectInfo.data" [nzLabel]="user[column.selectInfo.label]" [nzValue]="user[column.selectInfo.value]"></nz-option>
+                                                </nz-select>
+                                                <nz-input-number nz-tooltip
+                                                                 *ngIf="column.type === 'number'"
+                                                                 [nzDisabled]="isEdit == 'false'"
+                                                                 style="width: 100%"
+                                                                 [(ngModel)]="detailInfo.protocolList[1][column.key]"
+                                                                 (nzBlur)="column.blur(detailInfo.protocolList[1][column.key], this)"
+                                                                 [nzMin]="column.min" [nzMax]="column.max" [nzStep]="1"></nz-input-number>
+
+                                                <ng-template #nzTemplate>
+                                                    <i class="anticon anticon-file"></i><span>{{column.msg}}</span>
+                                                </ng-template>
+                                            </nz-tooltip>
+                                        </div>
+                                    </div>
+                                </div>
+                            </nz-collapse>
+                            <nz-collapse [nzTitle]="'协议(REDFISH)'" [nzActive]="true" >
+                                <div class="search-row" nz-row *ngFor="let row of agreementConfig.redfish" >
+                                    <div nz-col [ngClass]="'gutter-row'" [nzSpan]="12" *ngFor="let column of row">
+                                        <div nz-col [nzSpan]="8" [ngClass]="'row-title'"><em *ngIf="column.required" class="important">*</em>{{column.label}}:</div>
+                                        <div nz-col [nzSpan]="16">
+                                            <nz-tooltip [nzTrigger]="'focus'" [ngClass]="{'form-error': column.isError}" [(nzVisible)]="column.isError">
+                                                <nz-input nz-tooltip
+                                                          [nzDisabled]="isEdit == 'false' "
+                                                          *ngIf="column.type === 'input'"
+                                                          [(ngModel)]="detailInfo.protocolList[2][column.key]"
+                                                          (nzBlur)="column.blur(detailInfo.protocolList[2][column.key], this)"
+                                                          [nzPlaceHolder]="'请输入'">
+
+                                                </nz-input>
+                                                <nz-select nz-tooltip *ngIf="column.type === 'select'" style="width: 100%"
+                                                           nzAllowClear
+                                                           [nzDisabled]="isEdit == 'false'"
+                                                           [nzPlaceHolder]="'请输入'"
+                                                           [(ngModel)]="detailInfo.protocolList[2][column.key]"
+                                                           (nzBlur)="column.blur(detailInfo.protocolList[2][column.key], this)"
+                                                           (ngModelChange)="column.selectInfo.changeHook($event, this)"
+                                                           [nzShowSearch]="true">
+                                                    <nz-option *ngFor="let user of column.selectInfo.data" [nzLabel]="user[column.selectInfo.label]" [nzValue]="user[column.selectInfo.value]"></nz-option>
+                                                </nz-select>
+                                                <nz-input-number nz-tooltip
+                                                                 *ngIf="column.type === 'number'"
+                                                                 [nzDisabled]="isEdit == 'false'"
+                                                                 style="width: 100%"
+                                                                 [(ngModel)]="detailInfo.protocolList[2][column.key]"
+                                                                 (nzBlur)="column.blur(detailInfo.protocolList[2][column.key], this)"
+                                                                 [nzMin]="column.min" [nzMax]="column.max" [nzStep]="1"></nz-input-number>
+
+                                                <ng-template #nzTemplate>
+                                                    <i class="anticon anticon-file"></i><span>{{column.msg}}</span>
+                                                </ng-template>
+                                            </nz-tooltip>
+                                        </div>
+                                    </div>
+                                </div>
+                            </nz-collapse>
+                        </nz-collapseset>
+
+                    </div>
+                </nz-collapse>
+            </nz-collapseset>
+
+            <nz-collapseset  [nzBordered]="false">
+                <nz-collapse [nzTitle]="'备注信息'" [nzActive]="true" [ngStyle]="style" >
+                    <nz-input [(ngModel)]="detailInfo.remarks" [nzType]="'textarea'" [nzDisabled]="isEdit == 'false'" [nzRows]="'4'" [nzPlaceHolder]="'请输入'"></nz-input>
+                </nz-collapse>
+            </nz-collapseset>
+
+            <nz-collapseset  [nzBordered]="false">
+                <nz-collapse [nzTitle]="'服务器单元信息'" [nzActive]="true" [ngStyle]="style" >
+
+                    <div class="search-row" nz-row >
+                        <button nz-button [nzType]="'primary'"
+                                [disabled]="isEdit == 'false' || bladeServerId == 'null'"
+                                (click)="toUnitDetail(bladeServerId, 'null', true, isEdit)">
+                            <span>新增单元</span>
+                        </button>
+                        <button nz-button [nzType]="'primary'"
+                                [nzLoading]="_operating"
+                                [disabled]="_disabledButton"
+                                (click)="batchDelete()">
+                            <span>批量删除单元</span>
+                        </button>
+                    </div>
+                    <div class="search-row" nz-row >
+                        <nz-table #nzTable
+                                  [nzDataSource]="detailInfo.units"
+                                  [nzBordered]="true"
+                                  [nzPageSize]="10"
+                                  (nzDataChange)="_displayDataChange($event)"
+                                  (nzPageIndexChange)="_refreshStatus()"
+                                  (nzPageSizeChange)="_refreshStatus()">
+                            <thead nz-thead>
+                            <tr>
+                                <th nz-th [nzCheckbox]="true" *ngIf="isEdit === 'true'">
+                                    <label nz-checkbox [(ngModel)]="_allChecked" [nzIndeterminate]="_indeterminate" (ngModelChange)="_checkAll($event)">
+                                    </label>
+                                </th>
+                                <th nz-th><span>名称</span></th>
+                                <th nz-th><span>管理IP</span></th>
+                                <th nz-th><span>带内IP</span></th>
+                                <th nz-th><span>型号</span></th>
+                                <th nz-th><span>槽位数</span></th>
+                                <th nz-th><span>资产编号</span></th>
+                                <th nz-th><span>所属项目</span></th>
+                                <th nz-th><span>责任人</span></th>
+                                <th nz-th *ngIf="isEdit === 'true'"><span>操作</span></th>
+                            </tr>
+                            </thead>
+                            <tbody nz-tbody>
+                            <tr nz-tbody-tr *ngFor="let unit of nzTable.data">
+                                <td nz-td [nzCheckbox]="true" *ngIf="isEdit === 'true'">
+                                    <label nz-checkbox [(ngModel)]="unit.checked" (ngModelChange)="_refreshStatus($event)">
+                                    </label>
+                                </td>
+                                <td nz-td style="border-left: 1px solid #e9e9e9;border-bottom: 1px solid #e9e9e9;">{{unit.serverName}}</td>
+                                <td nz-td style="border-bottom: 1px solid #e9e9e9;">
+                                    <a (click)="toUnitPandect(unit.serverId)">{{unit.serverIp}}</a>
+                                </td>
+                                <td nz-td style="border-bottom: 1px solid #e9e9e9;">{{unit.bandIp}}</td>
+                                <td nz-td style="border-bottom: 1px solid #e9e9e9;">{{unit.model}}</td>
+                                <td nz-td style="border-bottom: 1px solid #e9e9e9;">{{unit.slotNum}}</td>
+                                <td nz-td style="border-bottom: 1px solid #e9e9e9;">{{unit.serverCode}}</td>
+                                <td nz-td style="border-bottom: 1px solid #e9e9e9;">{{unit.serverProject}}</td>
+                                <td nz-td style="border-bottom: 1px solid #e9e9e9;">{{unit.serverFirstUserName}} <span *ngIf="unit.serverSecondUserName">, {{unit.serverSecondUserName}}</span></td>
+                                <td nz-td style="border-bottom: 1px solid #e9e9e9;" *ngIf="isEdit === 'true'">
+                                    <a (click)="toUnitDetail(bladeServerId, unit.serverId, false, isEdit)">查看</a>
+                                    <a (click)="toUnitDetail(bladeServerId, unit.serverId, true, isEdit)" >修改</a>
+                                    <nz-popconfirm [nzTitle]="'确定要删除这个用户吗？'"
+                                                   (nzOnConfirm)="deleteUnit(unit.serverId)"
+                                                   (nzOnCancel)="cancel()">
+                                        <a nz-popconfirm>删除</a>
+                                    </nz-popconfirm>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </nz-table>
+                    </div>
+                </nz-collapse>
+            </nz-collapseset>
+        </nz-tab>
+
+    </nz-tabset>
+    <div style="text-align: center">
+        <button nz-button [nzType]="'primary'" *ngIf="isEdit === 'true'" (click)="saveBladeDetail()" ><span>保存</span></button>
+        <button nz-button [nzType]="'default'" (click)="backList()"><span>返回</span></button>
+    </div>
+</div>
+

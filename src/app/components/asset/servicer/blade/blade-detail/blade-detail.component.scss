@@ -1,0 +1,26 @@
+.wrap {
+    position: relative;
+    top: 0px;
+    left: 0px;
+    right: 0px;
+    bottom: 0px;
+    height: 100%;
+    background: #ffffff;
+    .search-row {
+        margin: 12px 10px;
+        .gutter-row {
+            padding: 0 16px;
+            line-height: 28px;
+        }
+    }
+}
+
+.row-title {
+    line-height: 28px;
+    padding-right: 15px;
+    text-align: right;
+}
+.important {
+    color: red;
+    font-size: 16px;
+}

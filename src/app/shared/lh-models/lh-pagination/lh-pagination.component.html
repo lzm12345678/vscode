@@ -1,0 +1,41 @@
+<div>
+    <span style="display: inline-block">共 {{totalCount}} 条</span>
+    <ul class="lh-page" style="display: inline-block">
+        <li class="lh-page-item lh-page-prev" (click)="prev()">
+            <a >上一页</a></li>
+        <li class="lh-page-item" *ngIf="pageIndex !== 1"><a (click)="pageIndexChange(1)">1</a></li>
+
+        <li class="lh-page-item lh-page-dot" *ngIf="pageIndex - 2 > 1">...</li>
+
+        <li class="lh-page-item" *ngIf="pageIndex - 1 > 1">
+            <a (click)="pageIndexChange(pageIndex - 1)">{{pageIndex - 1}}</a>
+        </li>
+        <li class="lh-page-item lh-page-item-active">
+                <a (click)="pageIndexChange(pageIndex)">{{pageIndex}}</a>
+        </li>
+        <li class="lh-page-item" *ngIf="pageIndex + 1 < total">
+            <a (click)="pageIndexChange(pageIndex + 1)">{{pageIndex + 1}}</a>
+        </li>
+
+        <li class="lh-page-item lh-page-dot" *ngIf="pageIndex + 2 < total">...</li>
+
+        <li class="lh-page-item" *ngIf="total > 1 && pageIndex !== total">
+            <a (click)="pageIndexChange(total)">{{total}}</a></li>
+        <li class="lh-page-item lh-page-next"><a (click)="next()">下一页</a></li>
+    </ul>
+
+    <nz-select style="display: inline-block" [ngModel]="pageSize" (ngModelChange)="pageSizeChange($event)">
+        <nz-option *ngFor="let option of options"
+                   [nzLabel]="option.value + ' 条/页 '"
+                   [nzValue]="option.value"
+                   [nzDisabled]="option.disabled">
+
+        </nz-option>
+    </nz-select>
+
+    <div style="display: inline-block;">
+        <span>跳至 </span>
+        <input style="display: inline-block;width: 45px;" [ngModel]="pageIndex" (keyup.enter)="handleEnter($event)">
+        <span>页</span>
+    </div>
+</div>

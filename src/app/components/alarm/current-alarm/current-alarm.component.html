@@ -1,0 +1,213 @@
+<div class="maintenance-wrap">
+    <div class="maintenance-body" id="mainBody">
+        <div style="margin: 10px 25px;">
+            <button nz-button [nzType]="'primary'" [disabled]="checkedNumber?false:true"  (click)="batchAlarmAll('clean')">
+                <i class="anticon anticon-delete"></i>
+                <span>清除告警</span>
+            </button>
+            <button nz-button  [nzType]="'primary'" [disabled]="checkedNumber?false:true" [nzType]="'default'"(click)="batchAlarmAll('config')" >
+                <i class="anticon anticon-sync"></i>
+                <span>告警确认</span>
+            </button>
+            <button nz-button
+                    [disabled]="checkedNumber?false:true"
+                    [nzType]="'primary'"
+                    [nzLoading]="operating"
+                    >
+                <i class="anticon anticon-delete"></i>
+                <span>导出告警</span>
+            </button>
+            <span style="margin-left: 8px;" >已选中 {{checkedNumber}} 条</span>
+        </div>
+        <!-- 注释了他原来的结构 -->
+        <!-- <div class="w1000" style="max-height: 350px;overflow: auto;" [style.width]="tabWidth + 'px'"> -->
+        <div class="w1000" style="max-height: 350px;overflow: auto;" [style.width]="isCollapse ? 'tabWidth ' : '100%'">
+            <div style="width: 1800px;">
+                <nz-table #nzTable [nzDataSource]="alarms"
+                          [nzSize]="'small'"
+                          [nzIsPagination]="false"
+                          [nzScroll]="{ y: 300 }"
+                          [nzBordered]="false"
+                          [nzPageSize]="10">
+                    <ng-template #nzFixedHeader>
+                        <thead nz-thead>
+                        <tr>
+                            <th nz-th style="width: 40px;min-width: 40px;" [nzCheckbox]="true">
+                                <label nz-checkbox
+                                       [(ngModel)]="allChecked"
+                                       [nzIndeterminate]="indeterminate"
+                                       (ngModelChange)="checkAll($event)">
+                                </label>
+                            </th>
+                            <th nz-th style="width: 90px;" >
+                                <span>告警级别</span>
+                                <nz-table-sort [(nzValue)]="sortMap.alarm_level" (nzValueChange)="sort('alarm_level',$event)"></nz-table-sort>
+                            </th>
+                            <th nz-th style="width: 90px;" >
+                                <span>告警名称</span>
+                                <nz-table-sort [(nzValue)]="sortMap.alarm_name" (nzValueChange)="sort('alarm_name',$event)"></nz-table-sort>
+
+                            </th>
+                            <th nz-th style="width: 70px;"><span>告警内容</span></th>
+                            <th nz-th style="width: 70px;"><span>设备类型</span></th>
+                            <th nz-th style="width: 90px;">
+                                <span>告警源</span>
+                                <nz-table-sort [(nzValue)]="sortMap.alarm_source" (nzValueChange)="sort('alarm_source',$event)"></nz-table-sort>
+                            </th>
+                            <th nz-th style="width: 140px;" >
+                                <span>首次发生告警时间</span>
+                                <nz-table-sort [(nzValue)]="sortMap.alarm_begin_time" (nzValueChange)="sort('alarm_begin_time',$event)"></nz-table-sort>
+                            </th>
+                            <th nz-th style="width: 140px;">
+                                <span>最后发生告警时间</span>
+                                <nz-table-sort [(nzValue)]="sortMap.alarm_near_time" (nzValueChange)="sort('alarm_near_time',$event)"></nz-table-sort>
+                            </th>
+                            <th nz-th style="width: 90px;">
+                                <span>发生次数</span>
+                                <nz-table-sort [(nzValue)]="sortMap.alarm_happen_count" (nzValueChange)="sort('alarm_happen_count',$event)"></nz-table-sort>
+                            </th>
+                            <th nz-th style="width: 95px;"><span>告警确认状态</span></th>
+                            <th nz-th style="width: 130px;">
+                                <span>告警确认时间</span>
+                                <nz-table-sort [(nzValue)]="sortMap.alarm_confirm_time" (nzValueChange)="sort('alarm_confirm_time',$event)"></nz-table-sort>
+                            </th>
+                            <th nz-th style="width: 80px;"><span>告警确认人</span></th>
+                            <th nz-th style="width: 120px;"><span>操作</span></th>
+                            <th nz-th style="width: 95px;"><span>告警清除状态</span></th>
+                            <th nz-th style="width: 130px;">
+                                <span>告警清除时间</span>
+                                <nz-table-sort [(nzValue)]="sortMap.alarm_clean_time" (nzValueChange)="sort('alarm_clean_time',$event)"></nz-table-sort>
+                            </th>
+                            <th nz-th style="width: 70px;"><span>清除类型</span></th>
+                            <th nz-th style="width: 70px;"><span>清除人</span></th>
+                            <th nz-th style="width: 70px;"><span>附加信息</span></th>
+                            <th nz-th ><span>备注</span></th>
+                        </tr>
+                        </thead>
+                    </ng-template>
+                    <tbody nz-tbody>
+                    <ng-template ngFor let-alarm [ngForOf]="nzTable.data">
+                        <tr nz-tbody-tr>
+                            <td nz-td style="width: 40px;min-width: 40px;" [nzCheckbox]="true">
+                                <label nz-checkbox [(ngModel)]="alarm.checked" (ngModelChange)="refreshStatus($event)"></label>
+                            </td>
+                            <td nz-td style="width: 90px;">
+                                <div style="width: 70px;">
+                            <span class="alarm-light" [title]="alarm.alarmLevel==='1'?'严重告警':alarm.alarmLevel=='2'?'重要告警':
+                            alarm.alarmLevel=='3'?'次要告警':alarm.alarmLevel=='4'?'提示告警':'正常'"  [ngStyle]="{'background':alarm.alarmLevel==='1'?'#ff0000':alarm.alarmLevel=='2'?'#ff9900':
+                            alarm.alarmLevel=='3'?'#ffff00':alarm.alarmLevel=='4'?'#00ccff':'#2bd544'}"></span>
+                                </div>
+
+                            </td>
+                            <td nz-td style="width: 90px;">
+                                <div style="width: 70px;">
+                                    <a (click)="alarm.show=!alarm.show" title="{{alarm.alarmName || '--'}}">{{alarm.alarmName || '--'}}</a>
+                                </div>
+                            </td>
+                            <td nz-td style="width: 70px;">
+                                <div style="width: 50px;"><span title="{{alarm.alarmContent}}">{{alarm.alarmContent}}</span></div>
+                            </td>
+                            <td nz-td style="width: 70px;">
+                                <div style="width: 50px;"><span title="{{alarm.alarmServerType}}">{{alarm.alarmServerType}}</span></div>
+                            </td>
+                            <td nz-td style="width: 90px;">
+                                <div style="width: 70px;"><span title="{{alarm.alarmSource}}">{{alarm.alarmSource}}</span></div>
+                            </td>
+                            <td nz-td style="width: 140px;">
+                                <div style="width: 120px;"><span>{{alarm.alarmBeginTime }}</span></div>
+                            </td>
+                            <td nz-td style="width: 140px;">
+                                <div style="width: 120px;"><span>{{alarm.alarmNearTime}}</span></div>
+                            </td>
+                            <td nz-td style="width: 95px;">
+                                <div style="width: 75px;"><span>{{alarm.alarmHappenCount}}</span></div>
+                            </td>
+                            <td nz-td style="width: 90px;">
+                                <div style="width: 70px;"><span>{{alarm.alarmConfirmStatus==='1'?'已确认':'未确认'}}</span></div>
+                            </td>
+                            <td nz-td style="width: 130px;">
+                                <div style="width: 110px;"><span>{{alarm.alarmConfirmTime}}</span></div>
+                            </td>
+                            <td nz-td style="width: 80px;">
+                                <div style="width: 60px;"><span title="{{alarm.alarmConfirmPeople}}">{{alarm.alarmConfirmPeople}}</span></div>
+                            </td>
+                            <td nz-td style="width: 120px;">
+                                <div style="width: 100px;">
+                                    <nz-popconfirm [nzTitle]="'确定要清除这条告警吗？'"
+                                                   (nzOnConfirm)="cleanAlarm(alarm)"
+                                                   (nzOnCancel)="cancel()">
+                                        <a nz-popconfirm>告警清除</a>
+                                    </nz-popconfirm>
+                                    <a (click)="confirmAlarm(alarm)">告警确认</a>
+                                </div>
+                            </td>
+                            <td nz-td style="width: 95px;">
+                                <div style="width: 75px;"><span title="{{alarm.alarmCleanStatus==='1'?'已清除':'未清除'}}">{{alarm.alarmCleanStatus==='1'?'已清除':'未清除'}}</span></div>
+                            </td>
+                            <td nz-td style="width: 130px;">
+                                <div style="width: 110px;"><span title="{{alarm.alarmCleanTime}}">{{alarm.alarmCleanTime}}</span></div>
+                            </td>
+                            <td nz-td style="width: 70px;">
+                                <div style="width: 50px;"><span title="{{alarm.alarmCleanType==='1'?'手动清除':''}}">{{alarm.alarmCleanType==='1'?'手动清除':''}}</span></div>
+                            </td>
+                            <td nz-td style="width: 70px;">
+                                <div style="width: 50px;"><span title="{{alarm.alarmCleanPeople}}">{{alarm.alarmCleanPeople}}</span></div>
+                            </td>
+                            <td nz-td style="width: 70px;">
+                                <div style="width: 50px;"><span title="{{alarm.extraMsg}}">{{alarm.extraMsg}}</span></div>
+                            </td>
+                            <td nz-td style="">
+                                <div style="width: 80px;"><span title="{{alarm.remark}}">{{alarm.remark}}</span></div>
+                            </td>
+                        </tr>
+                        <!-- jiade jiegou start -->
+                        <tr  *ngIf="alarm.show">
+                              <td colspan="24"  class="foz14 bold td-bg">
+                                  <div style="margin-left:40px;">告警详情</div>
+                                </td>
+                        </tr>
+                        <!-- jiade jiegou end -->
+                        <tr  *ngIf="alarm.show">
+                            <td nz-td colspan="24" >
+                                <div style="float: left;width: 100%;margin-left:40px;">
+                                    <!-- <h5 class="foz14 bold">告警详情</h5> -->
+                                    <div style="float: left;width:400px;">
+                                        <div class="pd-5"><span>告警名称 ：</span>{{alarm.alarmName}}</div>
+                                        <div class="pd-5"><span>告警等级 ：</span><span class="alarm-light" [title]="alarm.alarmLevel==='1'?'严重告警':alarm.alarmLevel=='2'?'重要告警':
+                                            alarm.alarmLevel=='3'?'次要告警':alarm.alarmLevel=='4'?'提示告警':'正常'" [ngStyle]="{'background':alarm.alarmLevel==='1'?'#ff0000':alarm.alarmLevel=='2'?'#ff9900':
+                            alarm.alarmLevel=='3'?'#ffff00':alarm.alarmLevel=='4'?'#00ccff':'#2bd544'}"></span></div>
+                                        <div class="pd-5"><span>告警内容 ：</span>{{alarm.alarmContent}}</div>
+                                        <div class="pd-5"><span>设备类型 ：</span>{{alarm.alarmServerType}}</div>
+                                        <div class="pd-5"><span>告警源 ：</span>{{alarm.alarmSource}}</div>
+                                        <div class="pd-5"><span>首次发生时间：</span> {{alarm.alarmBeginTime}}</div>
+                                        <div class="pd-5"><span>最后发生时间：</span> {{alarm.alarmNearTime}}</div>
+                                        <div class="pd-5"><span>发生次数：</span> {{alarm.alarmHappenCount}}</div>
+                                        <div class="pd-5"><span>告警确认状态：</span> <span>{{alarm.alarmConfirmStatus==='1'?'已确认':'未确认'}}</span></div>
+                                    </div>
+                                    <div style="float: left;width:400px;">
+                                        <div class="pd-5"><span>告警确认时间：</span>{{alarm.alarmConfirmTime}}</div>
+                                        <div class="pd-5"><span>确认人：</span>{{alarm.alarmCleanPeople}}</div>
+                                        <div class="pd-5"><span>清除状态 ：</span><span>{{alarm.alarmCleanStatus==='1'?'已清除':'未清除'}}</span></div>
+                                        <div class="pd-5"><span>告警清除时间 ：</span>{{alarm.alarmCleanTime}}</div>
+                                        <div class="pd-5"><span>清除类型：</span>{{alarm.alarmCleanType==='1'?'手动清除':''}}</div>
+                                        <div class="pd-5"><span>清除人：</span>{{alarm.alarmCleanPeople}}</div>
+                                        <div class="pd-5"><span>附加信息：</span>{{alarm.extraMsg}}</div>
+                                        <div class="pd-5"><span>备注 ：</span>{{alarm.remark}}</div>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                    </ng-template>
+                    </tbody>
+                </nz-table>
+            </div>
+        </div>
+        <div style="margin: 20px 30px;text-align: right;">
+            <app-pagination [pageIndex]="pageIndex"
+                            [pageSize]="pageSize"
+                            [total]="total">
+            </app-pagination>
+        </div>
+    </div>
+</div>
+

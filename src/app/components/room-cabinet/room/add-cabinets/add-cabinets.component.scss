@@ -1,0 +1,97 @@
+$transition: all 0.4s;
+.c-item {
+    margin: 25px auto;
+    position: relative;
+    display: flex;
+    .c-name{
+        flex: 2;
+    }
+    .c-info{
+        flex: 8;
+    }
+    .img-bg {
+        width: 100%;
+        border: 1px solid #d9d9d9;
+        border-radius: 3px;
+        min-height: 70px;
+        cursor: pointer;
+        position: relative;
+        text-align: center;
+        vertical-align: middle;
+        font-size: 0px;
+        color: #aaa;
+        font-style: normal;
+        transition: $transition;
+        &:hover {
+            border: 1px solid #49a9ee;
+            box-shadow: 0 0 3px 0 #49a9ee;
+        }
+        input[type=file] {
+            height: 70px;
+            width: 100%;
+            position: absolute;
+            left: 0px;
+            top: 0px;
+            z-index: 99;
+            opacity: 0;
+            cursor: pointer;
+        }
+        .img-area {
+            width: 100%;
+            border-radius: 3px;
+        }
+    }
+    .img-hover {
+        &:hover {
+            .mask {
+                background: rgba(0, 0, 0, 0.49);
+                p {
+                    display: block;
+                }
+            }
+        }
+        .mask {
+            font-size: 20px;
+            background: rgba(255, 255, 255, 0);
+            position: absolute;
+            left: 0px;
+            top: 0px;
+            right: 0px;
+            bottom: 0px;
+            height: 100%;
+            p {
+                position: absolute;
+                line-height: 20px;
+                height: 20px;
+                width: 100%;
+                top: 50%;
+                margin-top: -10px;
+                display: none;
+            }
+        }
+    }
+}
+.modal-footer {
+    text-align: center;
+    line-height: 26px;
+    .m-btn {
+        outline: none;
+        border: 1px solid #d1d2d3;
+        color: #95bbf4;
+        padding: 0px 30px;
+        border-radius: 5px;
+        cursor: pointer;
+        background: #ffffff;
+        //background: linear-gradient(#108ee9, #1362a0);
+        box-shadow: inset 0 0 1px 0px #378ed2;
+        &:hover {
+            //background: linear-gradient(rgb(67, 176, 255), #1681d6)
+        }
+    }
+    .m-btn:nth-of-type(1){
+        background: #2b87e1;
+    }
+}
+.Validate-color{
+    color: red;
+}

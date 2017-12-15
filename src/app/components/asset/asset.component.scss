@@ -1,0 +1,92 @@
+$bb: 1px solid rgb(70,77,92);
+$transition: all 0.4s;
+
+.asset-wrap {
+    position: relative;
+    top: -10px;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    //height: 100%;
+    .top-title{
+        //text-align: center;
+        margin-left: 20px;
+        height: 60px;
+        background: #1a2226;
+        font-size: 20px;
+        line-height: 60px;
+        color: #667ef7;
+        border-bottom: $bb;
+    }
+    .asset-list{
+        display:block;
+        height: 40px;
+        background: #1a2226;
+        line-height: 40px;
+        color: #ccc;
+    }
+    .asset-list:hover{
+        border-left:3px solid rgb(255,102,0);
+        color: rgb(255,102,0);
+    }
+    .asset-menu {
+        position: fixed;
+        top: 50px;
+        left: 0;
+        bottom: 0;
+        width: 240px;
+        background: #1a2226;
+        z-index: 9;
+        transition: $transition;
+        .collapse {
+            position: absolute;
+            right: -5px;
+            width: 20px;
+            line-height: 100px;
+            height: 100px;
+            top: 72px;
+            cursor: pointer;
+            margin-top: -50px;
+            z-index: 40 ;
+            &:hover {
+                //box-shadow: 1px 0 6px 0px #cccccc;
+                //.anticon {
+                //    color: #666666;
+                //}
+            }
+        }
+        .close {
+            opacity: 0;
+            right: -20px;
+            transition: $transition;
+            &:hover {
+                opacity: 1;
+            }
+            .icon_collapse {
+                transform: rotate(180deg);
+            }
+        }
+
+    }
+    .asset-body {
+        position: absolute;
+        left: 240px;
+        right: 0px;
+        top: 0px;
+        bottom: 0px;
+        height: 100%;
+        transition: $transition;
+        padding: 20px;
+    }
+}
+
+.disabled-menu-item{
+    color: rgba(255, 255, 255, 0.67) !important;
+    background-color: transparent !important;
+    cursor: not-allowed;
+}
+
+.ant-menu-dark {
+    background: #1a2226;
+
+}

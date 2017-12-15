@@ -1,0 +1,269 @@
+$bb: 1px solid #cccccc;
+$transition: all 0.4s;
+
+.rotate {
+    transform: rotate(90deg);
+}
+.active{
+    background: #cccccc;
+}
+.cabinet-active{
+    background: #cccccc;
+}
+.server-active{
+    background: #cccccc;
+}
+.machine-wrap {
+    position: relative;
+    top: 0px;
+    bottom: 0px;
+    left: 0px;
+    right: 0px;
+    height: 100%;
+    .top-title{
+        height: 60px;
+        background: #1a2226;
+        font-size: 20px;
+        line-height: 60px;
+        color: #667ef7;
+    }
+    .m-menu {
+        width: 260px;
+        display: block;
+        height: 100%;
+        position: absolute;
+        left: 0px;
+        top: 60px;
+        bottom: 0px;
+        //border-right: 1px solid #cccccc;
+        z-index: 40;
+        transition: $transition;
+        .collapse {
+            position: absolute;
+            right: -5px;
+            width: 20px;
+            line-height: 100px;
+            height: 100px;
+            top: 42px;
+            cursor: pointer;
+            //background: #f3f3f3;
+            margin-top: -50px;
+            //border: 1px solid #cccccc;
+            //border-top-right-radius: 99px;
+            //border-bottom-right-radius: 99px;
+            z-index: 40 ;
+            &:hover {
+                //box-shadow: 1px 0 6px 0px #cccccc;
+                //.anticon {
+                //    color: #666666;
+                //}
+            }
+            .anticon {
+                font-size: 16px;
+                color: #868484;
+                transition: $transition;
+            }
+        }
+        .close {
+            opacity: 0;
+            right: -20px;
+            //transition: $transition;
+            &:hover {
+                opacity: 1;
+            }
+            .icon_collapse {
+                transform: rotate(180deg);
+            }
+        }
+        .m-search {
+            background: #ced3dc;
+            position: relative;
+            line-height: 30px;
+            height: 30px;
+            //border-bottom: 1px solid #666666;
+            margin: 10px 20px 20px 20px;
+            input {
+                outline: none;
+                border: none;
+                background: #ced3dc;
+                padding-left: 5px;
+            }
+            .anticon {
+                font-size: 18px;
+                position: absolute;
+                right: 5px;
+                top: 50%;
+                margin-top: -9px;
+            }
+            .m-search-panel {
+                background: #fff;
+                max-height: 600px;
+                overflow: auto;
+                z-index: 999;
+                position: absolute;
+                left: 0px;
+                top: 40px;
+                width: 100%;
+                box-shadow: 0 0 10px 0 #bbb9b9;
+                border: 1px solid #ccc;
+                border-radius: 3px;
+                padding: 0;
+                transition: all .4s;
+                .ms-title {
+                    font-size: 12px;
+                    color: #868686;
+                    line-height: 36px;
+                    padding-left: 15px;
+                    border-bottom: 1px solid #cccccc;
+                }
+                .ms-room {
+                    em {
+                        position: absolute;
+                        font-style: normal;
+                        color: #737373;
+                        .anticon {
+                            position: relative;
+                            left: 5px;
+                            margin-right: 7px;
+                            font-size: 12px;
+                        }
+                        span {
+                            font-size: 12px;
+                        }
+                    }
+                    .ms-ul {
+                        $border: 1px solid #ccc;
+                        margin-left: 60px;
+                        padding: 5px 0;
+                        border-left: $border;
+                        border-bottom: $border;
+                        max-height: 180px;
+                        overflow: auto;
+                        li {
+                            padding-left: 9px;
+                            cursor: pointer;
+                            color: #333;
+                            font-size: 14px;
+                            &:hover {
+                                background: #e4e4e4;
+                                text-shadow: 1px 0px 2px #ffffff;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        .add-btn {
+            width: 100%;
+            background: #f5f5f5;
+            line-height: 30px;
+            height: 30px;
+            color: #666;
+        }
+        .custom-menu {
+            line-height: 30px;
+            width: 100%;
+            position: absolute;
+            top: 60px;
+            bottom: 10px;
+            overflow-y: auto;
+            background: #e0e8ee;
+            .l-menu, .l-item {
+                padding: 0 0 0 20px;
+            }
+            .l-item{
+                padding-left: 0;
+            }
+            .l-item2{
+                padding-left: 20px;
+            }
+            .l-title {
+                position: relative;
+                line-height: 30px;
+                height: 30px;
+                display: block;
+                user-select: none;
+                //padding: 0 0 0 20px;
+                &:hover {
+                    background: #cccccc;
+                    .deal-area {
+                        display: inline-block;
+                        background: #cccccc;
+                    }
+                }
+                .alarm{
+                    position: absolute;
+                    top:10px;
+                    left: 25px;
+                    display: inline-block;
+                    height: 10px;
+                    width: 10px;
+                    background: red;
+                    border-radius: 5px;
+                }
+                .icon {
+                    position: absolute;
+                    left: 0px;
+                    top:2px;
+                    display: inline-block;
+                    line-height: 30px;
+                    height: 30px;
+                    width: 30px;
+                    cursor: pointer;
+                    &:hover {
+                        .anticon {
+                            color: #108ee9;
+                        }
+                    }
+                    .anticon {
+                        position: absolute;
+                        top: 50%;
+                        left: 50%;
+                        margin-left: -6px;
+                        margin-top: -6px;
+                        transition: .4s;
+                    }
+                }
+                .deal-area {
+                    display: inline-block;
+                    position: absolute;
+                    right: 50px;
+                    display: none;
+                    background: #f3f3f3;
+                    cursor: pointer;
+                    em {
+                        display: inline-block;
+                        width: 20px;
+                        text-align: center;
+                        &:hover {
+                            .anticon {
+                                color: #2898E0;
+                            }
+                        }
+                    }
+                }
+            }
+            .l1 {
+                padding: 0 0 0 40px;
+                overflow: hidden;
+            }
+            .l2 {
+                padding: 0 0 0 40px;
+                overflow: hidden;
+            }
+            .l3 {
+                padding: 0 0 0 40px;
+                overflow: hidden;
+            }
+        }
+    }
+    .m-body {
+        position: absolute;
+        left: 260px;
+        right: 0px;
+        top: 0px;
+        bottom: 0px;
+        height: 100%;
+        transition: $transition;
+    }
+}

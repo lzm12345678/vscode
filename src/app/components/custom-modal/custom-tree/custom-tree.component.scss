@@ -1,0 +1,98 @@
+ul {
+    margin-left: 20px;
+    li {
+        line-height: 24px;
+        user-select: none;
+        span, label {
+            line-height: 24px;
+        }
+        .c-content {
+            font-size: 14px;
+            font-weight:bold;
+        }
+        .expand-span {
+            display: inline-block;
+            position: relative;
+            width: 12px;
+            cursor: pointer;
+            transition: 0.5s;
+            .anticon {
+                display: inline-block;
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                margin-left: -12px;
+                margin-top: -10px;
+                transition: .3s;
+            }
+            .ant-down {
+                transform: rotate(90deg);
+            }
+        }
+    }
+}
+
+
+
+.c-all, .c-part, .c-none {
+    cursor: pointer;
+    top: 3px;
+    margin-right: 10px;
+}
+.c-all {
+    border-color: #2d8cf0;
+    background-color: #2d8cf0;
+    display: inline-block;
+    width: 14px;
+    height: 14px;
+    position: relative;
+    left: 0;
+    border-radius: 2px;
+    transition: border-color .2s ease-in-out,background-color .2s ease-in-out;
+    &::after {
+        content: "";
+        display: table;
+        width: 4px;
+        height: 8px;
+        position: absolute;
+        top: 2px;
+        left: 5px;
+        border: 2px solid #fff;
+        border-top: 0;
+        border-left: 0;
+        transform: rotate(45deg) scale(1);
+        transition: all .2s ease-in-out;
+    }
+}
+.c-part {
+    border-color: #2d8cf0;
+    background-color: #2d8cf0;
+    display: inline-block;
+    width: 14px;
+    height: 14px;
+    position: relative;
+    left: 0;
+    border-radius: 2px;
+    transition: border-color .2s ease-in-out,background-color .2s ease-in-out;
+    &::after {
+        content: "";
+        display: table;
+        width: 8px;
+        height: 8px;
+        position: absolute;
+        top: 0px;
+        left: 3px;
+        border-bottom: 2px solid #fff;
+        transition: all .2s ease-in-out;
+    }
+}
+.c-none {
+    border: 1px solid #ccc;
+    display: inline-block;
+    width: 14px;
+    height: 14px;
+    position: relative;
+    left: 0;
+    border-radius: 2px;
+    transition: border-color .2s ease-in-out,background-color .2s ease-in-out;
+}

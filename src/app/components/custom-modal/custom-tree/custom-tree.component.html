@@ -1,0 +1,16 @@
+
+<ul>
+    <li *ngFor="let item of data">
+        <span class="expand-span" (click)="toggle(item)">
+            <i *ngIf="item.expand" class="anticon anticon-caret-right"
+               [ngClass]="{'ant-down': item.toggle}">
+            </i>
+        </span>
+        <label (click)="checkItem(item)" >
+            <span [ngClass]="item.checked === 0 ? 'c-none': item.checked === 1 ? 'c-part' : 'c-all'"></span>
+            <!--<span [ngClass]="item.status === '1' ? 'c-all': 'c-none'"></span>-->
+        </label>
+        <span class="c-content">{{item.title}}</span>
+        <app-custom-tree *ngIf="item.toggle" [data]="item.children" [allData]="allData"></app-custom-tree>
+    </li>
+</ul>

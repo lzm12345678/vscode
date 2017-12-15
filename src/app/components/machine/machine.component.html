@@ -1,0 +1,198 @@
+<div class="machine-wrap">
+    <div class="top-title">&nbsp;&nbsp;机房</div>
+    <div class="m-menu"  [ngStyle]="{transform: isCollapse ? 'translateX(-100%)' : 'translateX(0)'}">
+        <div id="cabinetSearch" class="m-search">
+            <input [ngModel]="searchValue"
+                   (focus)="focus($event)"
+                   (ngModelChange)="$watchSearch($event)" type="text" placeholder="search...." >
+            <i class="anticon anticon-search" (click)="search()"></i>
+            <div class="m-search-panel" *ngIf="searchValue || isSearchShow">
+                <p class="ms-title">搜"{{searchValue}}"的相关结果>></p>
+                <div style="padding-left: 20px" *ngIf="ass.rooms.length===0&&ass.cabinets.length===0&&ass.servicers.length===0">没有数据</div>
+                <div class="ms-room" *ngIf="ass.rooms.length > 0">
+                    <em><i class="anticon anticon-home"></i><span>机房</span></em>
+                    <ul class="ms-ul">
+                        <li *ngFor="let room of ass.rooms"
+                            (click)="searchValue=null;isSearchShow = false;router.navigate(['machine/room/' + room.roomId])">
+                            {{room.roomName}}
+                        </li>
+                    </ul>
+                </div>
+                <div class="ms-room" *ngIf="ass.cabinets.length > 0">
+                    <em><i class="anticon anticon-database"></i><span>机柜</span></em>
+                    <ul class="ms-ul">
+                        <li *ngFor="let cabinet of ass.cabinets"
+
+                            (click)="searchValue=null;isSearchShow = false;router.navigate(['machine/cabinet/' + cabinet.cabinetId]);">
+                            {{cabinet.cabinetName}}
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="ms-room" *ngIf="ass.servicers.length > 0">
+                    <em><i class="anticon anticon-appstore"></i>服务器</em>
+                    <ul class="ms-ul">
+                        <li *ngFor="let server of ass.servicers"
+                             class="overflow">
+                            {{server.serverName}}
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+        </div>
+        <div class="collapse" (click)="toggleCollapse()" [ngClass]="{close: isCollapse}">
+            <!--<i class="anticon anticon-caret-left"></i>-->
+            <i class="icon_collapse"></i>
+        </div>
+        <ul class="custom-menu">
+            <!--<li class="l-menu" *ngFor="let item of data">-->
+                <!--<span class="l-title l1"-->
+                      <!--(dblclick)="router.navigate(['machine/room/' + item.id])">-->
+                    <!--{{item.name}}-->
+                    <!--<div class="deal-area">-->
+                        <!--<em title="批量添加机柜">-->
+                            <!--<i class="anticon anticon-plus-square-o" ></i>-->
+                        <!--</em>-->
+                        <!--<em title="删除机房">-->
+                            <!--<i class="anticon anticon-minus-square-o"></i>-->
+                        <!--</em>-->
+                        <!--<em title="修改机房">-->
+                            <!--<i class="anticon anticon-edit"></i>-->
+                        <!--</em>-->
+                    <!--</div>-->
+                    <!--<em class="icon" [title]="item.isOpen ? '收起' : '展开'" (click)="toggleMenu(item, $event)">-->
+                        <!--<i class="anticon anticon-down"-->
+                           <!--[ngClass]="{'rotate': item.isOpen}"></i>-->
+                    <!--</em>-->
+                <!--</span>-->
+                <!--<ul [@fadeState]="item.isOpen ? 'active' : 'inactive'">-->
+                    <!--<li class="l-menu" *ngFor="let item_i of item.cabinets">-->
+                        <!--<span class="l-title l2"-->
+                              <!--(dblclick)="router.navigate(['machine/cabinet/' + item_i.id])">-->
+                              <!--{{item_i.name}}-->
+                            <!--<div class="deal-area">-->
+                                <!--<em title="新增机柜">-->
+                                    <!--<i class="anticon anticon-plus-square-o"></i>-->
+                                <!--</em>-->
+                                <!--<em title="删除机柜">-->
+                                    <!--<i class="anticon anticon-minus-square-o"></i>-->
+                                <!--</em>-->
+                                <!--<em title="修改机柜">-->
+                                    <!--<i class="anticon anticon-edit"></i>-->
+                                <!--</em>-->
+                            <!--</div>-->
+                            <!--<em class="icon"-->
+                                <!--[title]="item_i.isOpen ? '收起' : '展开'"-->
+                                <!--(click)="toggleMenu(item_i, $event)">-->
+                                <!--<i class="anticon anticon-down" [ngClass]="{'rotate': item_i.isOpen}">-->
+
+                                <!--</i>-->
+                            <!--</em>-->
+                        <!--</span>-->
+                        <!--<ul [@fadeState]="item_i.isOpen ? 'active' : 'inactive'">-->
+                            <!--<li class="l-item" *ngFor="let item_ii of item_i.servicers">-->
+                                <!--<span class="l-title l3">-->
+                                    <!--{{item_ii.bserverName}}-->
+                                <!--</span>-->
+                            <!--</li>-->
+                        <!--</ul>-->
+                    <!--</li>-->
+                <!--</ul>-->
+            <!--</li>-->
+            <!--复制过后的机房菜单项-->
+            <li class="l-menu" style="padding-left: 0" *ngFor="let item of datas ;let index = index">
+                <span class="l-title l1" [ngClass]="{'active': index===activeIndex}"
+                      (click)="clickRoom(item.roomId,index)">
+                    {{item.roomName}}
+                    <!--<div class="deal-area">-->
+                        <!--<em title="批量添加机柜">-->
+                            <!--<i class="anticon anticon-plus-square-o" (click)="addCabinetBatch(item.roomName,item.roomId)"></i>-->
+                        <!--</em>-->
+                        <!--<em title="删除机房">-->
+                            <!--<nz-popconfirm [nzTitle]="'确定要删除吗？'"-->
+                                           <!--(nzOnConfirm)="delroom(item.roomId)"-->
+                                           <!--(nzOnCancel)="cancel()">-->
+                                <!--<i nz-popconfirm class="anticon anticon-minus-square-o"></i>-->
+                            <!--</nz-popconfirm>-->
+                            <!--&lt;!&ndash;<i class="anticon anticon-minus-square-o"(click)="delroom(item.roomId)"></i>&ndash;&gt;-->
+                        <!--</em>-->
+                        <!--<em title="修改机房">-->
+                            <!--<i class="anticon anticon-edit"(click)="editorRoom(item.roomId,item.roomName)"></i>-->
+                        <!--</em>-->
+                    <!--</div>-->
+                    <em class="icon" id ='isRoom' [title]="item.isOpen ? '收起' : '展开'" isRoom = true (click)="toggleMenu(item, item.roomId,$event)">
+                        <!--修改样式图标！-------------------------->
+                        <!--<i class="anticon anticon-down" isRoom = true-->
+                           <!--[ngClass]="{'rotate': item.isOpen}"></i>-->
+                        <i class="icon_open_common icon_open_parent" isRoom=true [ngClass]="{'rotate': item.isOpen}"></i>
+
+                    </em>
+                </span>
+                <ul [@fadeState]="item.isOpen ? 'active' : 'inactive'">
+                    <li class="l-menu" *ngFor="let item_i of item.cabinetDatas; let cabinetIndex = index">
+                        <span class="l-title l2"  [ngClass]="{'cabinet-active':cabinetIndex === item.cabinetActiveIndex}"
+                              (click)="clickCabinet(item_i.cabinetId,cabinetIndex,index)">
+                              {{item_i.cabinetName}}
+                            <!--<div class="deal-area">-->
+                                <!--<em title="新增机柜">-->
+                                    <!--<i class="anticon anticon-plus-square-o"></i>-->
+                                <!--</em>-->
+                                <!--<em title="删除机柜" >-->
+                                    <!--<nz-popconfirm [nzTitle]="'确定要删除吗？'"-->
+                                                   <!--(nzOnConfirm)="delCabinet(item_i.cabinetId,item.roomId,item)"-->
+                                                   <!--(nzOnCancel)="cancel()">-->
+                                <!--<i nz-popconfirm class="anticon anticon-minus-square-o"></i>-->
+                            <!--</nz-popconfirm>-->
+                                <!--</em>-->
+                                <!--<em title="修改机柜">-->
+                                    <!--<i class="anticon anticon-edit"></i>-->
+                                <!--</em>-->
+                            <!--</div>-->
+                            <em class="alarm" [ngStyle]="{'background':item_i.alarmLevel==='1'?'#ff0000':item_i.alarmLevel=='2'?'#ff9900':
+                            item_i.alarmLevel=='3'?'#ffff00':item_i.alarmLevel=='4'?'#00ccff':'#2bd544'}">
+                            </em>
+                            <em class="icon"
+                                [title]="item_i.isOpen ? '收起' : '展开'"
+                                (click)="toggleMenu(item_i, item_i.cabinetId, $event)">
+                                <!--<i class="anticon anticon-down" [ngClass]="{'rotate': item_i.isOpen}">-->
+
+                                <!--</i>-->
+                                <!--修改样式图标2！------------------------->
+                                <i class="icon_open_common icon_open_children"  [ngClass]="{'rotate': item_i.isOpen}"></i>
+                            </em>
+                        </span>
+                        <ul [@fadeState]="item_i.isOpen ? 'active' : 'inactive'">
+                            <li class="l-item2" *ngFor="let item_ii of item_i.servicers; let serverIndex = index">
+                                <span class="l-title l3"(click)="navigateToServer(item_i.cabinetId,item_ii.serverId,serverIndex,cabinetIndex)"
+                                      [ngClass]="{'server-active':serverIndex === item_i.serverActiveIndex}">
+                                      <!--[ngStyle]="{'background':item_ii.background}">-->
+                                    {{item_ii.serverName}}
+                                    <em class="alarm" [ngStyle]="{'background':item_ii.alarmLevel==='1'?'#ff0000':item_ii.alarmLevel=='2'?'#ff9900':
+                            item_ii.alarmLevel=='3'?'#ffff00':item_ii.alarmLevel=='4'?'#00ccff':'#2bd544'}">
+                                    </em>
+                                </span>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+        <!--<button class="add-btn"-->
+                <!--title="新增机房"-->
+                <!--(click)="createRoom()"-->
+                <!--nz-button [nzType]="'dashed'">-->
+            <!--<span><i class="anticon anticon-plus"></i></span>-->
+        <!--</button>-->
+    </div>
+    <div class="m-body" [ngStyle]="{left: isCollapse ? '0' : '260px'}">
+        <router-outlet></router-outlet>
+    </div>
+
+    <!--<app-create-room-modal-->
+        <!--[isVisible]="isVisible" (onVoted)="onVoted($event)" [roomName]="roomName" [roomId] ='roomId' [isEditorRoom]="isEditorRoom">-->
+    <!--</app-create-room-modal>-->
+    <!--<app-add-cabinets [isAddVisible] ='isAddVisible' [roomName]="roomName" [roomId] ='roomId' (close)="closeModal($event)">-->
+
+    <!--</app-add-cabinets>-->
+</div>

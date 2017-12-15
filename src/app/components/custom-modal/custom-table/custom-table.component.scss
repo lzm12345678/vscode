@@ -1,0 +1,19 @@
+
+.custom-table {
+    width: 80%;
+    margin: 20px auto;
+    border: 1px solid #cccccc;
+    line-height: 32px;
+    th, td {
+        font-size: 12px;
+        min-width: 150px;
+    }
+    th {
+        font-weight: bold;
+        text-align: right;
+        padding-right: 8px;
+    }
+    td {
+
+    }
+}

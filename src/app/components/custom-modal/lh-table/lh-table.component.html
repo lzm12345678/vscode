@@ -1,0 +1,246 @@
+<div [id]="tableId" class="lh-table-wrapper" style="width:100%;">
+    <div class="lh-table-buttons">
+        <button class="lh-btn lh-btn-primary "
+                type="button"
+                [disabled]="btn.batch && !checkedAll && !indeterminate"
+                *ngFor="let btn of operateButtons;let i = index" (click)="btn.clickEvent()">
+            <i class="anticon" [ngClass]="btn.icon"></i>
+            <span [innerHTML]="btn.title"></span>
+        </button>
+    </div>
+    <div class="lh-table" [ngClass]="{'lh-table-border': setting.border,
+        'lh-table-small': size === 'small', 'lh-table-large': size === 'large'}">
+        <div class="lh-table-header">
+            <table cellspacing="0" cellpadding="0" border="0" style="width: 820px">
+                <thead>
+                <tr>
+                    <th [width]="col.width"
+                        *ngFor="let col of column;let i = index"
+                        [ngSwitch]="col.type" [ngClass]="{'lh-table-hidden': col.fixed}">
+                        <div *ngSwitchCase="'index'" class="lh-table-cell">
+                            #
+                            <div *ngIf="i < column.length - 1" (mousedown)="mousedown($event, col)" class="lh-drag-line"></div></div>
+                        <div *ngSwitchCase="'selection'" class="lh-table-cell">
+                            <label class="lh-checkbox-wrapper">
+                                <span class="lh-checkbox" [ngClass]="{'lh-checkbox-indeterminate': indeterminate,
+                                'lh-checkbox-checked': checkedAll}">
+                                    <span class="lh-checkbox-inner">
+                                        <input [(ngModel)]="checkedAll"  (ngModelChange)="col._selectChange($event, 'all')" type="checkbox" class="lh-checkbox-input">
+                                    </span>
+                                </span>
+                            </label>
+                            <div *ngIf="i < column.length - 1" (mousedown)="mousedown($event, col)" class="lh-drag-line"></div>
+                        </div>
+                        <div *ngSwitchCase="'expand'" class="lh-table-cell lh-table-cell-with-expand">
+                            &
+                            <div *ngIf="i < column.length - 1" (mousedown)="mousedown($event, col)" class="lh-drag-line"></div>
+                        </div>
+                        <div *ngSwitchDefault class="lh-table-cell">
+                            <span>{{col.title}}</span>
+                            <span *ngIf="col.sortable" class="lh-table-sort">
+                                <i (click)="col._sortChange(col.key, 'asc', $event)" class="anticon anticon-caret-up"></i>
+                                <i (click)="col._sortChange(col.key, 'desc', $event)" class="anticon anticon-caret-down"></i>
+                            </span>
+                            <div *ngIf="i < column.length - 1" (mousedown)="mousedown($event, col)" class="lh-drag-line"></div>
+                        </div>
+                    </th>
+                </tr>
+                </thead>
+            </table>
+        </div>
+        <div class="lh-table-body" (scroll)="scroll($event)" (mousewheel)="mouseWheel($event)" [ngStyle]="{height: height - 40 + 'px'}">
+            <table cellspacing="0" cellpadding="0" border="0" style="width: 803px;">
+                <tbody>
+                <tr *ngFor="let item of data;let i = index">
+                    <td [ngSwitch]="col.type"
+                        [width]="col.width"
+                        *ngFor="let col of column"
+                        [ngClass]="{'lh-table-column-center': col.type === 'index', 'lh-table-hidden': col.fixed}">
+                        <div *ngSwitchCase="'index'" class="lh-table-cell">
+                            {{i + 1}}
+                        </div>
+                        <div *ngSwitchCase="'selection'" class="lh-table-cell">
+                            <label class="lh-checkbox-wrapper">
+                                <span class="lh-checkbox" [ngClass]="{'lh-checkbox-checked': item.checked}">
+                                    <span class="lh-checkbox-inner">
+                                        <input [(ngModel)]="item.checked" (ngModelChange)="col._selectChange($event)" type="checkbox" class="lh-checkbox-input">
+                                    </span>
+                                </span>
+                            </label>
+                        </div>
+                        <div *ngSwitchCase="'expand'" class="lh-table-cell lh-table-cell-with-expand">
+                            <div class="lh-table-cell-expand"
+                                 (click)="item.expand = !item.expand"
+                                 [ngClass]="{'lh-table-cell-expand-expand': item.expand}">
+                                <i class="anticon anticon-right"></i>
+                            </div>
+                        </div>
+                        <div *ngSwitchCase="'buttons'" class="lh-table-cell">
+                            <a ><i class="anticon anticon-eye"></i></a>
+                            <a ><i class="anticon anticon-edit"></i></a>
+                            <a ><i class="anticon anticon-delete"></i></a>
+                        </div>
+                        <div class="lh-table-cell" *ngSwitchDefault>
+                            <span *ngIf="!col.href">{{item[col.key]}}</span>
+                            <a *ngIf="col.href" (click)="col.clickEvent(item[col.key])">{{item[col.key]}}</a>
+                        </div>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="lh-table-tip" style="display: none">
+            <table cellspacing="0" cellpadding="0" border="0">
+                <tbody>
+                <tr>
+                    <td>
+                        <span>暂无数据</span>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
+
+
+
+        <div class="lh-table-fixed" [ngStyle]="{width: _fixedLeft + 'px'}">
+            <div class="lh-table-fixed-header">
+                <table cellpadding="0" cellspacing="0" border="0" [ngStyle]="{width: _fixedLeft + 'px'}">
+                    <thead>
+                    <tr>
+                        <th [width]="col.width || 100"
+                            *ngFor="let col of column"
+                            [ngSwitch]="col.type" [ngClass]="{'lh-table-hidden': col.fixed !== 'left'}">
+                            <div *ngSwitchCase="'index'" class="lh-table-cell">#</div>
+                            <div *ngSwitchCase="'selection'" class="lh-table-cell">
+                                <label class="lh-checkbox-wrapper">
+                                        <span class="lh-checkbox" [ngClass]="{'lh-checkbox-indeterminate': indeterminate,
+                                        'lh-checkbox-checked': checkedAll}">
+                                            <span class="lh-checkbox-inner">
+                                                <input [(ngModel)]="checkedAll"  (ngModelChange)="col._selectChange($event, 'all')" type="checkbox" class="lh-checkbox-input">
+                                            </span>
+                                        </span>
+                                </label>
+                            </div>
+                            <div *ngSwitchCase="'expand'" class="lh-table-cell lh-table-cell-with-expand">
+                                &
+                            </div>
+                            <div *ngSwitchDefault class="lh-table-cell">{{col.title}}</div>
+                        </th>
+                    </tr>
+                    </thead>
+                </table>
+            </div>
+            <div class="lh-table-fixed-body"  [ngStyle]="{height: height - 56 + 'px'}">
+                <table cellspacing="0" cellpadding="0" border="0" [ngStyle]="{width: _fixedLeft + 'px'}">
+                    <tbody>
+                    <tr *ngFor="let item of data;let i = index">
+                        <td [ngSwitch]="col.type"
+                            [width]="col.width || 100"
+                            *ngFor="let col of column"
+                            [ngClass]="{'lh-table-column-center': col.type === 'index', 'lh-table-hidden': col.fixed !== 'left'}">
+                            <div *ngSwitchCase="'index'" class="lh-table-cell">
+                                {{i + 1}}
+                            </div>
+                            <div *ngSwitchCase="'selection'" class="lh-table-cell">
+                                <label class="lh-checkbox-wrapper">
+                                        <span class="lh-checkbox" [ngClass]="{'lh-checkbox-checked': item.checked}">
+                                            <span class="lh-checkbox-inner">
+                                                <input [(ngModel)]="item.checked" (ngModelChange)="col._selectChange($event)" type="checkbox" class="lh-checkbox-input">
+                                            </span>
+                                        </span>
+                                </label>
+                            </div>
+                            <div *ngSwitchCase="'expand'" class="lh-table-cell lh-table-cell-with-expand">
+                                <div class="lh-table-cell-expand"
+                                     (click)="item.expand = !item.expand"
+                                     [ngClass]="{'lh-table-cell-expand-expand': item.expand}">
+                                    <i class="anticon anticon-right"></i>
+                                </div>
+                            </div>
+                            <div class="lh-table-cell" *ngSwitchDefault>
+                                {{item[col.key]}}
+                            </div>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="lh-table-fixed-right" [ngStyle]="{width: _fixedRight + 'px'}">
+            <div class="lh-table-fixed-header">
+                <table cellpadding="0" cellspacing="0" border="0" [ngStyle]="{width: _fixedRight + 'px'}">
+                    <thead>
+                    <tr>
+                        <th [width]="col.width || 100"
+                            *ngFor="let col of rightFixedColumn"
+                            [ngSwitch]="col.type" [ngClass]="{'lh-table-hidden': col.fixed !== 'right'}">
+                            <div *ngSwitchCase="'index'" class="lh-table-cell">#</div>
+                            <div *ngSwitchCase="'selection'" class="lh-table-cell">
+                                <label class="lh-checkbox-wrapper">
+                                <span class="lh-checkbox lh-checkbox-indeterminate">
+                                    <span class="lh-checkbox-inner">
+                                        <input type="checkbox" class="lh-checkbox-input">
+                                    </span>
+                                </span>
+                                </label>
+                            </div>
+                            <div *ngSwitchCase="'expand'" class="lh-table-cell lh-table-cell-with-expand">
+                                &
+                            </div>
+                            <div *ngSwitchDefault class="lh-table-cell">{{col.title}}</div>
+                        </th>
+                    </tr>
+                    </thead>
+                </table>
+            </div>
+            <div class="lh-table-fixed-body"  [ngStyle]="{height: height - 56 + 'px'}">
+                <table cellspacing="0" cellpadding="0" border="0" style="width: 200px">
+                    <tbody>
+                    <tr *ngFor="let item of data;let i = index">
+                        <td [ngSwitch]="col.type"
+                            [width]="col.width || 100"
+                            *ngFor="let col of rightFixedColumn"
+                            [ngClass]="{'lh-table-column-center': col.type === 'index', 'lh-table-hidden': col.fixed !== 'right'}">
+                            <div *ngSwitchCase="'index'" class="lh-table-cell">
+                                {{i + 1}}
+                            </div>
+                            <div *ngSwitchCase="'selection'" class="lh-table-cell">
+                                <label class="lh-checkbox-wrapper">
+                                <span class="lh-checkbox lh-checkbox-checked">
+                                    <span class="lh-checkbox-inner">
+                                        <input type="checkbox" class="lh-checkbox-input">
+                                    </span>
+                                </span>
+                                </label>
+                            </div>
+                            <div *ngSwitchCase="'expand'" class="lh-table-cell lh-table-cell-with-expand">
+                                <div class="lh-table-cell-expand">
+                                    <i class="anticon anticon-right"></i>
+                                </div>
+                            </div>
+                            <div *ngSwitchCase="'buttons'" class="lh-table-cell lh-table-cell-button">
+                                <a *ngFor="let button of col.buttons"
+                                   (click)="button.clickEvent(button.type)"
+                                   [ngSwitch]="button.type"
+                                   [title]="button.title">
+                                    <i *ngSwitchCase="'detail'" class="anticon anticon-eye"></i>
+                                    <i *ngSwitchCase="'modify'" class="anticon anticon-edit"></i>
+                                    <i *ngSwitchCase="'delete'" class="anticon anticon-delete"></i>
+                                </a>
+
+                            </div>
+                            <div class="lh-table-cell" *ngSwitchDefault>
+                                {{item[col.key]}}
+                            </div>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+</div>

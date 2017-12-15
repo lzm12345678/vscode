@@ -1,0 +1,377 @@
+<div class="wrap">
+    <div class="search-area" >
+        <div class="search-row" nz-row>
+            <div nz-col class="gutter-row" [nzSpan]="4">
+                <nz-input [nzPlaceHolder]="'资产名称'" [(ngModel)]="search.bladeServerName" ></nz-input>
+
+            </div>
+            <div nz-col class="gutter-row" [nzSpan]="4">
+                <nz-input [nzPlaceHolder]="'管理IP'" [(ngModel)]="search.manageIp" ></nz-input>
+            </div>
+            <div nz-col class="gutter-row" [nzSpan]="4">
+                <nz-select
+                    style="width: 100%;"
+                    [nzPlaceHolder]="'资产型号'"
+                    [nzShowSearch]="true"
+                    [(ngModel)] ="search.bladeServerModelId"
+                    (ngModelChange)="versionChange($event)"
+                    nzAllowClear>
+                    <nz-option
+                        *ngFor="let version of versions"
+                        [nzLabel]="version.modelName"
+                        [nzValue]="version.id">
+                    </nz-option>
+                </nz-select>
+            </div>
+            <div nz-col class="gutter-row" [nzSpan]="8">
+                <button nz-button (click)="toggleSearch()" [nzType]="'default'">
+                    <i [ngClass]="isSearchOpen ? 'anticon-arrow-up' : 'anticon-arrow-down'" class="anticon"></i><span>{{isSearchOpen ? '收 起' : '展 开'}}</span>
+                </button>
+                <button nz-button (click)="searchServices(search)" [nzType]="'default'">
+                    <i class="anticon anticon-search"></i><span>查&nbsp;询</span>
+                </button>
+                <button nz-button (click)="clearFilter()" [nzType]="'default'">
+                    <i class="anticon anticon-delete"></i><span>清空查询</span>
+                </button>
+            </div>
+        </div>
+        <div class="search-row" *ngIf="isSearchOpen" nz-row>
+            <div nz-col class="gutter-row" [nzSpan]="6">
+                <nz-select
+                    style="width: 100%;"
+                    nzAllowClear
+                    [nzPlaceHolder]="'管理状态'"
+                    [(ngModel)]="search.bladeServerStatus"
+                    [nzShowSearch]="true">
+                    <nz-option
+                        [nzLabel]="'在线'"
+                        [nzValue]="0">
+                    </nz-option>
+                    <nz-option
+                        [nzLabel]="'离线'"
+                        [nzValue]="1">
+                    </nz-option>
+                </nz-select>
+            </div>
+
+            <div nz-col class="gutter-row" [nzSpan]="4">
+                <nz-select
+                    style="width: 100%;"
+                    nzAllowClear
+                    [nzPlaceHolder]="'所在机房'"
+                    [(ngModel)]="search.computerRoomId"
+                    (ngModelChange)="roomChange('search', $event)"
+                    [nzShowSearch]="true">
+                    <nz-option *ngFor="let room of rooms"
+                        [nzLabel]="room.roomName"
+                        [nzValue]="room.roomId">
+                    </nz-option>
+                </nz-select>
+            </div>
+            <div nz-col class="gutter-row" [nzSpan]="4">
+                <nz-select
+                    style="width: 100%;"
+                    nzAllowClear
+                    [nzPlaceHolder]="'所在机柜'"
+                    [(ngModel)]="search.cabinetId"
+                    (ngModelChange)="cabinetChange('search', $event)"
+                    [nzShowSearch]="true">
+                    <nz-option *ngFor="let cabinet of cabinets"
+                        [nzLabel]="cabinet.cabinetName"
+                        [nzValue]="cabinet.cabinetId">
+                    </nz-option>
+                </nz-select>
+            </div>
+            <div nz-col class="gutter-row" [nzSpan]="4">
+                <nz-select
+                    style="width: 100%;"
+                    nzAllowClear
+                    [nzPlaceHolder]="'所在U位'"
+                    [(ngModel)]="search.startU"
+                    (ngModelChange)="getStartU($event)"
+                    [nzShowSearch]="true">
+                    <nz-option *ngFor="let posU of posUList"
+                        [nzLabel]="posU"
+                        [nzValue]="posU">
+                    </nz-option>
+                </nz-select>
+            </div>
+        </div>
+        <div class="search-row" *ngIf="isSearchOpen" nz-row>
+            <div nz-col class="gutter-row" [nzSpan]="6">
+                <nz-input [ngModel]="search.bladeServerCode" [nzPlaceHolder]="'资产编号'"></nz-input>
+            </div>
+            <div nz-col class="gutter-row" [nzSpan]="6">
+                <nz-input [ngModel]="search.bladeServerProject" [nzPlaceHolder]="'所属项目'"></nz-input>
+            </div>
+            <div nz-col class="gutter-row" [nzSpan]="6">
+                <nz-select
+                    style="width: 100%;"
+                    nzAllowClear
+                    [nzPlaceHolder]="'责任人'"
+                    [(ngModel)]="search.principalId"
+                    (ngModelChange)="getPrincipals($event)"
+                    [nzShowSearch]="true">
+                    <nz-option *ngFor="let user of users"
+                        [nzLabel]="user.userName"
+                        [nzValue]="user">
+                    </nz-option>
+                </nz-select>
+            </div>
+        </div>
+    </div>
+    <div class="maintenance-body">
+        <div style="margin: 10px 25px;">
+            <button nz-button [nzType]="'default'" (click)="toDetail('null', true)">
+                <i class="anticon anticon-plus"></i>
+                <span>新&nbsp;&nbsp;增</span>
+            </button>
+            <button nz-button [disabled]="_disabledButton" [nzType]="'primary'" [nzType]="'default'">
+                <i class="anticon anticon-sync"></i>
+                <span>同步服务器</span>
+            </button>
+            <button nz-button
+                    [disabled]="_disabledButton"
+                    [nzType]="'primary'"
+                    [nzLoading]="operating"
+                    (click)="batchDelete()">
+                <i class="anticon anticon-delete"></i>
+                <span>批量删除</span>
+            </button>
+            <!--<span style="margin-left: 8px;" *ngIf="_checkedNumber">已选中 {{_checkedNumber}} 条</span>-->
+        </div>
+        <nz-table #nzTable
+            [nzDataSource]="blades"
+            [nzSize]="'small'"
+            [nzIsPagination]="false"
+            [nzScroll]="{ y: 500 }"
+            [nzBordered]="true"
+            [nzPageSize]="10"
+            (nzDataChange)="_displayDataChange($event)">
+
+            <ng-template #nzFixedHeader>
+            <thead nz-thead>
+                <tr>
+                    <th nz-th [nzWidth]="'33px'"></th>
+                    <th nz-th [nzWidth]="'10px'" [nzCheckbox]="true">
+                        <label nz-checkbox
+                               [(ngModel)]="_allChecked"
+                               [nzIndeterminate]="_indeterminate"
+                               (ngModelChange)="_checkAll($event)">
+                        </label>
+                    </th>
+                    <th nz-th >
+                        <span>资产名称</span>
+                        <nz-table-sort [(nzValue)]="tableSort.serverName" (nzValueChange)="sort('blade_server_name',$event)"></nz-table-sort>
+                    </th>
+                    <th nz-th [nzWidth]="'100px'">
+                        <span>管理IP</span>
+                        <nz-table-sort [(nzValue)]="tableSort.serverIp" (nzValueChange)="sort('model_name',$event)"></nz-table-sort>
+                    </th>
+                    <th nz-th [nzWidth]="'70px'"><span>管理状态</span></th>
+                    <th nz-th [nzWidth]="'70px'"><span>告警状态</span></th>
+                    <th nz-th [nzWidth]="'90px'">
+                        <span>资产型号</span>
+                        <nz-table-sort [(nzValue)]="tableSort.computerRoomName" (nzValueChange)="sort('room_name',$event)"></nz-table-sort>
+                    </th>
+                    <th nz-th [nzWidth]="'120px'">
+                        <span>资产位置</span>
+                        <nz-table-sort [(nzValue)]="tableSort.computerRoomName" (nzValueChange)="sort('room_name',$event)"></nz-table-sort>
+                    </th>
+                    <th nz-th [nzWidth]="'90px'">
+                        <span>资产编码</span>
+                        <nz-table-sort [(nzValue)]="tableSort.serverCode" (nzValueChange)="sort('blade_server_code',$event)"></nz-table-sort>
+                    </th>
+                    <th nz-th [nzWidth]="'80px'"><span>所属项目</span></th>
+                    <th nz-th [nzWidth]="'80px'"><span>责任人</span></th>
+                    <th nz-th [nzWidth]="'200px'"><span>操作</span></th>
+
+                </tr>
+            </thead>
+            </ng-template>
+
+            <tbody nz-tbody>
+            <ng-template ngFor let-blade let-i="index" [ngForOf]="nzTable.data">
+                <tr nz-tbody-tr>
+                    <td nz-td >
+                        <i class="anticon"
+                           style="font-size: 16px;cursor: pointer;"
+                           [ngClass]="blade.isShowUnits ? 'anticon-minus-circle-o' : 'anticon-plus-circle-o'"
+                           *ngIf="blade.units.length > 0"
+                           (click)="toogleUnits(i)">
+
+                        </i>
+                    </td>
+                    <td nz-td [nzCheckbox]="true">
+                        <label nz-checkbox [(ngModel)]="blade.checked"  (ngModelChange)="_refreshStatus($event)"></label>
+                    </td>
+                    <td nz-td>
+                        <span>{{blade.bladeServerName}}</span>
+                    </td>
+                    <td nz-td>
+                        <a (click)="toPandect(blade.bladeServerId)">{{blade.manageIp}}</a>
+                    </td>
+                    <td nz-td>
+                        <span [style.color]="blade.computerRoomName ? '#0f0' : '#f00'">{{blade.computerRoomName ? '在线' : '离线'}}</span>
+                    </td>
+                    <td nz-td>
+                        <i class="anticon anticon-exclamation-circle tip"
+                           [ngClass]="{
+                                'error': blade.alamLevel == 1,
+                                'primary': blade.alamLevel == 2,
+                                'success': blade.alamLevel == 3,
+                                'warning': !blade.alamLevel || rock.alamLevel == 4
+                           }">
+
+                        </i>
+                    </td>
+                    <td nz-td>
+                        <span>{{blade.bladeServerModelName}}</span>
+                    </td>
+                    <td nz-td>
+                        <span *ngIf="blade.computerRoomName"><span *ngIf="blade.computerRoomName">{{blade.computerRoomName}}-{{blade.cabinetName}}-{{blade.startU}}</span></span>
+                    </td>
+                    <td nz-td>
+                        <span>{{blade.bladeServerCode}}</span>
+                    </td>
+                    <td nz-td>
+                        <span>{{blade.bladeServerProject}}</span>
+                    </td>
+                    <td nz-td>
+                        <span *ngIf="blade.secondPrincipalName; else elseBlock">{{blade.firstPrincipalName + ',' + blade.secondPrincipalName}}</span>
+                        <ng-template #elseBlock>{{blade.firstPrincipalName}}</ng-template>
+                    </td>
+                    <td nz-td>
+                        <a (click)="toDetail(blade.bladeServerId, false)"><i class="anticon anticon-eye-o"></i>查看</a>
+                        <a (click)="toDetail(blade.bladeServerId, true)" ><i class="anticon anticon-edit"></i>修改</a>
+                        <nz-popconfirm [nzTitle]="'确定要删除这个用户吗？'"
+                                       (nzOnConfirm)="confirmDelete(blade.bladeServerId)"
+                                       (nzOnCancel)="cancel()">
+                            <a nz-popconfirm><i class="anticon anticon-delete"></i>删除</a>
+                        </nz-popconfirm>
+                        <nz-popconfirm *ngIf="blade.computerRoomName"
+                                       [nzTitle]="'确定下架吗？'"
+                                       (nzOnConfirm)="shelf(blade)"
+                                       >
+                            <a nz-popconfirm><i class="anticon anticon-arrow-down"></i>下架</a>
+                        </nz-popconfirm>
+                        <a *ngIf="!blade.computerRoomName" (click)="shelf(blade)"><i class="anticon anticon-arrow-up"></i>上架</a>
+                        <!--<nz-switch [ngModel]="false">-->
+                            <!--<span checked>上架</span>-->
+                            <!--<span unchecked>下架</span>-->
+                        <!--</nz-switch>-->
+                    </td>
+                </tr>
+                <tr nz-tbody-tr
+                    *ngIf="blade.units.length > 0"
+                    [style.display]="blade.isShowUnits ? 'table-row' : 'none'">
+                    <td style="padding: 0;" nz-td [attr.colspan]="12">
+
+                        <div style="padding: 15px;background-color: #fafafa;">
+                            <nz-table #nzUnits
+                                      [nzDataSource]="blade.units"
+                                      [nzIsPagination]="false"
+                                      [nzBordered]="true"
+                            >
+                                <thead nz-thead>
+                                    <tr >
+                                        <th nz-th style="border-left: 1px solid #e9e9e9;"><span>名称</span></th>
+                                        <th nz-th><span>管理IP</span></th>
+                                        <th nz-th><span>带内IP</span></th>
+                                        <th nz-th><span>型号</span></th>
+                                        <th nz-th><span>槽位数</span></th>
+                                        <th nz-th><span>资产编码</span></th>
+                                        <th nz-th><span>所属项目</span></th>
+                                        <th nz-th><span>责任人</span></th>
+                                    </tr>
+
+                                </thead>
+                                <tbody nz-tbody>
+                                    <tr nz-tbody-tr *ngFor="let unit of blade.units" >
+                                        <td nz-td style="border-left: 1px solid #e9e9e9;border-bottom: 1px solid #e9e9e9;">{{unit.serverName}}</td>
+                                        <td nz-td style="border-bottom: 1px solid #e9e9e9;">{{unit.serverIp}}</td>
+                                        <td nz-td style="border-bottom: 1px solid #e9e9e9;">{{unit.bandIp}}</td>
+                                        <td nz-td style="border-bottom: 1px solid #e9e9e9;">{{unit.model}}</td>
+                                        <td nz-td style="border-bottom: 1px solid #e9e9e9;">{{unit.slotNum}}</td>
+                                        <td nz-td style="border-bottom: 1px solid #e9e9e9;">{{unit.serverCode}}</td>
+                                        <td nz-td style="border-bottom: 1px solid #e9e9e9;">{{unit.serverProject}}</td>
+                                        <td nz-td style="border-bottom: 1px solid #e9e9e9;">{{unit.serverFirstUserName}} <span *ngIf="unit.secondPrincipalName">, {{unit.serverSecondUserName}}</span></td>
+                                    </tr>
+                                </tbody>
+                            </nz-table>
+                        </div>
+
+                    </td>
+                </tr>
+
+            </ng-template>
+            </tbody>
+        </nz-table>
+        <div style="margin: 20px 30px;text-align: right;">
+            <app-pagination [pageIndex]="pageIndex"
+                            [pageSize]="pageSize"
+                            [total]="total">
+
+            </app-pagination>
+        </div>
+    </div>
+
+    <nz-modal [nzVisible]="isShelfModalShow"
+              [nzTitle]="'上架'"
+              [nzContent]="modalContent"
+              (nzOnCancel)="isShelfModalShow = false"
+              (nzOnOk)="saveShelf($event)">
+        <ng-template #modalContent>
+            <div nz-row>
+                <div nz-col [nzSpan]="6">
+                    <span>机房</span>
+                </div>
+                <div nz-col [nzSpan]="18">
+                    <nz-select style="width: 100%" nzAllowClear
+                               [nzPlaceHolder]="'所在机房'"
+                               [(ngModel)]="shelfData.computerRoomId"
+                               (ngModelChange)="roomChange('shelf', $event)"
+                               [nzShowSearch]="true">
+                        <nz-option *ngFor="let room of rooms"
+                                   [nzLabel]="room.roomName"
+                                   [nzValue]="room.roomId">
+                        </nz-option>
+                    </nz-select>
+                </div>
+            </div>
+            <div nz-row>
+                <div nz-col [nzSpan]="6">
+                    <span>机柜</span>
+                </div>
+                <div nz-col [nzSpan]="18">
+                    <nz-select style="width: 100%" nzAllowClear [nzPlaceHolder]="'所在机柜'"
+                               [(ngModel)]="shelfData.cabinetId"
+                               (ngModelChange)="cabinetChange('shelf', $event)"
+                               [nzShowSearch]="true">
+                        <nz-option *ngFor="let cabinet of shelfCabinets"
+                                   [nzLabel]="cabinet.cabinetName"
+                                   [nzValue]="cabinet.cabinetId">
+                        </nz-option>
+                    </nz-select>
+                </div>
+            </div>
+            <div nz-row>
+                <div nz-col [nzSpan]="6">
+                    <span>U位</span>
+                </div>
+                <div nz-col [nzSpan]="18">
+                    <nz-select style="width: 100%" nzAllowClear [nzPlaceHolder]="'所在U位'"
+                               [(ngModel)]="shelfData.startU"
+                               (nzModelChange)="getStartU($event)"
+                               [nzShowSearch]="true">
+                        <nz-option *ngFor="let item of shelfUList"
+                                   [nzLabel]="item"
+                                   [nzValue]="item">
+
+                        </nz-option>
+                    </nz-select>
+                </div>
+            </div>
+        </ng-template>
+    </nz-modal>
+</div>

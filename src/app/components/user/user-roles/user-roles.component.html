@@ -1,0 +1,102 @@
+<div class="roles-wrap">
+    <div class="search-area" nz-row>
+        <div nz-col class="gutter-row" [nzSpan]="6">
+            <span class="inputTitle">用户名称</span>
+            <span class="input-common-width">
+            <nz-input [(ngModel)]="search.name"></nz-input>
+            </span>
+        </div>
+        <div nz-col class="gutter-row" [nzSpan]="6">
+            <button nz-button (click)="searchByField()" [nzType]="'default'" class="btn-common btn-search-normal">
+                <!-- <i class="anticon anticon-search"></i> -->
+                <span>查&nbsp;&nbsp;询</span>
+            </button>
+        </div>
+    </div>
+    <div class="roles-body">
+        <div class="m-10">
+            <button nz-button
+                    [disabled]="true"
+                    [nzType]="'primary'"
+                    (click)="$modal.info({title: '新增角色', content: '12/8 不做要求'})" class="btn-common">
+                <i class="anticon anticon-plus"></i>
+                <span>新增</span>
+            </button>
+            <button nz-button
+                    [disabled]="_disabledButton"
+                    [nzType]="'primary'"
+                    [nzLoading]="_operating"
+                    (click)="_operateData()" class="btn-common">
+                    <i class="anticon anticon-minus"></i>
+                <span>批量删除</span>
+            </button>
+            <span style="margin-left: 8px;" *ngIf="_checkedNumber">已选中 {{_checkedNumber}} 条</span>
+        </div>
+        <nz-table #nzTable [nzDataSource]="data"
+                  [nzSize]="'small'"
+                  [nzIsPagination]="false"
+                  [nzScroll]="{ y: 330 }"
+                  [nzBordered]="true"
+                  (nzDataChange)="_displayDataChange($event)"
+                  [nzPageSize]="20">
+            <ng-template #nzFixedHeader>
+                <thead nz-thead>
+                <tr>
+                    <th nz-th [nzCheckbox]="true">
+                        <label nz-checkbox
+                               [(ngModel)]="_allChecked"
+                               [nzIndeterminate]="_indeterminate"
+                               (ngModelChange)="_checkAll($event)">
+                        </label>
+                    </th>
+                    <th nz-th [nzWidth]="'100px'"><span>角色名</span></th>
+                    <th nz-th [nzWidth]="'400px'"><span>描述</span></th>
+                    <th nz-th [nzWidth]="'100px'"><span>操作</span></th>
+                </tr>
+                </thead>
+            </ng-template>
+            <tbody nz-tbody>
+            <ng-template ngFor let-role [ngForOf]="nzTable.data">
+                <tr nz-tbody-tr>
+                    <td nz-td [nzCheckbox]="true">
+                        <label nz-checkbox
+                               [(ngModel)]="role.checked"
+                               (ngModelChange)="_refreshStatus($event)"
+                        ></label>
+                    </td>
+                    <td nz-td style="max-width:80px;color:#108ee9">
+                        <div title="{{role.roleName}}" class="overflow" (click)="routerToDetail('detail', role.roleId)">{{role.roleName}}</div>
+                    </td>
+                    <td nz-td style="max-width:380px">
+                        <div title="{{role.roleDescribe}}" class="overflow">{{role.roleDescribe}}</div>
+                    </td>
+                    <td nz-td style="max-width:80px">
+                        <!-- <div class="overflow"> -->
+                            <nz-tooltip [nzTitle]="'删除'">
+                                <span class="hove_alert deal-item" nz-tooltip>
+                                    <nz-popconfirm [nzTitle]="'确定要删除这个用户吗？'" (nzOnConfirm)="confirmDelete(role)" (nzOnCancel)="cancel()">
+                                        <a nz-popconfirm>
+                                                <span class="btn-delate icon_mlr-15"></span>
+                                            <!-- <i class="anticon anticon-delete icon_mlr-5"></i> -->
+                                        </a>
+                                    </nz-popconfirm>
+                                </span>
+                            </nz-tooltip>
+                        <!-- </div> -->
+
+                        <!--<a (click)="routerToDetail('modify', role.roleId)">修改</a>-->
+
+                    </td>
+                </tr>
+            </ng-template>
+            </tbody>
+        </nz-table>
+        <div style="margin: 20px 30px;text-align: right;">
+            <app-pagination [pageIndex]="pageIndex"
+                            [pageSize]="pageSize"
+                            [total]="total">
+
+            </app-pagination>
+        </div>
+    <!-- </div> -->
+</div>

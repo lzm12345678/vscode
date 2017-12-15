@@ -1,0 +1,178 @@
+<div id="mainBody"></div>
+<!--<div class="w500 alarm-list-space" [style.width]="tabWidth + 'px'">-->
+<div class="w500 alarm-list-space" [style.width]="isCollapse ? 'tabWidth ' : '100%'">
+<div class="w1800">
+    <nz-table #nzTable
+              [nzDataSource]="data"
+              [nzSize]="'small'"  [nzScroll]="{ y: 330 }" [nzBordered]="true" [nzIsPagination]="false">
+        <ng-template #nzFixedHeader>
+        <thead nz-thead>
+        <tr>
+            <th nz-th style="width: 90px;">
+                <span>告警级别</span>
+            </th>
+            <th nz-th style="width: 90px;" >
+                <span>告警名称</span>
+            </th>
+            <th nz-th style="width: 70px;"><span>告警内容</span></th>
+            <th nz-th style="width: 70px;"><span>设备类型</span></th>
+            <th nz-th style="width: 90px;"><span>告警源</span></th>
+
+            <th nz-th style="width: 140px;"><span>首次告警发生时间</span></th>
+            <th nz-th style="width: 140px;"><span>最近告警发生时间</span></th>
+            <th nz-th style="width: 90px;">
+                <span>发生次数</span>
+            </th>
+            <th nz-th style="width: 95px;"><span>告警确认状态</span></th>
+            <th nz-th style="width: 130px;"><span>告警确认时间</span></th>
+
+            <th nz-th style="width: 80px;"><span>告警确认人</span></th>
+            <th nz-th style="width: 120px;"><span>操作</span></th>
+            <th nz-th style="width: 95px;"><span>告警清除状态</span></th>
+            <th nz-th style="width: 130px;"><span>告警清除时间</span></th>
+            <th nz-th style="width: 70px;"><span>清除类型</span></th>
+            <th nz-th style="width: 70px;"><span>清除人</span></th>
+
+            <th nz-th style="width: 70px;"><span>附加信息</span></th>
+            <th nz-th><span>备注</span></th>
+        </tr>
+        </thead>
+        </ng-template>
+        <tbody nz-tbody>
+        <tr nz-tbody-tr *ngFor="let data of nzTable.data let i=index ">
+            <td nz-td [title]="data.alarmLevel === '1' ? '严重告警' :
+                                        data.alarmLevel === '2' ? '重要告警' :
+                                        data.alarmLevel === '3' ? '次要告警' :
+                                        data.alarmLevel === '4' ? '提示告警' : '正常'
+                                        " style="width: 90px;">
+                <div style="width: 70px;">
+                <i class="anticon anticon-exclamation-circle tip"
+                         [ngClass]="{
+                                'error': data.alarmLevel === '1',
+                                'primary': data.alarmLevel === '2',
+                                'success': data.alarmLevel === '3',
+                                'warning': data.alarmLevel === '4',
+                                'normal': !data.alarmLevel
+                           }">
+                </i>
+                </div>
+            </td>
+            <td nz-td style="width: 90px">
+                <div style="width: 70px;">
+                    <span title="{{data.alarmName}}">{{data.alarmName}}</span>
+                </div>
+            </td>
+            <td nz-td style="width: 70px">
+                <div style="width: 50px;">
+                    <span title="{{data.alarmContent }}">{{data.alarmContent }}</span>
+                </div>
+            </td>
+            <td nz-td style="width: 70px;">
+                <div style="width: 50px;">
+                    <span title="{{data.alarmServerType }}">{{data.alarmServerType }}</span>
+                </div>
+            </td>
+            <td nz-td style="width: 90px">
+                <div style="width: 70px;">
+                    <span title="{{data.alarmSource}}">{{data.alarmSource}}</span>
+                </div>
+            </td>
+
+            <td nz-td style="width:140px;">
+                <div style="width: 120px;">
+                    <span title="{{data.alarmBeginTime }}">{{data.alarmBeginTime }}</span>
+                </div>
+            </td>
+            <td nz-td style="width: 140px;">
+                <div style="width: 120px;">
+                    <span title="{{data.alarmNearTime }}">{{data.alarmNearTime }}</span>
+                </div>
+            </td>
+            <td nz-td style="width: 95px">
+                <div style="width: 75px;">
+                    <span title="{{data.alarmHappenCount }}">{{data.alarmHappenCount }}</span>
+                </div>
+            </td>
+            <td nz-td style="width: 90px">
+                <div style="width: 70px;">
+                    <span title="{{data.alarmConfirmStatus==='1'?'已确认':'未确认' }}">{{data.alarmConfirmStatus==='1'?'已确认':'未确认' }}</span>
+                </div>
+            </td>
+            <td nz-td style="width: 130px;">
+                <div style="width: 110px;">
+                    <span title="{{data.alarmConfirmTime }}"> {{data.alarmConfirmTime }}</span>
+                </div>
+            </td>
+
+            <td nz-td style="width: 80px;">
+                <div style="width: 60px;">
+                    <span title="{{data.alarmConfirmPeople }}"> {{data.alarmConfirmPeople }}</span>
+                </div>
+            </td>
+            <!--<td nz-td>-->
+                <!--<div style="width: 100px;">-->
+                    <!--<span>-->
+                        <!--<nz-popconfirm [nzTitle]="'确定要清除这条告警吗？'"-->
+                                       <!--(nzOnConfirm)="cleanAlarm(data)"-->
+                                       <!--(nzOnCancel)="cancel()">-->
+                        <!--<a nz-popconfirm >告警清除</a>-->
+                        <!--</nz-popconfirm>-->
+                        <!--<br>-->
+                        <!--<a (click)="confirmAlarm(data)" >告警确认</a>-->
+                    <!--</span>-->
+                <!--</div>-->
+            <!--</td>-->
+            <td nz-td style="width: 120px;">
+                <div style="width: 100px;">
+                    <nz-popconfirm [nzTitle]="'确定要清除这条告警吗？'"
+                                   (nzOnConfirm)="cleanAlarm(data)"
+                                   (nzOnCancel)="cancel()"
+                                   [nzPlacement]="i<2?'leftTop':'top' ">
+                        <a nz-popconfirm>告警清除</a>
+                    </nz-popconfirm>
+                    <a (click)="confirmAlarm(alarm)">告警确认</a>
+                </div>
+            </td>
+            <td nz-td style="width: 95px;">
+                <div style="width: 75px;">
+                    <span title="{{data.alarmCleanStatus==='1'?'已清除':'未清除' }}">{{data.alarmCleanStatus==='1'?'已清除':'未清除' }}</span>
+                </div>
+            </td>
+            <td nz-td style="width: 130px;">
+                <div style="width: 110px;">
+                    <span title="{{data.alarmCleanTime }}"> {{data.alarmCleanTime }}</span>
+                </div>
+            </td>
+            <td nz-td style="width: 70px;">
+                <div style="width: 50px;">
+                    <span title=" {{data.alarmCleanType==='1'?'手动清除':'' }}"> {{data.alarmCleanType==='1'?'手动清除':'' }}</span>
+                </div>
+            </td>
+            <td nz-td style="width: 70px;">
+                <div style="width: 50px;">
+                    <span title=" {{data.alarmCleanPeople }}"> {{data.alarmCleanPeople }}</span>
+                </div>
+            </td>
+
+            <td nz-td style="width: 70px">
+                <div style="width: 50px;">
+                    <span title=" {{data.extraMsg }}"> {{data.extraMsg }}</span>
+                </div>
+            </td>
+            <td nz-td style="">
+                <div style="width: 80px;">
+                    <span title=" {{data.remark }}"> {{data.remark }}</span>
+                </div>
+            </td>
+        </tr>
+        </tbody>
+    </nz-table>
+    <div style="margin: 20px 30px;text-align: right;">
+        <app-pagination [pageIndex]="pageIndex"
+                        [pageSize]="pageSize"
+                        [total]="total">
+
+        </app-pagination>
+    </div>
+</div>
+</div>

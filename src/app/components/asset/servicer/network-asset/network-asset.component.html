@@ -1,0 +1,186 @@
+<div class="maintenance-wrap">
+  <div class="search-area" >
+    <div class="search-row" nz-row>
+        <div nz-col class="gutter-row" [nzSpan]="6">
+            <span class="inputTitle">资产名称</span>
+            <span class="input-common-width">
+                <nz-input [(ngModel)]="search.serverName" [nzPlaceHolder]="''"></nz-input>
+            </span>
+        </div>
+        <div nz-col class="gutter-row" [nzSpan]="6">
+            <span class="inputTitle">资产IP</span>
+            <span class="input-common-width">
+                <nz-input [(ngModel)]="search.serverIp" [nzPlaceHolder]="''"></nz-input>
+            </span>
+        </div>
+        <div nz-col class="gutter-row" [nzSpan]="6">
+            <span class="inputTitle">资产型号</span>
+            <span class="input-common-width">
+               
+                <nz-select style="width: 100%" nzAllowClear [nzPlaceHolder]="''"
+                            [(ngModel)]="search.serverModel"
+                            [nzShowSearch]="true">
+                    <nz-option *ngFor="let version of versions" [nzLabel]="version.modelName" [nzValue]="version.id"></nz-option>
+                </nz-select>
+              
+            </span>
+            <!-- <span class="input-common-width">
+                <nz-input nzType="select"  [nzPlaceHolder]="''"></nz-input>
+            </span> -->
+        </div>
+        <div nz-col class="gutter-row">
+            <button nz-button (click)="searchByField()"  [nzType]="'default'" class="btn-common btn-search-normal" style="margin-left: -10px;">
+                <!--按钮查询图标-->
+                <!--<i class="anticon anticon-search"></i>-->
+                <span>查&nbsp;询</span>
+            </button>
+            <button nz-button (click)="clearField()" [nzType]="'default'" class="btn-common btn-reset-normal">
+                <!---按钮重置图标->
+                <!--<i class="anticon anticon-delete"></i>-->
+                <span>重&nbsp;置</span>
+            </button>
+            <button nz-button (click)="toggleSearch()" [nzType]="'default'" class="btn-common">
+                <!--展开折叠样式不要-->
+                <!--<i [ngClass]="isSearchOpen ? 'anticon-arrow-up' : 'anticon-arrow-down'" class="anticon"></i>-->
+                <span>{{isSearchOpen ? '高 级' : '高 级'}}</span>
+            </button>
+        </div>
+    </div>
+    <div class="search-row" *ngIf="isSearchOpen" nz-row>
+        <div nz-col class="gutter-row" [nzSpan]="6">
+            <span class="inputTitle">设备分类</span>
+            <span class="input-common-width">
+                <nz-select style="width: 100%" nzAllowClear [nzPlaceHolder]="''"
+                           [(ngModel)]="search.serverModel"
+                           [nzShowSearch]="true"
+                           nzDisabled>
+                    <nz-option *ngFor="let version of versions" [nzLabel]="version.modelName" [nzValue]="version.id"></nz-option>
+                </nz-select>
+            </span>
+        </div>
+        <div nz-col class="gutter-row" [nzSpan]="6">
+            <span class="inputTitle">所在机房</span>
+            <span class="input-common-width">
+                <nz-select style="width: 100%" [nzPlaceHolder]="''"
+                        [(ngModel)]="search.computerRoomId"
+                        (ngModelChange)="roomChange($event)"
+                        [nzShowSearch]="true"
+                        nzDisabled>
+                    <nz-option *ngFor="let room of rooms" [nzLabel]="room.roomName" [nzValue]="room.roomId"></nz-option>
+                </nz-select>
+            </span>
+        </div>
+        <div nz-col class="gutter-row" [nzSpan]="6">
+            <span class="inputTitle">所在机柜</span>
+            <span class="input-common-width">
+            <nz-select style="width: 100%" [nzPlaceHolder]="''"
+                       [(ngModel)]="search.cabinetId"
+                       (ngModelChange)="cabinetAllChange($event)"
+                       [nzShowSearch]="true"
+                       nzDisabled>
+                <nz-option *ngFor="let item of cabinets" [nzLabel]="item.cabinetName" [nzValue]="item.cabinetId"></nz-option>
+            </nz-select>
+            </span>
+        </div>
+        <div nz-col class="gutter-row" [nzSpan]="6">
+            <span class="inputTitle">所在U位</span>
+            <span class="input-common-width">
+            <nz-select style="width: 100%" [nzPlaceHolder]="''"
+                       [(ngModel)]="search.startU"
+                       nzShowSearch>
+                <nz-option *ngFor="let item of allStartUs" [nzLabel]="item" [nzValue]="item"></nz-option>
+            </nz-select>
+            </span>
+        </div>
+    </div>
+
+    <div class="search-row" *ngIf="isSearchOpen" nz-row>
+        <div nz-col class="gutter-row" [nzSpan]="6">
+            <span>管理状态：</span>
+            <nz-radio-group [(ngModel)]="search.status">
+                <label nz-radio [nzValue]="'1'">
+                    <span>在线</span>
+                </label>
+                <label nz-radio [nzValue]="'2'">
+                    <span>离线</span>
+                </label>
+            </nz-radio-group>
+        </div>
+        <div nz-col class="gutter-row" [nzSpan]="14">
+            <span>告警状态：</span>
+            <nz-checkbox-group
+                [(ngModel)]="alarmArr"
+                (ngModelChange)="alarmChange(alarmArr)">
+
+            </nz-checkbox-group>
+        </div>
+    </div>
+
+    <div class="search-row" *ngIf="isSearchOpen" nz-row>
+        <div nz-col class="gutter-row" [nzSpan]="6">
+            <span class="inputTitle">资产编号</span>
+            <span class="input-common-width">
+                <nz-input [(ngModel)]="search.serverCode" [nzPlaceHolder]="''"></nz-input>
+            </span>
+        </div>
+        <div nz-col class="gutter-row" [nzSpan]="6">
+            <span class="inputTitle">所属项目</span>
+            <span class="input-common-width">
+                <nz-input [(ngModel)]="search.serverProject" [nzPlaceHolder]="''"></nz-input>
+            </span>
+        </div>
+        <div nz-col class="gutter-row" [nzSpan]="6">
+            <span class="inputTitle">责任人</span>
+            <span class="input-common-width">
+                <nz-select
+                    style="width: 100%;"
+                    nzAllowClear
+                    [nzPlaceHolder]="''"
+                    [(ngModel)]="search.serverUser"
+                    [nzShowSearch]="true">
+                    <nz-option *ngFor="let user of users" [nzLabel]="user.userName" [nzValue]="user.userId"></nz-option>
+                </nz-select>
+            </span>
+        </div>
+    </div>
+  </div>
+
+  <div class="maintenance-body">
+    <!-- <div class="m-10">
+        <button nz-button [nzType]="'default'" (click)="routerToDetail('insert')" class="ant-btn-add btn-common">
+            <i class="anticon anticon-plus"></i>
+            <span>新&nbsp;&nbsp;增</span>
+        </button>
+        <button nz-button [disabled]="disabledButton" (click)="synchronization()" [nzType]="'primary'" [nzType]="'default'" class="btn-common">
+            <i class="anticon anticon-sync"></i>
+            <span>同步服务器</span>
+        </button>
+        <button nz-button
+                [disabled]="disabledButton"
+                [nzType]="'primary'"
+                [nzLoading]="operating"
+                (click)="batchDelete()" class="btn-common">
+            
+            <i class="anticon anticon-minus"></i>
+            <span>批量删除</span>
+        </button>
+        <span style="margin-left: 8px;" *ngIf="_checkedNumber">已选中 {{_checkedNumber}} 条</span>
+    </div> -->
+
+        <!-- table start -->
+        <lh-table [column]="tableColumn" [data]="network" [operateButtons]="operateButtons"></lh-table>
+        
+        <div style="margin: 20px 30px;text-align: right;">
+            <lh-pagination [pageIndex]="pageIndex" [pageSize]="pageSize" [totalCount]="total"></lh-pagination>
+        </div>
+        <!-- table end -->
+
+
+
+  </div>
+
+  
+</div>
+
+
+

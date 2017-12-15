@@ -1,0 +1,49 @@
+
+.lh-tree-active {
+    background: #666;
+    color: #f3f3f3;
+}
+
+.lh-tree-children {
+    ul {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        font-size: 12px;
+        li {
+            list-style: none;
+            padding: 0;
+            white-space: nowrap;
+            outline: 0;
+        }
+    }
+    li {
+        user-select: none;
+        line-height: 28px;
+        cursor: pointer;
+        &:hover {
+            >.lh-tree-arrow, >.lh-tree-title {
+                background: #cccccc;
+            }
+        }
+        ul {
+            margin: 0;
+            padding: 0 0 0 18px;
+        }
+    }
+}
+
+.lh-tree-arrow {
+    cursor: pointer;
+    width: 12px;
+    text-align: center;
+    display: inline-block;
+    i, span {
+        transition: all .2s ease-in-out;
+    }
+}
+.lh-tree-arrow-open {
+    i, span {
+        transform: rotate(90deg);
+    }
+}

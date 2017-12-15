@@ -1,0 +1,151 @@
+<div class="series-wrap">
+    <div class="search-area" nz-row >
+        <div nz-col class="gutter-row" [nzSpan]="6">
+            <span class="inputTitle">型号名称</span>
+            <span class="input-common-width">
+                <nz-input [(ngModel)]="searchName" [nzPlaceHolder]="''"></nz-input>
+            </span>
+        </div>
+        <div nz-col class="gutter-row" [nzSpan]="6">
+            <span class="inputTitle">类型</span>
+            <span class="input-common-width">
+                <nz-select style="width: 100%"
+                           [(ngModel)]="assetType"
+                           nzAllowClear
+                           [nzShowSearch]="true"
+                           [nzPlaceHolder]="''">
+                    <nz-option  [nzLabel]="'网络设备'" [nzValue]="1"></nz-option>
+                    <nz-option  [nzLabel]="'机架服务器'" [nzValue]="2"></nz-option>
+                    <nz-option  [nzLabel]="'刀片服务器'" [nzValue]="3"></nz-option>
+                    <nz-option  [nzLabel]="'刀片服务器单元'" [nzValue]="4"></nz-option>
+                </nz-select>
+            </span>
+        </div>
+        <div nz-col class="gutter-row" [nzSpan]="8">
+            <button nz-button  [nzType]="'default'" (click)="getSeriesByField()" class="btn-common btn-search-normal">
+                <!--<i class="anticon anticon-search"></i>-->
+                <span>查&nbsp;询</span>
+            </button>
+            <button nz-button  [nzType]="'default'" (click)="clearSearch()" class="btn-common btn-reset-normal">
+                <!--<i class="anticon anticon-delete"></i>-->
+                <span>重&nbsp;置</span>
+            </button>
+        </div>
+    </div>
+    <div>
+        <div class="m-10">
+            <button nz-button [nzType]="'default'" (click)="quickRouter('insert')" class="ant-btn-add btn-common">
+                <i class="anticon anticon-plus"></i>
+                <span>新&nbsp;&nbsp;增</span>
+            </button>
+            <button nz-button
+                    [disabled]="disabledButton"
+                    [nzType]="'primary'"
+                    [nzLoading]="operating"
+                    (click)="batchDelete()" class="btn-common">
+                <!--<i class="anticon anticon-delete"></i>-->
+                <i class="anticon anticon-minus"></i>
+                <span>批量删除</span>
+            </button>
+            <span style="margin-left: 8px;" *ngIf="_checkedNumber">已选中 {{_checkedNumber}} 条</span>
+        </div>
+        <nz-table #nzTable
+                  [nzDataSource]="data"
+                  [nzSize]="'small'"
+                  [nzIsPagination]="false"
+                  [nzScroll]="{ y: 330 }"
+                  [nzBordered]="true"
+                  [nzPageSize]="20">
+            <ng-template #nzFixedHeader>
+                <thead nz-thead>
+                <tr>
+                    <th nz-th [nzWidth]="'30px'" [nzCheckbox]="true">
+                        <label nz-checkbox
+                               [(ngModel)]="allChecked"
+                               [nzIndeterminate]="indeterminate"
+                               (ngModelChange)="checkAll($event)">
+                        </label>
+                    </th>
+                    <th nz-th [nzWidth]="'150px'"><span>型号名称</span></th>
+                    <th nz-th [nzWidth]="'100px'"><span>系列</span></th>
+                    <th nz-th [nzWidth]="'100px'"><span>品牌</span></th>
+                    <th nz-th [nzWidth]="'100px'"><span>规格</span></th>
+                    <th nz-th [nzWidth]="'100px'"><span>类别</span></th>
+                    <th nz-th [nzWidth]="'100px'"><span>最大槽位数</span></th>
+                    <th nz-th [nzWidth]="'150px'"><span>操作</span></th>
+                </tr>
+                </thead>
+            </ng-template>
+            <tbody nz-tbody>
+            <tr nz-tbody-tr *ngFor="let version of data;let _index = index;">
+                <td nz-td [nzCheckbox]="true">
+                    <label nz-checkbox [(ngModel)]="version.checked" (ngModelChange)="refreshStatus($event)"></label>
+                </td>
+                <td nz-td>
+                    <a class="overflow" title="{{version.modelName}}" style="width: 120px;" (click)="quickRouter('detail', version.id)">{{version.modelName}}</a>
+                </td>
+                <td nz-td>
+                    <span class="overflow" title="{{version.seriesName}}" style="width: 80px;">{{version.seriesName}}</span>
+                </td>
+                <td nz-td>
+                    <span class="overflow" title="{{version.brandName}}" style="width: 80px;">{{version.brandName}}</span>
+                </td>
+                <td nz-td>
+                    <span class="overflow" title="{{version.standard}}" style="width: 60px;">{{version.standard}}</span>
+                </td>
+                <td nz-td>
+                    <span class="overflow" style="width: 80px;" title="{{version.assetType===1?'网络设备':version.assetType===2?'机架服务器':version.assetType===3?'刀片服务器':version.assetType===4?'刀片服务器单元':''}}">
+                        {{version.assetType===1?'网络设备':version.assetType===2?'机架服务器':version.assetType===3?'刀片服务器':version.assetType===4?'刀片服务器单元':''}}
+                    </span>
+                </td>
+                <td nz-td>
+                    <span class="overflow" style="width: 60px;" title="{{version.maxSlotNum}}">{{version.maxSlotNum}}</span>
+                </td>
+
+                <td nz-td>
+                    <!--<nz-tooltip [nzTitle]="'修改'">-->
+                        <!--<span nz-tooltip class="hove_alert">-->
+                            <!--<a (click)="quickRouter('modify', version.id)">-->
+                                <!--&lt;!&ndash; <i class="anticon anticon-edit icon_mlr-15"></i> &ndash;&gt;-->
+                                <!--<span class="btn-edit icon_mlr-15"></span>-->
+                            <!--</a>-->
+                        <!--</span>-->
+                    <!--</nz-tooltip>-->
+                    <a class="edit-item" (click)="quickRouter('modify', version.id)">
+                        <nz-tooltip [nzTitle]="'修改'">
+                                <span  nz-tooltip class="hove_alert">
+                                    <i class="btn-edit icon_mlr-15"></i>
+                                </span>
+                        </nz-tooltip>
+                    </a>
+                    <nz-tooltip [nzTitle]="'删除'">
+                            <span nz-tooltip class="hove_alert">
+                                <nz-popconfirm [nzTitle]="'确定要删除这个型号吗？'"
+                                               (nzOnConfirm)="confirmDelete(version)"
+                                               (nzOnCancel)="cancel()">
+                                    <a nz-popconfirm><span class="btn-delate icon_mlr-15" ></span></a>
+                                </nz-popconfirm>
+                            </span>
+                    </nz-tooltip>
+                </td>
+            </tr>
+            </tbody>
+        </nz-table>
+
+        <!--<app-lh-table [setting]="{}"-->
+                          <!--[size]="'small'"-->
+                          <!--[column]="column"-->
+                          <!--[data]="demoData"-->
+                          <!--[height]="400"-->
+                          <!--[operateButtons]="operateButtons">-->
+
+        <!--</app-lh-table>-->
+        <div style="margin: 20px 30px;text-align: right;">
+            <app-pagination [pageIndex]="pageIndex"
+                            [pageSize]="pageSize"
+                            [total]="total">
+
+            </app-pagination>
+        </div>
+    </div>
+</div>
